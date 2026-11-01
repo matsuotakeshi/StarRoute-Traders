@@ -1,0 +1,367 @@
+TELNET LOGIN / DOOR local-bbs
+DOOR> map
+
+map
+STARROUTE 240x120  [19,104]  59,112
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                        [32m*[0m                                       
+                                                                                
+                                                                                
+                   *                                                            
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+到着まで: 0s  029 -> -
+SRT>
+DOOR> status
+
+status
+プレイヤーID: 31431317160b4e05acc22b3ea3690d4f
+名前: pilot
+クール: 1
+所持クレジット: 5000
+宇宙船: normal_2
+船名: Test normal 2
+積載上限: 40
+使用積載量: 0
+惑星: 029
+惑星名: Texia
+目的地: None
+到着時刻 UTC: None
+到着までの秒数: 0
+貨物:
+SRT>
+DOOR> language en
+
+language en
+STARROUTE TRADERS - BBS Door
+SRT>
+DOOR> names on
+
+names on
+STARROUTE 240x120  [19,104]  59,112
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                        [32m*[0m Texia                                 
+                                                                                
+                                                                                
+                   * Orzef                                                      
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+ETA: 0s  029 -> -
+SRT>
+DOOR> color off
+
+color off
+SRT>
+DOOR> buy grain 1
+
+buy grain 1
+Trade side: buy
+Goods ID: grain
+Quantity: 1
+Unit price: 101
+first_unit_price: 101
+last_unit_price: 101
+Total Cr: 101
+pricing_mode: planet_supply_v1
+Previous stock: 70
+New stock: 69
+SRT>
+DOOR> warp 034 fast
+
+warp 034 fast
+Round: 1
+Player ID: 31431317160b4e05acc22b3ea3690d4f
+Ship: normal_2
+Origin: 029
+Destination: 034
+mode: warp
+level: fast
+Seconds: 38
+Navigation Cr: 380
+warp_speed: 20
+policy_status: provisional
+Arrival UTC: 1793552937
+Cost Cr: 380
+STARROUTE 240x120  [18,103]  58,111
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                        +                                       
+                                         * Texia                                
+                                                                                
+                                                                                
+                    * Orzef                                                     
+                                                                                
+                                                                                
+                                                                                
+ETA: 37s  029 -> 034
+In flight: news only. map/flight/display settings and quit remain available.
+SRT>
+DOOR> flight
+
+flight
+Origin: 029
+Destination: 034
+departure_at: 1793552899
+Arrival UTC: 1793552937
+ETA seconds: 37
+position:
+58
+111
+SRT>
+DOOR> news
+
+news
+News type | Planet | Time UTC
+news 1 / 1
+SRT>
+DOOR> buy grain 1
+
+buy grain 1
+Operation rejected: IN_TRANSIT
+SRT>
+WAITING FOR REAL ARRIVAL: 36 seconds
+WAITING FOR REAL ARRIVAL: 26 seconds
+WAITING FOR REAL ARRIVAL: 15 seconds
+WAITING FOR REAL ARRIVAL: 5 seconds
+DOOR> status
+
+status
+Player ID: 31431317160b4e05acc22b3ea3690d4f
+Name: pilot
+Round: 1
+Credits: 4519
+Ship: normal_2
+Ship name: Test normal 2
+Capacity: 40
+Used capacity: 1
+Planet: 034
+Planet name: Nemelia
+Destination: None
+Arrival UTC: None
+ETA seconds: 0
+Cargo:
+Goods ID: grain
+name: 星穀
+Quantity: 1
+SRT>
+DOOR> sell grain 1
+
+sell grain 1
+Trade side: sell
+Goods ID: grain
+Quantity: 1
+Unit price: 100
+first_unit_price: 100
+last_unit_price: 100
+Total Cr: 100
+pricing_mode: planet_supply_v1
+Previous stock: 200
+New stock: 201
+SRT>
+DOOR> map
+
+map
+STARROUTE 240x120  [2,89]  52,100
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                  * Nemelia                                         
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+ETA: 0s  034 -> -
+SRT>
+DOOR> score
+
+score
+Player ID: 31431317160b4e05acc22b3ea3690d4f
+Pilot: pilot
+bbs_id: standalone
+user_id: 1
+Realized trade profit: -1
+purchases: 101
+sales: 100
+navigation_cost: 380
+planet_paid: 0
+planet_effect: 0
+planet_bonus: 0
+route_paid: 0
+route_effect: 0
+route_bonus: 0
+Jackpot Cr: 0
+insurance_premium: 0
+insurance_claim: 0
+restart_grant: 0
+bankruptcy_cash_removed: 0
+ship_cost: 0
+pirate_loss: 0
+repair_cost: 0
+exploration: 2
+unpriced_units: 0
+SRT>
+TELNET LOGIN / DOOR bbs_a
+TELNET LOGIN / DOOR bbs_b
+DOOR> buy grain 1
+
+buy grain 1
+Trade side: buy
+Goods ID: grain
+Quantity: 1
+Unit price: 101
+first_unit_price: 101
+last_unit_price: 101
+Total Cr: 101
+pricing_mode: planet_supply_v1
+Previous stock: 70
+New stock: 69
+SRT>
+DOOR> market
+
+market
+Goods ID | Price | Stock
+grain | 102 | 69
+alloy | 201 | 200
+medicine | 781 | 60
+fusion_fuel | 301 | 10
+dense_warp_fuel | 1681 | 4
+water | 138 | 60
+vegetables | 163 | 60
+fruit | 188 | 60
+protein | 213 | 60
+timber | 238 | 60
+fiber | 263 | 60
+iron_ore | 288 | 60
+copper_ore | 313 | 60
+rare_metals | 338 | 60
+crystals | 363 | 60
+ceramics | 331 | 60
+polymers | 356 | 60
+machinery | 381 | 60
+electronics | 406 | 60
+market 1 / 2
+SRT>
+DOOR> WHO
+
+WHO
+Players:
+Player: pilot
+BBS: bbs_a
+Player: pilot
+BBS: bbs_b
+Online pilots: 2
+SRT>
+DOOR> invest primary 100
+
+invest primary 100
+Planet: 029
+Industry: primary
+Paid Cr: 100
+Development effect: 1
+level: 5
+SRT>
+DOOR> development
+
+development
+Planet: 029
+enabled: True
+industries:
+Industry: primary
+level: 5
+Industry: secondary
+level: 0
+Industry: tertiary
+level: 1
+Industry: quaternary
+level: 2
+SRT>
+DOOR> donate r011-029 120
+
+donate r011-029 120
+Route: r011-029
+Paid Cr: 120
+Development effect: 120
+Opened: False
+Jackpot Cr: 0
+SRT>
+DOOR> donate r011-029 120
+
+donate r011-029 120
+Route: r011-029
+Paid Cr: 120
+Development effect: 120
+Opened: True
+Jackpot Cr: 24
+SRT>
+DOOR> donate r011-029 1
+
+donate r011-029 1
+Operation rejected: ROUTE_ALREADY_OPEN
+SRT>
+DOOR> news
+
+news
+News type | Planet | Time UTC
+route_open | None | 1793552950
+  Route=r011-029, reward=24
+news 1 / 1
+SRT>
+DOOR> rankings
+
+rankings
+Category | Rank | Pilot | Score
+trade | 1 | pilot | 0
+trade | 2 | pilot | 0
+planet | 1 | pilot | 1
+planet | 2 | pilot | 0
+route | 1 | pilot | 120
+route | 2 | pilot | 120
+exploration | 1 | pilot | 1
+exploration | 2 | pilot | 1
+rankings 1 / 1
+SRT>
+DOOR> hall
+
+hall
+Round | Category | Rank | Pilot | Score
+hall 1 / 1
+SRT>
+{"A": {"telnet": true, "trade_travel_return_resume": true, "naws_resize": true, "languages": ["ja", "en"]}, "B": {"bbs_servers": 2, "shared_market": true, "shared_development": true, "shared_route_jackpot_once": true, "who": true, "disconnect_preserves_assets": true}, "integrity": "ok"}

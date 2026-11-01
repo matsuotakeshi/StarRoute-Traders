@@ -1,0 +1,71 @@
+{
+  "version": "0.18.0",
+  "windows": {
+    "tests": 430,
+    "seconds": 416.062,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "result": "PASS",
+    "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "freebsd": {
+    "tests": 430,
+    "seconds": 374.687,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "result": "PASS",
+    "python": "3.12.15 (main, Oct 15 2026, 01:09:06) [Clang 19.1.7 (https://github.com/llvm/llvm-project.git llvmorg-19.1.7-0-gcd7080",
+    "platform": "FreeBSD-15.1-RELEASE-amd64-64bit-ELF"
+  },
+  "regression_tests": 386,
+  "phase5_tests": 44,
+  "source_manifest": "source-manifest.json",
+  "real_telnet": {
+    "A": {
+      "telnet": true,
+      "trade_travel_return_resume": true,
+      "naws_resize": true,
+      "languages": [
+        "ja",
+        "en"
+      ]
+    },
+    "B": {
+      "bbs_servers": 2,
+      "shared_market": true,
+      "shared_development": true,
+      "shared_route_jackpot_once": true,
+      "who": true,
+      "disconnect_preserves_assets": true
+    },
+    "integrity": "ok"
+  },
+  "operations_cli": {
+    "D": {
+      "discarded_response_resolved": true,
+      "single_purchase": true,
+      "master_process_restart": true,
+      "readonly_cache": true,
+      "no_offline_queue": true
+    },
+    "E": {
+      "local_remote_both": true,
+      "restored_and_reconnected": true,
+      "administrator_diagnostics": true
+    },
+    "C": {
+      "operator_cli_join_leave": true,
+      "local_assets_not_imported": true,
+      "fresh_local_reset": true,
+      "other_site_unchanged": true,
+      "backups": 1,
+      "db_integrity": "ok"
+    }
+  },
+  "production_deployment": "not performed; separate approval required",
+  "private_github_live_test": "not performed; no production repository/credentials provided",
+  "freebsd_directory": "/home/takeshi/starroute-phase5-verification-20261102/final3"
+}

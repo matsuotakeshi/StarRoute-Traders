@@ -1,0 +1,23 @@
+{
+  "mode": "independent_levels_v1",
+  "status": "provisional",
+  "maximum_ranges": {
+    "primary": {
+      "min": 1,
+      "max": 5
+    },
+    "secondary": {
+      "min": 1,
+      "max": 5
+    },
+    "tertiary": {
+      "min": 1,
+      "max": 5
+    },
+    "quaternary": {
+      "min": 1,
+      "max": 5
+    }
+  },
+  "initial_policy": "uniform_zero_to_max_v1"
+}

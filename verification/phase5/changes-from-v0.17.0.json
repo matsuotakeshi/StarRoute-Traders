@@ -1,0 +1,37 @@
+{
+  "modified": [
+    "pyproject.toml",
+    "README.md",
+    "starroute/repository.py",
+    "starroute/__init__.py"
+  ],
+  "added": [
+    "PHASE5_COMPLETE.md",
+    "docs/PHASE5_API.md",
+    "examples/door-local.example.json",
+    "examples/door-remote.example.json",
+    "examples/master.example.json",
+    "scripts/phase5_operations_demo.py",
+    "scripts/phase5_telnet_demo.py",
+    "starroute/local_door.py",
+    "starroute/network.py",
+    "starroute/network_admin.py",
+    "starroute/network_security.py",
+    "starroute_bbs/client.py",
+    "starroute_bbs/door.py",
+    "starroute_bbs/node.py",
+    "starroute_bbs/terminal.py",
+    "starroute_bbs/__init__.py",
+    "tests/phase5_support.py",
+    "tests/test_phase5.py",
+    "starroute_bbs/locales/en.json",
+    "starroute_bbs/locales/ja.json",
+    "integration/liner_notes/prepare_resize_copy.py"
+  ],
+  "deleted": [],
+  "previous_386_test_sources_unchanged": true,
+  "protected_windows_phase4_files": 126,
+  "protected_windows_phase4_unchanged": true,
+  "protected_freebsd_files": 2471,
+  "protected_freebsd_unchanged": true
+}

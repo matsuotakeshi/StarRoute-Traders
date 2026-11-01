@@ -1,0 +1,43 @@
+--- a/src/doors.h
++++ b/src/doors.h
+@@ -9,6 +9,7 @@
+ int door_input(Door *,unsigned char);
+ int door_room(Door *);
+ int door_pump(Door *,int (*)(void *,const unsigned char *,size_t),void *,uint64_t);
++int door_resize(Door *,unsigned,unsigned);
+ void door_stop(Door *);
+ void doors_reap(void);
+ int doors_pending(void);
+--- a/src/doors.c
++++ b/src/doors.c
+@@ -96,3 +96,17 @@
+ void doors_reap(void) {}
+ int doors_pending(void) { return 0; }
+ #endif
++
++/* Isolated StarRoute integration: propagate Telnet NAWS to the live PTY. */
++int door_resize(Door *d,unsigned columns,unsigned rows) {
++#ifndef _WIN32
++    if(!d || columns<20 || columns>240 || rows<12 || rows>120)return 0;
++    struct winsize current={0};
++    if(ioctl(d->fd,TIOCGWINSZ,&current))return 0;
++    if(current.ws_col==columns && current.ws_row==rows)return 1;
++    current.ws_col=(unsigned short)columns;current.ws_row=(unsigned short)rows;
++    return ioctl(d->fd,TIOCSWINSZ,&current)==0;
++#else
++    (void)d;(void)columns;(void)rows;return 0;
++#endif
++}
+--- a/src/runtime.c
++++ b/src/runtime.c
+@@ -254,6 +254,10 @@
+         if(byte==29) { done=1;break; }if(!door_input(c->door,byte)) { done=-1;break; }
+     }
+     memmove(c->input,c->input+used,c->used-used);c->used-=used;
++    if(c->terminal.mode==TERMINAL_TELNET && c->terminal.telnet.width && c->terminal.telnet.height) {
++        session_dimensions(s,c->terminal.telnet.width,c->terminal.telnet.height);
++        door_resize(c->door,s->columns,s->rows);
++    }
+     if(!done && c->queued<=OUT_CAP/2)done=door_pump(c->door,zbytes,c,now);
+     if(done) {
+         door_stop(c->door);c->door=NULL;s->door=0;c->used=0;terminal_clear(&c->terminal);terminal_set_binary(&c->terminal,0);

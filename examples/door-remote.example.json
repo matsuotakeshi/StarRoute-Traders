@@ -1,0 +1,1 @@
+{"mode":"inter-bbs","url":"https://master.example.invalid:8443","profile":"/private/starroute/site-profile.json","ca_file":"/private/starroute/master-ca.pem","state_directory":"/private/starroute/client-state","language":"ja","ansi":true,"timeout":5,"heartbeat_seconds":30}

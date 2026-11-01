@@ -1,0 +1,192 @@
+{
+  "version": "0.18.0",
+  "phase5_status": "COMPLETE",
+  "items": [
+    {
+      "id": "standalone",
+      "requirement": "スタンドアロン正常動作",
+      "result": "PASS",
+      "evidence": "freebsd-telnet-demo.log: scenario A"
+    },
+    {
+      "id": "api",
+      "requirement": "TLSマスターAPI",
+      "result": "PASS",
+      "evidence": "test_phase5 + operations scenarios C/D/E"
+    },
+    {
+      "id": "site-auth",
+      "requirement": "BBSサイト認証",
+      "result": "PASS",
+      "evidence": "test_bad_site_token, test_disabled_site, test_site_admin_rotation_and_disable_cli"
+    },
+    {
+      "id": "identity",
+      "requirement": "プレイヤー識別・権限",
+      "result": "PASS",
+      "evidence": "test_two_sites_identity_and_shared_stock, test_user_impersonation_body_rejected, test_result_lookup_cannot_cross_user_or_site"
+    },
+    {
+      "id": "configuration",
+      "requirement": "設定不一致の原因分類",
+      "result": "PASS",
+      "evidence": "operations scenario E; test_reference_missing, test_reference_signature_invalid, test_healthy_peer_and_freshness"
+    },
+    {
+      "id": "disclosure",
+      "requirement": "公開・非公開情報分離",
+      "result": "PASS",
+      "evidence": "test_public_projection_no_secrets, test_private_news_never_cached, unchanged Phase 3 disclosure tests"
+    },
+    {
+      "id": "door",
+      "requirement": "Liner notes Door起動",
+      "result": "PASS",
+      "evidence": "freebsd-telnet-demo.log: actual isolated Liner runtime / PTY"
+    },
+    {
+      "id": "telnet",
+      "requirement": "Telnet実試遊",
+      "result": "PASS",
+      "evidence": "freebsd-telnet-demo.log: scenarios A/B"
+    },
+    {
+      "id": "language",
+      "requirement": "日本語・英語UI",
+      "result": "PASS",
+      "evidence": "scenario A; test_language_preference_persists"
+    },
+    {
+      "id": "map",
+      "requirement": "ASCII星図・位置・ETA・NAWS",
+      "result": "PASS",
+      "evidence": "scenario A; test_terminal_map_ansi_names_width, test_terminal_live_size_overrides_startup_environment"
+    },
+    {
+      "id": "transit",
+      "requirement": "航行中の操作制限",
+      "result": "PASS",
+      "evidence": "scenario A; test_transit_restrictions"
+    },
+    {
+      "id": "records",
+      "requirement": "ニュース・ランキング・殿堂",
+      "result": "PASS",
+      "evidence": "scenario B; test_news_details_rendered_and_help_not_truncated; Phase 4 records tests"
+    },
+    {
+      "id": "who",
+      "requirement": "オンライン一覧",
+      "result": "PASS",
+      "evidence": "scenario B; test_who_scope_logout_timeout, test_duplicate_session_not_duplicate_who, test_heartbeat_keeps_idle_session_without_game_changes"
+    },
+    {
+      "id": "two-bbs",
+      "requirement": "2 BBS共有宇宙",
+      "result": "PASS",
+      "evidence": "scenario B: two independent Liner runtimes"
+    },
+    {
+      "id": "shared-state",
+      "requirement": "市場・開発・航路一致",
+      "result": "PASS",
+      "evidence": "scenario B"
+    },
+    {
+      "id": "concurrency",
+      "requirement": "同時更新の整合性",
+      "result": "PASS",
+      "evidence": "test_concurrent_last_stock_independent_processes, test_concurrent_route_final_donation, test_concurrent_last_investment"
+    },
+    {
+      "id": "idempotency",
+      "requirement": "二重処理防止",
+      "result": "PASS",
+      "evidence": "scenario D; test_request_replay_and_conflict, test_lost_response_recovery"
+    },
+    {
+      "id": "join",
+      "requirement": "クール途中参加",
+      "result": "PASS",
+      "evidence": "operations scenario C"
+    },
+    {
+      "id": "leave",
+      "requirement": "正式離脱",
+      "result": "PASS",
+      "evidence": "operations scenario C; test_join_leave_and_recovery"
+    },
+    {
+      "id": "target-reset",
+      "requirement": "対象ノードだけ初期化",
+      "result": "PASS",
+      "evidence": "operations scenario C: other site and shared market unchanged"
+    },
+    {
+      "id": "disconnect",
+      "requirement": "一時切断でリセットなし",
+      "result": "PASS",
+      "evidence": "scenarios B/D; test_disconnect_no_offline_mutation_or_reset"
+    },
+    {
+      "id": "offline-update",
+      "requirement": "通信断中の更新禁止",
+      "result": "PASS",
+      "evidence": "scenario D"
+    },
+    {
+      "id": "uncertain",
+      "requirement": "未確定操作の結果照会",
+      "result": "PASS",
+      "evidence": "scenario D; test_join_leave_and_recovery, test_round_reconnect_and_old_pending_result"
+    },
+    {
+      "id": "round",
+      "requirement": "次クール再接続",
+      "result": "PASS",
+      "evidence": "test_round_reconnect_and_old_pending_result"
+    },
+    {
+      "id": "client-secrets",
+      "requirement": "BBSへの秘密情報非配布",
+      "result": "PASS",
+      "evidence": "thin client archive allowlist; test_thin_client_imports_without_engine, test_public_projection_no_secrets, test_audit_no_tokens"
+    },
+    {
+      "id": "windows",
+      "requirement": "Windows自動テスト",
+      "result": "PASS",
+      "evidence": "windows-tests.log: 430/430"
+    },
+    {
+      "id": "freebsd",
+      "requirement": "FreeBSD自動テスト",
+      "result": "PASS",
+      "evidence": "freebsd-tests.log: 430/430"
+    },
+    {
+      "id": "regression",
+      "requirement": "従来386テスト維持",
+      "result": "PASS",
+      "evidence": "unchanged test files; 386 regression + 44 Phase 5"
+    },
+    {
+      "id": "real-integration",
+      "requirement": "Door / Inter-BBS実動作",
+      "result": "PASS",
+      "evidence": "FreeBSD scenarios A/B/C/D/E"
+    },
+    {
+      "id": "recovery",
+      "requirement": "DB整合性・バックアップ・復旧",
+      "result": "PASS",
+      "evidence": "operations C/D, test_join_leave_and_recovery; Phase 4 fault injection tests; integrity_check and foreign_key_check"
+    }
+  ],
+  "production_approval_separate": true,
+  "known_limitations": [
+    "Production TLS/ports/DNS/Liner deployment not performed.",
+    "Real private GitHub deployment remains untested without supplied production configuration.",
+    "Python 3.10 syntax compatibility maintained; runtime validation is Windows 3.14.7 and FreeBSD 3.12.15."
+  ]
+}

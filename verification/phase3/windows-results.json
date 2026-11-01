@@ -1,0 +1,55 @@
+{
+  "tests": 340,
+  "failures": 0,
+  "demos": {
+    "ja": {
+      "language": "ja",
+      "initial_trade_profit": 478,
+      "cash": 3362,
+      "ship": "engineering_1",
+      "damage": {
+        "industry": "quaternary",
+        "goods_id": "biotech",
+        "level_before": 1,
+        "level_after": 0,
+        "production_before": 6,
+        "production_after": 4
+      },
+      "news_count": 65,
+      "rules": {
+        "rules_version": "phase3-complete-1",
+        "config_schema_version": 10,
+        "canonicalization": "srt-integer-json-v1",
+        "algorithm": "sha256",
+        "sha256": "694b823812920729a6b037621bf89c90308345c4221c88aa35c3dd9b7c8a5a90"
+      },
+      "saved_reopened": true
+    },
+    "en": {
+      "language": "en",
+      "initial_trade_profit": 478,
+      "cash": 3362,
+      "ship": "engineering_1",
+      "damage": {
+        "industry": "quaternary",
+        "goods_id": "biotech",
+        "level_before": 1,
+        "level_after": 0,
+        "production_before": 6,
+        "production_after": 4
+      },
+      "news_count": 65,
+      "rules": {
+        "rules_version": "phase3-complete-1",
+        "config_schema_version": 10,
+        "canonicalization": "srt-integer-json-v1",
+        "algorithm": "sha256",
+        "sha256": "694b823812920729a6b037621bf89c90308345c4221c88aa35c3dd9b7c8a5a90"
+      },
+      "saved_reopened": true
+    }
+  },
+  "standalone_generator": true,
+  "separate_process_cli": true,
+  "external_deployment": false
+}

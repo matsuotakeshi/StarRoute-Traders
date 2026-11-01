@@ -1,0 +1,61 @@
+{
+  "windows": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "total": 386,
+    "phase3": 340,
+    "phase4": 46,
+    "failures": 0
+  },
+  "freebsd": {
+    "platform": "FreeBSD-15.1-RELEASE-amd64-64bit-ELF",
+    "python": "3.12.15 (main, Oct 15 2026, 01:09:06) [Clang 19.1.7 (https://github.com/llvm/llvm-project.git llvmorg-19.1.7-0-gcd7080",
+    "source_files": 126,
+    "commands": {
+      "tests": 0,
+      "demo-ja": 0,
+      "demo-en": 0
+    },
+    "protected_files": 2230,
+    "protected_unchanged": true,
+    "total": 386,
+    "phase3": 340,
+    "phase4": 46,
+    "failures": 0
+  },
+  "real_github": "NOT_TESTED: production URL / read-only deploy key not supplied; local signed Git transport passed",
+  "local_phase3": {
+    "baseline_files": 112,
+    "differences": [],
+    "unchanged": true
+  },
+  "actual_schema10_migrations": {
+    "status": "PASS",
+    "migrations": [
+      {
+        "source": "levels-cli-ja.db",
+        "from_schema": 10,
+        "to_schema": 11,
+        "tables_preserved": 25,
+        "backup": true,
+        "source_unchanged": true
+      },
+      {
+        "source": "universe.db",
+        "from_schema": 10,
+        "to_schema": 11,
+        "tables_preserved": 25,
+        "backup": true,
+        "source_unchanged": true
+      },
+      {
+        "source": "verification-demo.db",
+        "from_schema": 10,
+        "to_schema": 11,
+        "tables_preserved": 25,
+        "backup": true,
+        "source_unchanged": true
+      }
+    ]
+  }
+}

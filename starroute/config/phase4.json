@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "status": "provisional",
+  "round_seconds": 2592000,
+  "trade": "fifo_realized_v1",
+  "planet": "effect_units",
+  "route": "effect_units",
+  "exploration": "unique_visits_provisional",
+  "ties": "score_desc_player_id_asc",
+  "cutoff": "committed_at_deadline_no_carry",
+  "unpriced_cargo": "zero_cost_marked"
+}

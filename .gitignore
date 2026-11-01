@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*.db
+*.db-wal
+*.db-shm
+.venv/
+build/
+*.egg-info/
+
+# Runtime worlds, credentials and private deployment files
+*.sqlite*
+*.pem
+*.key
+.env
+.env.*
+private/
+client-state/
+*-state/
+site-profile*.json
+replacement-profile*.json
+master.json
+node.json
+*package.json
+!package.json

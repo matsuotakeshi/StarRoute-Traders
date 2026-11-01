@@ -1,0 +1,187 @@
+{
+  "status": "COMPLETE_FOR_PHASE4_IMPLEMENTATION_AND_ISOLATED_VALIDATION",
+  "version": "0.17.0",
+  "date": "2026-11-02",
+  "items": [
+    {
+      "id": "P4-01",
+      "requirement": "GitHub Private Repository取得機構",
+      "status": "PASS",
+      "evidence": "test_signed_fetch / pinned commit / local Git A-E; real GitHub external test excluded"
+    },
+    {
+      "id": "P4-02",
+      "requirement": "読み取り専用認証対応",
+      "status": "PASS",
+      "evidence": "test_network_requires_dedicated_credentials / test_strict_ssh_and_no_global_git_config; GitHub Deploy Key permissions require operator setup"
+    },
+    {
+      "id": "P4-03",
+      "requirement": "配布元・署名・完全性",
+      "status": "PASS",
+      "evidence": "test_signed_fetch / test_wrong_signer / test_bad_signature / test_manifest_changed / test_hash_changed"
+    },
+    {
+      "id": "P4-04",
+      "requirement": "宇宙登録台帳",
+      "status": "PASS",
+      "evidence": "test_registration_separation"
+    },
+    {
+      "id": "P4-05",
+      "requirement": "重複・競合検出",
+      "status": "PASS",
+      "evidence": "test_duplicate / test_conflict"
+    },
+    {
+      "id": "P4-06",
+      "requirement": "登録と有効化分離",
+      "status": "PASS",
+      "evidence": "test_current_universe_unaffected"
+    },
+    {
+      "id": "P4-07",
+      "requirement": "ローカル共通登録",
+      "status": "PASS",
+      "evidence": "CLI scenario A"
+    },
+    {
+      "id": "P4-08",
+      "requirement": "クール開始終了・状態",
+      "status": "PASS",
+      "evidence": "test_end_deadline / test_prepared_no_gameplay / test_close_idempotent_and_hall"
+    },
+    {
+      "id": "P4-09",
+      "requirement": "次宇宙事前登録",
+      "status": "PASS",
+      "evidence": "CLI scenario B"
+    },
+    {
+      "id": "P4-10",
+      "requirement": "成績確定",
+      "status": "PASS",
+      "evidence": "test_scores_and_ties / test_empty_round"
+    },
+    {
+      "id": "P4-11",
+      "requirement": "交易・投資・航路成績",
+      "status": "PASS",
+      "evidence": "test_fifo_trade / test_contribution_components / test_insurance_claim_separate"
+    },
+    {
+      "id": "P4-12",
+      "requirement": "探索保存集計",
+      "status": "PASS",
+      "evidence": "test_arrival_exploration_persists"
+    },
+    {
+      "id": "P4-13",
+      "requirement": "部門別ランキング表示",
+      "status": "PASS",
+      "evidence": "test_player_records_languages_and_privacy / CLI rankings"
+    },
+    {
+      "id": "P4-14",
+      "requirement": "部門上位3名の殿堂",
+      "status": "PASS",
+      "evidence": "test_close_idempotent_and_hall / test_small_hall / CLI C"
+    },
+    {
+      "id": "P4-15",
+      "requirement": "未確定探索条件を捏造しない",
+      "status": "PASS",
+      "evidence": "test_scores_and_ties; provisional_unique_visits_not_victory"
+    },
+    {
+      "id": "P4-16",
+      "requirement": "安全なクール切り替え",
+      "status": "PASS",
+      "evidence": "test_activation_fault / test_crash_rollback_and_retry / test_concurrent_close"
+    },
+    {
+      "id": "P4-17",
+      "requirement": "新クール状態初期化",
+      "status": "PASS",
+      "evidence": "test_switch_and_identity_preservation / test_pending_voyage_reset / test_new_initial_levels"
+    },
+    {
+      "id": "P4-18",
+      "requirement": "過去成績・殿堂維持",
+      "status": "PASS",
+      "evidence": "test_immutable_hall / CLI D"
+    },
+    {
+      "id": "P4-19",
+      "requirement": "障害時再開復旧",
+      "status": "PASS",
+      "evidence": "test_recovery_copy_no_overwrite / test_repeated_activation_preserves_new_transactions"
+    },
+    {
+      "id": "P4-20",
+      "requirement": "取得障害中のゲーム継続",
+      "status": "PASS",
+      "evidence": "test_fetch_failure_noninterference"
+    },
+    {
+      "id": "P4-21",
+      "requirement": "Phase3 340テスト",
+      "status": "PASS",
+      "evidence": "windows-tests.log + freebsd/tests.log"
+    },
+    {
+      "id": "P4-22",
+      "requirement": "Phase4 46テスト",
+      "status": "PASS",
+      "evidence": "windows-tests.log + freebsd/tests.log"
+    },
+    {
+      "id": "P4-23",
+      "requirement": "Windows統合検証",
+      "status": "PASS",
+      "evidence": "windows-cli-ja.log / windows-cli-en.log / windows-real-cli.log"
+    },
+    {
+      "id": "P4-24",
+      "requirement": "FreeBSD統合検証",
+      "status": "PASS",
+      "evidence": "freebsd/demo-ja.log / freebsd/demo-en.log / freebsd-real-cli.log"
+    },
+    {
+      "id": "P4-25",
+      "requirement": "管理CLIクール切り替え",
+      "status": "PASS",
+      "evidence": "A-E demo both languages and OS"
+    },
+    {
+      "id": "P4-26",
+      "requirement": "DB整合性検査",
+      "status": "PASS",
+      "evidence": "CLI check integrity=ok foreign_keys=[]; backup and failure tests; freebsd/actual-migrations.json: 3 real schema10 copies, 25 tables each preserved"
+    },
+    {
+      "id": "P4-27",
+      "requirement": "Phase5引き継ぎ",
+      "status": "PASS",
+      "evidence": "PHASE4_COMPLETE.md Phase5 section"
+    }
+  ],
+  "external_unverified": [
+    "Actual GitHub Private Repository SSH connection and server-side deploy key read-only scope"
+  ],
+  "tests": {
+    "windows": {
+      "total": 386,
+      "phase3": 340,
+      "phase4": 46,
+      "failures": 0
+    },
+    "freebsd": {
+      "total": 386,
+      "phase3": 340,
+      "phase4": 46,
+      "failures": 0
+    }
+  },
+  "phase3_checklist": "../starroute-phase3-complete/acceptance-checklist.json (preserved)"
+}

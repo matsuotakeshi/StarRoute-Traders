@@ -1,0 +1,22 @@
+starroute.network_admin --db -> {"state": "complete", "command": "add"}
+starroute.network_admin --db -> {"state": "complete", "command": "add"}
+starroute.network_admin --db -> {"state": "complete", "command": "add"}
+starroute_bbs.node --config -> {"state": "COMMITTED", "backup": "/home/takeshi/starroute-phase5-verification-20261102/final3/operations-demo/transition-8fa5cdb99deb456d99dc402392119df9"}
+SCENARIO D PASS
+starroute.network_admin --db -> {"state": "complete", "command": "approve"}
+DIAGNOSTIC LOCAL_CONFIG_MISMATCH
+starroute.network_admin --db -> {"state": "complete", "command": "approve"}
+starroute.network_admin --db -> {"state": "complete", "command": "approve"}
+DIAGNOSTIC LOCAL_CONFIG_MISMATCH
+DIAGNOSTIC REMOTE_CONFIG_MISMATCH
+starroute.network_admin --db -> {"state": "complete", "command": "approve"}
+DIAGNOSTIC BOTH_CONFIG_MISMATCH
+starroute.network_admin --db -> {"state": "complete", "command": "approve"}
+starroute.network_admin --db -> {"state": "complete", "command": "approve"}
+DIAGNOSTIC OK
+DIAGNOSTIC OK
+SCENARIO E PASS
+starroute.network_admin --db -> {"state": "complete", "command": "add"}
+starroute_bbs.node --config -> {"state": "COMMITTED"}
+SCENARIO C PASS
+{"D": {"discarded_response_resolved": true, "single_purchase": true, "master_process_restart": true, "readonly_cache": true, "no_offline_queue": true}, "E": {"local_remote_both": true, "restored_and_reconnected": true, "administrator_diagnostics": true}, "C": {"operator_cli_join_leave": true, "local_assets_not_imported": true, "fresh_local_reset": true, "other_site_unchanged": true, "backups": 1, "db_integrity": "ok"}}

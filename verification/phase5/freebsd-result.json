@@ -1,0 +1,14 @@
+{
+  "platform": "FreeBSD-15.1-RELEASE-amd64-64bit-ELF",
+  "python": "3.12.15 (main, Oct 15 2026, 01:09:06) [Clang 19.1.7 (https://github.com/llvm/llvm-project.git llvmorg-19.1.7-0-gcd7080",
+  "source_files": 147,
+  "commands": {
+    "liner-patch": 0,
+    "liner-build": 0,
+    "tests": 0,
+    "telnet-demo": 0,
+    "operations-demo": 0
+  },
+  "protected_files": 2471,
+  "protected_unchanged": true
+}

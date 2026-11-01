@@ -1,0 +1,271 @@
+"""Game rules only: no IO, SQL, HTML, CLI parsing or wall clock access."""
+from . import economy, development, production, events
+import hashlib
+import json
+from .catalog import Catalog, display_name, identifier
+from .model import GameError, Player, World, integer
+
+
+class Engine:
+    def __init__(self, catalog: Catalog):
+        self.catalog = catalog
+
+    def update(self, world: World, now: int, partial=False):
+        if self.catalog.phase3 is not None:
+            from . import mechanics as m
+            cfg=self.catalog.phase3;s=m.state(world);target=events.time_limit(self.catalog,world,max(world.game_time,integer(now)),partial)
+            last=(target-s['anchor'])//cfg['event_interval']
+            if last-s['slot']>cfg['max_catchup_slots']:
+                if not partial:raise GameError('EVENT_CATCHUP_REQUIRED')
+                last=s['slot']+cfg['max_catchup_slots'];target=s['anchor']+last*cfg['event_interval']
+            for slot in range(s['slot']+1,last+1):
+                self._update_base(world,s['anchor']+slot*cfg['event_interval'],partial)
+                m.event_tick(self,world,slot)
+            return self._update_base(world,target,partial)
+        return self._update_base(world,now,partial)
+
+    def _update_base(self, world: World, now: int, partial=False):
+        world.game_time = events.time_limit(self.catalog,world,max(world.game_time,integer(now)),partial)
+        economy.update(self.catalog, world)
+        events.update(self.catalog,world)
+        if self.catalog.phase3 is not None:
+            from .mechanics import news
+            for e in world.pending_events:
+                news(world,f"market:{e['slot']}:{e['planet_id']}:{e['goods_id']}",e['kind'],planet_id=e['planet_id'],goods_id=e['goods_id'],delta=e['delta'],occurred_at=e['starts_at'])
+        for player in world.players.values():
+            if player.arrival_at is not None and player.arrival_at <= world.game_time:
+                world.exploration_events.append((player.id,player.destination_id,player.arrival_at,'arrival'))
+                player.planet_id = player.destination_id
+                player.destination_id = None
+                arrival_at=player.arrival_at
+                player.arrival_at = None
+                if self.catalog.phase3 is not None:
+                    from .mechanics import player_state
+                    player_state(world,player.id)['mining_since']=arrival_at
+        return {"game_time": world.game_time}
+
+    def player(self, world, player_id):
+        identifier(player_id)
+        if player_id not in world.players:
+            raise GameError("PLAYER_NOT_FOUND")
+        return world.players[player_id]
+
+    def docked(self, world, player_id):
+        player = self.player(world, player_id)
+        if player.destination_id is not None:
+            raise GameError("IN_TRANSIT")
+        return player
+
+    def create_player(self, world, player_id, handle):
+        identifier(player_id)
+        display_name(handle)
+        if player_id in world.players:
+            raise GameError("PLAYER_EXISTS")
+        start = self.catalog.data["starting"]
+        world.players[player_id] = Player(player_id, handle, start["cash"],
+                                           start["ship_id"], start["planet_id"])
+        if self.catalog.phase3 is not None:
+            from .mechanics import player_state
+            player_state(world,player_id)
+        return self.get_player(world, player_id)
+
+    def used_capacity(self, player):
+        return sum(self.catalog.goods[g]["volume"] * q for g, q in player.cargo.items())
+
+    def get_player(self, world, player_id):
+        p = self.player(world, player_id)
+        ship = self.catalog.ships[p.ship_id]
+        return {"player_id": p.id, "handle": p.handle, "season_id": world.season_id,
+                "cash": p.cash, "ship_id": p.ship_id, "ship_name": ship["name"],
+                "capacity": ship["capacity"], "used_capacity": self.used_capacity(p),
+                "planet_id": p.planet_id, "planet_name": self.catalog.planets[p.planet_id]["name"],
+                "destination_id": p.destination_id, "arrival_at": p.arrival_at,
+                "remaining_seconds": max(0, p.arrival_at - world.game_time) if p.arrival_at else 0,
+                "cargo": [{"goods_id": g, "name": self.catalog.goods[g]["name"], "quantity": q}
+                          for g, q in sorted(p.cargo.items())]}
+
+    def get_ship(self, world, player_id):
+        p = self.docked(world, player_id) if self.catalog.phase3 is not None else self.player(world, player_id)
+        ship = self.catalog.ships[p.ship_id]
+        profile = self.catalog.ship_profiles[p.ship_id]
+        result = profile.dto()
+        grade = self.catalog.ship_grades.get(profile.grade_id)
+        result.update(name=ship['name'], capacity=ship['capacity'], max_distance=ship['max_distance'],
+                      legacy_speed=ship['speed'], grade_rank=grade.rank if grade else None)
+        return result
+
+    def events_sync(self, world, player_id):
+        self.player(world,player_id)
+        return {'game_time':world.game_time,'processed_slot':world.event_slot}
+
+    def get_events(self, world, player_id):
+        p=self.docked(world,player_id)
+        return [dict(r) for r in world.active_events if r['planet_id']==p.planet_id]
+
+    def get_region(self, world, player_id):
+        player=self.docked(world,player_id)
+        return {'planet_id':player.planet_id,'enabled':bool(self.catalog.regional_anchors),
+                'entries':[dict(self.catalog.regional_anchors[player.planet_id,g]) for g in self.catalog.goods]
+                if self.catalog.regional_anchors else []}
+
+    def get_production(self, world, player_id):
+        player=self.docked(world,player_id)
+        return production.public_view(self.catalog,world,player.planet_id)
+
+    def get_development(self, world, player_id):
+        player=self.docked(world,player_id)
+        return development.public_view(self.catalog,world,player.planet_id)
+
+    def invest(self, world, player_id, industry, paid_credits):
+        player=self.docked(world,player_id)
+        return development.invest(self.catalog,world,player,industry,paid_credits)
+
+    def get_market(self, world, player_id, planet_id=None):
+        p = self.docked(world, player_id)
+        if planet_id is not None and planet_id != p.planet_id:
+            raise GameError("REMOTE_MARKET_UNAVAILABLE")
+        return {"planet_id": p.planet_id, "pricing_mode":self.catalog.economy["mode"],
+                "entries": [{"goods_id": g, "name": good["name"], "volume": good["volume"],
+                             "price": (economy.price_at(economy.base_price(self.catalog,world.markets[p.planet_id,g],p.planet_id,g), max(0,world.markets[p.planet_id,g].stock-1), self.catalog.economy_markets[p.planet_id,g]) if self.catalog.economy["mode"]!="fixed" else world.markets[p.planet_id,g].price),
+                             "stock": world.markets[p.planet_id, g].stock}
+                            for g, good in self.catalog.goods.items()]}
+
+    def _trade(self, world, player_id, goods_id, quantity, buying):
+        integer(quantity, 1)
+        identifier(goods_id)
+        p = self.docked(world, player_id)
+        if goods_id not in self.catalog.goods:
+            raise GameError("GOODS_NOT_FOUND")
+        m = world.markets[p.planet_id, goods_id]
+        receipt = economy.quote(self.catalog,m,p.planet_id,goods_id,quantity,buying)
+        total = receipt["total"]
+        owned = p.cargo.get(goods_id, 0)
+        if buying:
+            if p.cash < total:
+                raise GameError("INSUFFICIENT_FUNDS")
+            if self.used_capacity(p) + self.catalog.goods[goods_id]["volume"] * quantity > self.catalog.ships[p.ship_id]["capacity"]:
+                raise GameError("INSUFFICIENT_CAPACITY")
+            if m.stock < quantity:
+                raise GameError("INSUFFICIENT_STOCK")
+            integer(owned + quantity)
+            p.cash -= total
+            p.cargo[goods_id] = owned + quantity
+            m.stock -= quantity
+        else:
+            if owned < quantity:
+                raise GameError("INSUFFICIENT_CARGO")
+            integer(p.cash + total)
+            integer(m.stock + quantity)
+            p.cash += total
+            m.stock += quantity
+            if owned == quantity:
+                p.cargo.pop(goods_id)
+            else:
+                p.cargo[goods_id] = owned - quantity
+        if self.catalog.economy['mode']=='fixed':
+            return {k:receipt[k] for k in ('side','goods_id','quantity','unit_price','total')}
+        return receipt
+
+    def quote_trade(self, world, player_id, goods_id, quantity, side):
+        if side not in ('buy','sell'):raise GameError('INVALID_TRADE_SIDE')
+        identifier(goods_id)
+        p=self.docked(world,player_id)
+        if goods_id not in self.catalog.goods:raise GameError('GOODS_NOT_FOUND')
+        return economy.quote(self.catalog,world.markets[p.planet_id,goods_id],p.planet_id,goods_id,quantity,side=='buy')
+
+    def buy_goods(self, world, player_id, goods_id, quantity):
+        return self._trade(world, player_id, goods_id, quantity, True)
+
+    def sell_goods(self, world, player_id, goods_id, quantity):
+        return self._trade(world, player_id, goods_id, quantity, False)
+
+    def get_routes(self, world, player_id):
+        p = self.docked(world, player_id)
+        speed = self.catalog.ships[p.ship_id]["speed"]
+        result = []
+        for route_id, r in world.routes.items():
+            if p.planet_id in (r["from"], r["to"]):
+                destination = r["to"] if p.planet_id == r["from"] else r["from"]
+                result.append({"route_id": route_id, "destination_id": destination,
+                               "name": self.catalog.planets[destination]["name"],
+                               "distance": r["distance"], "fee": 0,
+                               "seconds": self.catalog.navigation_plans.get((p.ship_id,route_id), {}).get("normal_seconds", max(1, (r["seconds"] + speed - 1) // speed)),
+                               "is_open": r["is_open"]})
+        return result
+
+    def quote_navigation(self, world, player_id, destination_id, mode='normal', level=None):
+        identifier(destination_id)
+        if mode not in ('normal','warp') or (mode=='normal' and level is not None):
+            raise GameError('INVALID_NAVIGATION')
+        if mode=='warp':
+            identifier(level)
+        p=self.docked(world,player_id)
+        if destination_id not in self.catalog.planets:
+            raise GameError('PLANET_NOT_FOUND')
+        route=next((r for r in self.get_routes(world,player_id) if r['destination_id']==destination_id),None)
+        if route is None:raise GameError('NO_ROUTE')
+        if not route['is_open']:raise GameError('ROUTE_CLOSED')
+        if route['distance']>self.catalog.ships[p.ship_id]['max_distance']:
+            raise GameError('OUT_OF_RANGE')
+        seconds,cost,speed=route['seconds'],0,None
+        if mode=='warp':
+            plan=self.catalog.navigation_plans.get((p.ship_id,route['route_id']))
+            if not plan:raise GameError('WARP_NOT_CONFIGURED')
+            option=next((o for o in plan['warp_options'] if o['level']==level),None)
+            if option is None:raise GameError('WARP_LEVEL_UNAVAILABLE')
+            seconds,cost,speed=option['seconds'],option['fuel_cost'],option['speed']
+        quote=dict(season_id=world.season_id,player_id=player_id,ship_id=p.ship_id,origin_id=p.planet_id,
+                   destination_id=destination_id,route_id=route['route_id'],mode=mode,level=level,
+                   seconds=seconds,fuel_cost=cost,warp_speed=speed,policy_status=self.catalog.navigation_status)
+        quote['quote_id']=hashlib.sha256((self.catalog.canonical()+json.dumps(quote,sort_keys=True)).encode()).hexdigest()
+        return quote
+
+    def navigate(self, world, player_id, destination_id, mode='normal', level=None, quote_id=None):
+        quote=self.quote_navigation(world,player_id,destination_id,mode,level)
+        if mode=='warp' and quote_id is None:raise GameError('QUOTE_REQUIRED')
+        if quote_id is not None and quote_id!=quote['quote_id']:raise GameError('QUOTE_CHANGED')
+        p=self.player(world,player_id)
+        if p.cash<quote['fuel_cost']:raise GameError('INSUFFICIENT_FUNDS')
+        arrival=integer(world.game_time+quote['seconds'])
+        if self.catalog.phase3 is not None:
+            from .mechanics import player_state
+            player_state(world,player_id)['voyage']={'departure_at':world.game_time,'origin_id':p.planet_id}
+        p.cash-=quote['fuel_cost'];p.destination_id=destination_id;p.arrival_at=arrival
+        return {**quote,'arrival_at':arrival,'fee':quote['fuel_cost']}
+
+    def depart(self, world, player_id, destination_id):
+        # Keep the established API and receipt shape; new normal trips are free.
+        result=self.navigate(world,player_id,destination_id)
+        return {k:result[k] for k in ('destination_id','arrival_at','fee')}
+
+    def dock(self, world, player_id):
+        p=self.docked(world,player_id)
+        return {'planet_id':p.planet_id,'fee':0}
+
+    def shipyard(self,world,pid):
+        from .mechanics import shipyard
+        return shipyard(self,world,pid)
+
+    def buy_ship(self,world,pid,sid):
+        from .mechanics import buy_ship
+        return buy_ship(self,world,pid,sid)
+
+    def donate(self,world,pid,rid,paid):
+        from .mechanics import donate
+        return donate(self,world,pid,rid,paid)
+
+    def insure(self,world,pid):
+        from .mechanics import insure
+        return insure(self,world,pid)
+
+    def bankrupt(self,world,pid):
+        from .mechanics import restart
+        return restart(self,world,pid)
+
+    def flight(self,world,pid):
+        from .mechanics import flight
+        return flight(self,world,pid)
+
+    def news(self,world,pid):
+        from .mechanics import news_view
+        return news_view(self,world,pid)

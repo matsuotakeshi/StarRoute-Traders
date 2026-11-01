@@ -1,0 +1,11 @@
+{
+  "mode": "grid_mst_templates_v1",
+  "status": "provisional",
+  "width": 8,
+  "height": 8,
+  "extra_neighbors": 1,
+  "initial_open_routes": 4,
+  "production_percent_min": 50,
+  "production_percent_max": 250,
+  "max_attempts": 32
+}

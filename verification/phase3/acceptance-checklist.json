@@ -1,0 +1,82 @@
+[
+  {
+    "requirement": "外部宇宙ジェネレーター",
+    "evidence": "test_standalone_bundle_runs_without_game_server / standalone-generator.log",
+    "status": "PASS"
+  },
+  {
+    "requirement": "48惑星・正式ID/名称・240×120",
+    "evidence": "test_48_30_coordinates_and_package / test_formal_48_names_ids_and_localization",
+    "status": "PASS"
+  },
+  {
+    "requirement": "産業初期Lv・隠し最大Lv",
+    "evidence": "test_48_30_coordinates_and_package / test_disaster_level_floor_maximum_news_and_replay",
+    "status": "PASS"
+  },
+  {
+    "requirement": "生産・売買・在庫・相場",
+    "evidence": "test_disaster_has_real_supply_and_price_effect_against_control / 既存経済テスト群",
+    "status": "PASS"
+  },
+  {
+    "requirement": "惑星開発・航路開拓",
+    "evidence": "test_engineering_fraction_is_saved / test_concurrent_last_donation_only_one_reward",
+    "status": "PASS"
+  },
+  {
+    "requirement": "3船種・上位船・購入",
+    "evidence": "test_ship_purchase_all_types_replay_and_capacity / test_ships.py",
+    "status": "PASS"
+  },
+  {
+    "requirement": "通常/ワープ航行・ETA",
+    "evidence": "test_navigation.py / test_flight_position_and_forbidden_commands",
+    "status": "PASS"
+  },
+  {
+    "requirement": "ASCII星図",
+    "evidence": "test_map_ascii_labels_viewport_and_color / test_map_resizing_and_transit_toggle_rejected",
+    "status": "PASS"
+  },
+  {
+    "requirement": "航行中のニュース・制限",
+    "evidence": "test_flight_position_and_forbidden_commands / CLI日英デモ",
+    "status": "PASS"
+  },
+  {
+    "requirement": "特殊船イベント",
+    "evidence": "test_patrol_capacity_and_pirate_immunity / test_mineral_zero_industry_and_no_dock_farming",
+    "status": "PASS"
+  },
+  {
+    "requirement": "惑星災害・供給・相場・ニュース",
+    "evidence": "test_disaster_has_real_supply_and_price_effect_against_control / CLI damage結果",
+    "status": "PASS"
+  },
+  {
+    "requirement": "保険・破産",
+    "evidence": "test_insurance_and_wreck_once / test_bankruptcy_fixed_start_grade_and_repeat",
+    "status": "PASS"
+  },
+  {
+    "requirement": "永続化・移行",
+    "evidence": "test_migration_v9_backup_and_data_preserved / 実旧DBコピー移行",
+    "status": "PASS"
+  },
+  {
+    "requirement": "全自動テスト",
+    "evidence": "windows-tests.log / freebsd-final/tests.log",
+    "status": "PASS"
+  },
+  {
+    "requirement": "CLI一連のプレイ",
+    "evidence": "windows-cli-ja.log / windows-cli-en.log / freebsd-final/cli-ja.log / freebsd-final/cli-en.log",
+    "status": "PASS"
+  },
+  {
+    "requirement": "Phase 4/5用窓口",
+    "evidence": "test_master_new_operations_and_disclosure / PHASE3_COMPLETE.md",
+    "status": "PASS"
+  }
+]

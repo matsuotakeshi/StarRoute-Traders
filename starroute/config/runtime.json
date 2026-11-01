@@ -1,0 +1,10 @@
+{
+  "format_version": 1,
+  "default_language": "ja",
+  "game_file": "game.json",
+  "inter_bbs_file": "inter-bbs.json",
+  "language_files": {
+    "ja": "../presentation/locales/ja.json",
+    "en": "../presentation/locales/en.json"
+  }
+}

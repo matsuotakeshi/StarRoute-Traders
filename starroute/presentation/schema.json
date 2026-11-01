@@ -1,0 +1,698 @@
+{
+  "messages": {
+    "error": [
+      "message"
+    ],
+    "invalid": [],
+    "db_error": [],
+    "db_open": [],
+    "bye": [],
+    "registered": [
+      "cash",
+      "handle"
+    ],
+    "status": [
+      "cash",
+      "handle",
+      "player_id",
+      "season_id"
+    ],
+    "ship": [
+      "capacity",
+      "ship_name",
+      "used_capacity"
+    ],
+    "travel": [
+      "destination_id",
+      "planet_id",
+      "remaining_seconds"
+    ],
+    "location": [
+      "planet_id",
+      "planet_name"
+    ],
+    "cargo": [
+      "items"
+    ],
+    "none": [],
+    "market": [
+      "planet_id"
+    ],
+    "entry": [
+      "goods_id",
+      "name",
+      "price",
+      "stock",
+      "volume"
+    ],
+    "buy": [
+      "goods_id",
+      "quantity",
+      "total"
+    ],
+    "sell": [
+      "goods_id",
+      "quantity",
+      "total"
+    ],
+    "route": [
+      "destination_id",
+      "distance",
+      "fee",
+      "name",
+      "seconds",
+      "state"
+    ],
+    "opened": [],
+    "closed": [],
+    "depart": [
+      "destination_id",
+      "fee"
+    ],
+    "language": [
+      "language"
+    ],
+    "help": [],
+    "undecided": [],
+    "type_normal": [],
+    "type_armed_cruiser": [],
+    "type_engineering": [],
+    "spec_legacy": [],
+    "spec_provisional": [],
+    "spec_confirmed": [],
+    "ship_profile": [
+      "capacity",
+      "grade_id",
+      "grade_rank",
+      "insurance_premium",
+      "legacy_speed",
+      "max_distance",
+      "max_warp_speed",
+      "name",
+      "normal_speed",
+      "purchase_price",
+      "ship_id",
+      "state_label",
+      "type_label"
+    ],
+    "navigation_quote": [
+      "destination_id",
+      "fuel_cost",
+      "mode_label",
+      "origin_id",
+      "policy_label",
+      "quote_id",
+      "seconds"
+    ],
+    "mode_normal": [],
+    "mode_warp": [],
+    "mode_legacy": [],
+    "policy_legacy": [],
+    "policy_provisional": [],
+    "policy_confirmed": [],
+    "docked": [
+      "fee",
+      "planet_id"
+    ],
+    "no_voyage": [],
+    "voyage": [
+      "destination_id",
+      "fuel_cost",
+      "mode_label",
+      "origin_id",
+      "state_label"
+    ],
+    "unknown": [],
+    "arrived": [],
+    "travelling": [],
+    "trade_quote": [
+      "first_unit_price",
+      "goods_id",
+      "last_unit_price",
+      "quantity",
+      "side",
+      "total"
+    ],
+    "ledger_empty": [],
+    "ledger_row": [
+      "game_time",
+      "goods_id",
+      "planet_id",
+      "quantity",
+      "sequence",
+      "side",
+      "total"
+    ],
+    "market_curve_notice": [],
+    "development_header": [
+      "planet_id"
+    ],
+    "development_disabled": [],
+    "industry_progress": [
+      "industry",
+      "label",
+      "progress"
+    ],
+    "resources": [
+      "items"
+    ],
+    "invested": [
+      "effect_units",
+      "label",
+      "paid_credits",
+      "progress"
+    ],
+    "investment_empty": [],
+    "investment_row": [
+      "effect_units",
+      "label",
+      "paid_credits",
+      "planet_id",
+      "sequence"
+    ],
+    "industry_primary": [],
+    "industry_secondary": [],
+    "industry_tertiary": [],
+    "industry_quaternary": [],
+    "production_disabled": [],
+    "production_header": [
+      "planet_id",
+      "tick_seconds"
+    ],
+    "production_row": [
+      "available",
+      "goods_id",
+      "imports_per_tick",
+      "label",
+      "production_per_tick"
+    ],
+    "region_header": [
+      "planet_id"
+    ],
+    "region_disabled": [],
+    "region_row": [
+      "base_price",
+      "basis",
+      "distance",
+      "goods_id"
+    ],
+    "region_distance": [],
+    "region_no_source": [],
+    "region_unreachable": [],
+    "events_sync": [
+      "game_time",
+      "pending",
+      "processed_slot"
+    ],
+    "events_empty": [],
+    "event_row": [
+      "delta",
+      "ends_at",
+      "goods_id",
+      "label",
+      "planet_id",
+      "record_id",
+      "slot",
+      "starts_at"
+    ],
+    "event_surge": [],
+    "event_crash": [],
+    "production_capacity": [
+      "market_capacity"
+    ],
+    "industry_level": [
+      "label",
+      "industry",
+      "level"
+    ],
+    "invested_level": [
+      "label",
+      "paid_credits",
+      "level"
+    ],
+    "news_empty": [],
+    "news_row": [
+      "game_time",
+      "label",
+      "planet",
+      "details",
+      "event_id"
+    ],
+    "ship_offer": [
+      "ship_id",
+      "price",
+      "capacity",
+      "available"
+    ],
+    "ship_bought": [
+      "old_ship_id",
+      "ship_id",
+      "paid_credits"
+    ],
+    "donated": [
+      "route_id",
+      "paid_credits",
+      "effect_units",
+      "opened",
+      "jackpot"
+    ],
+    "insured": [
+      "ship_id",
+      "paid_credits",
+      "insured"
+    ],
+    "restarted": [
+      "ship_id",
+      "cash",
+      "planet_id",
+      "insured_rescue"
+    ],
+    "flight_frame": [
+      "origin",
+      "destination",
+      "x",
+      "y",
+      "eta",
+      "seconds"
+    ],
+    "news_planet_raid": [],
+    "news_cyclone": [],
+    "news_factory_accident": [],
+    "news_pirate": [],
+    "news_patrol": [],
+    "news_mineral": [],
+    "news_storm": [],
+    "news_failure": [],
+    "news_wreck": [],
+    "news_route_open": [],
+    "news_surge": [],
+    "news_crash": [],
+    "news_production": []
+  },
+  "errors": [
+    "CONFIG_MISMATCH",
+    "GOODS_NOT_FOUND",
+    "INSUFFICIENT_CAPACITY",
+    "INSUFFICIENT_CARGO",
+    "INSUFFICIENT_FUNDS",
+    "INSUFFICIENT_STOCK",
+    "INTER_BBS_NOT_IMPLEMENTED",
+    "INVALID_CONFIG",
+    "INVALID_ID",
+    "INVALID_LANGUAGE",
+    "INVALID_LOCALE",
+    "INVALID_NAME",
+    "INVALID_NAVIGATION",
+    "INVALID_NUMBER",
+    "INVALID_SETTINGS",
+    "IN_TRANSIT",
+    "NAVIGATION_POLICY_MISMATCH",
+    "NO_ACTIVE_SEASON",
+    "NO_ROUTE",
+    "OUT_OF_RANGE",
+    "PLANET_NOT_FOUND",
+    "PLAYER_EXISTS",
+    "PLAYER_NOT_FOUND",
+    "QUOTE_CHANGED",
+    "QUOTE_REQUIRED",
+    "REMOTE_MARKET_UNAVAILABLE",
+    "REQUEST_CONFLICT",
+    "RESERVED_NAMESPACE",
+    "ROUTE_CLOSED",
+    "SHIP_MODEL_MISMATCH",
+    "UNSUPPORTED_SCHEMA",
+    "WARP_LEVEL_UNAVAILABLE",
+    "WARP_NOT_CONFIGURED",
+    "CONFIG_VERIFICATION_FAILED",
+    "MARKET_FULL",
+    "INVALID_TRADE_SIDE",
+    "INVALID_INDUSTRY",
+    "DEVELOPMENT_UNAVAILABLE",
+    "INVALID_INVESTMENT",
+    "INVESTMENT_UNAVAILABLE",
+    "EVENT_SYNC_REQUIRED",
+    "MASTER_REQUEST_INVALID",
+    "DISCLOSURE_DENIED",
+    "WORLD_TARGET_MISMATCH",
+    "FEATURE_UNAVAILABLE",
+    "SHIP_UNAVAILABLE",
+    "SHIP_ALREADY_OWNED",
+    "ROUTE_ALREADY_OPEN",
+    "ALREADY_INSURED",
+    "EVENT_NOT_ELIGIBLE",
+    "EVENT_CATCHUP_REQUIRED"
+  ],
+  "canonical_names": {
+    "planets": {
+      "aurora": "オーロラ",
+      "forge": "フォージ",
+      "haven": "ヘイヴン",
+      "001": "Alvera",
+      "002": "Selnoa",
+      "003": "Milesia",
+      "004": "Cartis",
+      "005": "Rivesta",
+      "006": "Elseris",
+      "007": "Bernad",
+      "008": "Tirea",
+      "009": "Norven",
+      "010": "Salmina",
+      "011": "Orzef",
+      "012": "Ferion",
+      "013": "Dolmea",
+      "014": "Galdis",
+      "015": "Zelgan",
+      "016": "Volmia",
+      "017": "Granis",
+      "018": "Belxia",
+      "019": "Dalcos",
+      "020": "Rigelta",
+      "021": "Tolmes",
+      "022": "Felgan",
+      "023": "Bresia",
+      "024": "Clazen",
+      "025": "Astrel",
+      "026": "Runelis",
+      "027": "Seledia",
+      "028": "Irision",
+      "029": "Texia",
+      "030": "Veltina",
+      "031": "Leorm",
+      "032": "Seradis",
+      "033": "Orsena",
+      "034": "Nemelia",
+      "035": "Finar",
+      "036": "Telsia",
+      "037": "Noxal",
+      "038": "Zephira",
+      "039": "Calesti",
+      "040": "Dilzan",
+      "041": "Velkas",
+      "042": "Eminora",
+      "043": "Trivas",
+      "044": "Orvik",
+      "045": "Merdis",
+      "046": "Clevina",
+      "047": "Drasia",
+      "048": "Voltena"
+    },
+    "goods": {
+      "grain": "星穀",
+      "alloy": "軽量合金",
+      "medicine": "医療パック"
+    },
+    "ships": {
+      "sparrow": "スパロウ"
+    }
+  },
+  "formats": {
+    "error": {
+      "message": ""
+    },
+    "invalid": {},
+    "db_error": {},
+    "db_open": {},
+    "bye": {},
+    "registered": {
+      "handle": "",
+      "cash": ","
+    },
+    "status": {
+      "handle": "",
+      "player_id": "",
+      "season_id": "",
+      "cash": ","
+    },
+    "ship": {
+      "ship_name": "",
+      "used_capacity": "",
+      "capacity": ""
+    },
+    "travel": {
+      "planet_id": "",
+      "destination_id": "",
+      "remaining_seconds": ""
+    },
+    "location": {
+      "planet_name": "",
+      "planet_id": ""
+    },
+    "cargo": {
+      "items": ""
+    },
+    "none": {},
+    "market": {
+      "planet_id": ""
+    },
+    "entry": {
+      "goods_id": "<12",
+      "name": "",
+      "price": ">5",
+      "stock": ">5",
+      "volume": ""
+    },
+    "buy": {
+      "goods_id": "",
+      "quantity": "",
+      "total": ","
+    },
+    "sell": {
+      "goods_id": "",
+      "quantity": "",
+      "total": ","
+    },
+    "route": {
+      "destination_id": "<12",
+      "name": "",
+      "distance": "",
+      "seconds": "",
+      "fee": "",
+      "state": ""
+    },
+    "opened": {},
+    "closed": {},
+    "depart": {
+      "destination_id": "",
+      "fee": ""
+    },
+    "language": {
+      "language": ""
+    },
+    "help": {},
+    "undecided": {},
+    "type_normal": {},
+    "type_armed_cruiser": {},
+    "type_engineering": {},
+    "spec_legacy": {},
+    "spec_provisional": {},
+    "spec_confirmed": {},
+    "ship_profile": {
+      "name": "",
+      "ship_id": "",
+      "type_label": "",
+      "grade_id": "",
+      "grade_rank": "",
+      "state_label": "",
+      "capacity": "",
+      "max_distance": "",
+      "legacy_speed": "",
+      "normal_speed": "",
+      "max_warp_speed": "",
+      "purchase_price": "",
+      "insurance_premium": ""
+    },
+    "navigation_quote": {
+      "mode_label": "",
+      "origin_id": "",
+      "destination_id": "",
+      "seconds": "",
+      "fuel_cost": "",
+      "policy_label": "",
+      "quote_id": ""
+    },
+    "mode_normal": {},
+    "mode_warp": {},
+    "mode_legacy": {},
+    "policy_legacy": {},
+    "policy_provisional": {},
+    "policy_confirmed": {},
+    "docked": {
+      "planet_id": "",
+      "fee": ""
+    },
+    "no_voyage": {},
+    "voyage": {
+      "mode_label": "",
+      "origin_id": "",
+      "destination_id": "",
+      "fuel_cost": "",
+      "state_label": ""
+    },
+    "unknown": {},
+    "arrived": {},
+    "travelling": {},
+    "trade_quote": {
+      "side": "",
+      "goods_id": "",
+      "quantity": "",
+      "total": ",",
+      "first_unit_price": ",",
+      "last_unit_price": ","
+    },
+    "ledger_empty": {},
+    "ledger_row": {
+      "sequence": "",
+      "side": "",
+      "goods_id": "",
+      "quantity": "",
+      "total": ",",
+      "planet_id": "",
+      "game_time": ""
+    },
+    "market_curve_notice": {},
+    "development_header": {
+      "planet_id": ""
+    },
+    "development_disabled": {},
+    "industry_progress": {
+      "label": "",
+      "industry": "",
+      "progress": ","
+    },
+    "resources": {
+      "items": ""
+    },
+    "invested": {
+      "paid_credits": ",",
+      "label": "",
+      "effect_units": ",",
+      "progress": ","
+    },
+    "investment_empty": {},
+    "investment_row": {
+      "sequence": "",
+      "planet_id": "",
+      "label": "",
+      "paid_credits": ",",
+      "effect_units": ","
+    },
+    "industry_primary": {},
+    "industry_secondary": {},
+    "industry_tertiary": {},
+    "industry_quaternary": {},
+    "production_disabled": {},
+    "production_header": {
+      "planet_id": "",
+      "tick_seconds": ""
+    },
+    "production_row": {
+      "goods_id": "",
+      "production_per_tick": "",
+      "label": "",
+      "imports_per_tick": "",
+      "available": ""
+    },
+    "region_header": {
+      "planet_id": ""
+    },
+    "region_disabled": {},
+    "region_row": {
+      "goods_id": "",
+      "base_price": ",",
+      "distance": "",
+      "basis": ""
+    },
+    "region_distance": {},
+    "region_no_source": {},
+    "region_unreachable": {},
+    "events_sync": {
+      "game_time": "",
+      "processed_slot": "",
+      "pending": ""
+    },
+    "events_empty": {},
+    "event_row": {
+      "planet_id": "",
+      "goods_id": "",
+      "label": "",
+      "delta": "",
+      "starts_at": "",
+      "ends_at": "",
+      "slot": "",
+      "record_id": ""
+    },
+    "event_surge": {},
+    "event_crash": {},
+    "production_capacity": {
+      "market_capacity": ","
+    },
+    "industry_level": {
+      "label": "",
+      "industry": "",
+      "level": ""
+    },
+    "invested_level": {
+      "label": "",
+      "paid_credits": ",",
+      "level": ""
+    },
+    "news_empty": {},
+    "news_row": {
+      "game_time": "",
+      "label": "",
+      "planet": "",
+      "details": "",
+      "event_id": ""
+    },
+    "ship_offer": {
+      "ship_id": "",
+      "price": "",
+      "capacity": "",
+      "available": ""
+    },
+    "ship_bought": {
+      "old_ship_id": "",
+      "ship_id": "",
+      "paid_credits": ""
+    },
+    "donated": {
+      "route_id": "",
+      "paid_credits": "",
+      "effect_units": "",
+      "opened": "",
+      "jackpot": ""
+    },
+    "insured": {
+      "ship_id": "",
+      "paid_credits": "",
+      "insured": ""
+    },
+    "restarted": {
+      "ship_id": "",
+      "cash": "",
+      "planet_id": "",
+      "insured_rescue": ""
+    },
+    "flight_frame": {
+      "origin": "",
+      "destination": "",
+      "x": "",
+      "y": "",
+      "eta": "",
+      "seconds": ""
+    },
+    "news_planet_raid": {},
+    "news_cyclone": {},
+    "news_factory_accident": {},
+    "news_pirate": {},
+    "news_patrol": {},
+    "news_mineral": {},
+    "news_storm": {},
+    "news_failure": {},
+    "news_wreck": {},
+    "news_route_open": {},
+    "news_surge": {},
+    "news_crash": {},
+    "news_production": {}
+  }
+}

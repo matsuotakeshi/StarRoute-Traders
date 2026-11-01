@@ -1,0 +1,1058 @@
+{
+  "format_version": 2,
+  "starting": {
+    "cash": 5000,
+    "planet_id": "aurora",
+    "ship_id": "normal_2"
+  },
+  "planets": [
+    {
+      "id": "aurora",
+      "name": "オーロラ"
+    },
+    {
+      "id": "forge",
+      "name": "フォージ"
+    },
+    {
+      "id": "haven",
+      "name": "ヘイヴン"
+    }
+  ],
+  "goods": [
+    {
+      "id": "grain",
+      "name": "星穀",
+      "base_price": 100,
+      "volume": 1,
+      "production": 8,
+      "volatility_bps": 500
+    },
+    {
+      "id": "alloy",
+      "name": "軽量合金",
+      "base_price": 200,
+      "volume": 2,
+      "production": 4,
+      "volatility_bps": 800
+    },
+    {
+      "id": "medicine",
+      "name": "医療パック",
+      "base_price": 300,
+      "volume": 1,
+      "production": 2,
+      "volatility_bps": 1200
+    },
+    {
+      "id": "fusion_fuel",
+      "name": "核融合燃料",
+      "base_price": 300,
+      "volume": 1,
+      "production": 0,
+      "volatility_bps": 500
+    },
+    {
+      "id": "dense_warp_fuel",
+      "name": "高密度ワープ燃料",
+      "base_price": 1200,
+      "volume": 2,
+      "production": 0,
+      "volatility_bps": 500
+    }
+  ],
+  "ships": [
+    {
+      "id": "normal_1",
+      "name": "Test normal 1",
+      "capacity": 20,
+      "max_distance": 10,
+      "speed": 1,
+      "profile": {
+        "ship_type": "normal",
+        "grade_id": "test_low",
+        "normal_speed": 10,
+        "max_warp_speed": 20,
+        "purchase_price": 1000,
+        "insurance_premium": 100,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "armed_cruiser_1",
+      "name": "Test armed_cruiser 1",
+      "capacity": 20,
+      "max_distance": 10,
+      "speed": 1,
+      "profile": {
+        "ship_type": "armed_cruiser",
+        "grade_id": "test_low",
+        "normal_speed": 10,
+        "max_warp_speed": 20,
+        "purchase_price": 1500,
+        "insurance_premium": 50,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "engineering_1",
+      "name": "Test engineering 1",
+      "capacity": 20,
+      "max_distance": 10,
+      "speed": 1,
+      "profile": {
+        "ship_type": "engineering",
+        "grade_id": "test_low",
+        "normal_speed": 5,
+        "max_warp_speed": 10,
+        "purchase_price": 1500,
+        "insurance_premium": 100,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "normal_2",
+      "name": "Test normal 2",
+      "capacity": 40,
+      "max_distance": 10,
+      "speed": 1,
+      "profile": {
+        "ship_type": "normal",
+        "grade_id": "test_high",
+        "normal_speed": 10,
+        "max_warp_speed": 40,
+        "purchase_price": 2000,
+        "insurance_premium": 200,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "armed_cruiser_2",
+      "name": "Test armed_cruiser 2",
+      "capacity": 40,
+      "max_distance": 10,
+      "speed": 1,
+      "profile": {
+        "ship_type": "armed_cruiser",
+        "grade_id": "test_high",
+        "normal_speed": 10,
+        "max_warp_speed": 40,
+        "purchase_price": 3000,
+        "insurance_premium": 100,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "engineering_2",
+      "name": "Test engineering 2",
+      "capacity": 40,
+      "max_distance": 10,
+      "speed": 1,
+      "profile": {
+        "ship_type": "engineering",
+        "grade_id": "test_high",
+        "normal_speed": 5,
+        "max_warp_speed": 20,
+        "purchase_price": 3000,
+        "insurance_premium": 200,
+        "specification_status": "provisional"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "id": "aurora-forge",
+      "from": "aurora",
+      "to": "forge",
+      "distance": 3,
+      "seconds": 2,
+      "fee": 0,
+      "is_open": true
+    },
+    {
+      "id": "forge-haven",
+      "from": "forge",
+      "to": "haven",
+      "distance": 4,
+      "seconds": 3,
+      "fee": 0,
+      "is_open": true
+    },
+    {
+      "id": "haven-aurora",
+      "from": "haven",
+      "to": "aurora",
+      "distance": 6,
+      "seconds": 4,
+      "fee": 0,
+      "is_open": true
+    }
+  ],
+  "markets": [
+    {
+      "planet_id": "aurora",
+      "goods_id": "grain",
+      "price": 60,
+      "stock": 200
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "alloy",
+      "price": 240,
+      "stock": 80
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "medicine",
+      "price": 350,
+      "stock": 50
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "grain",
+      "price": 120,
+      "stock": 70
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "alloy",
+      "price": 130,
+      "stock": 200
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "medicine",
+      "price": 340,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "grain",
+      "price": 90,
+      "stock": 100
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "alloy",
+      "price": 220,
+      "stock": 80
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "medicine",
+      "price": 180,
+      "stock": 150
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "fusion_fuel",
+      "price": 300,
+      "stock": 10
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "fusion_fuel",
+      "price": 500,
+      "stock": 10
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "fusion_fuel",
+      "price": 800,
+      "stock": 10
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "dense_warp_fuel",
+      "price": 1200,
+      "stock": 4
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "dense_warp_fuel",
+      "price": 2000,
+      "stock": 4
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "dense_warp_fuel",
+      "price": 1500,
+      "stock": 4
+    }
+  ],
+  "ship_grades": [
+    {
+      "id": "test_low",
+      "rank": 1
+    },
+    {
+      "id": "test_high",
+      "rank": 2
+    }
+  ],
+  "navigation": {
+    "status": "provisional",
+    "plans": [
+      {
+        "ship_id": "normal_1",
+        "route_id": "aurora-forge",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_1",
+        "route_id": "forge-haven",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_1",
+        "route_id": "haven-aurora",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_1",
+        "route_id": "aurora-forge",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_1",
+        "route_id": "forge-haven",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_1",
+        "route_id": "haven-aurora",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_1",
+        "route_id": "aurora-forge",
+        "normal_seconds": 8,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 4,
+            "fuel_cost": 12
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_1",
+        "route_id": "forge-haven",
+        "normal_seconds": 8,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 4,
+            "fuel_cost": 12
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_1",
+        "route_id": "haven-aurora",
+        "normal_seconds": 8,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 4,
+            "fuel_cost": 12
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_2",
+        "route_id": "aurora-forge",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 1,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_2",
+        "route_id": "forge-haven",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 1,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_2",
+        "route_id": "haven-aurora",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 1,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_2",
+        "route_id": "aurora-forge",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 1,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_2",
+        "route_id": "forge-haven",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 1,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_2",
+        "route_id": "haven-aurora",
+        "normal_seconds": 4,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 1,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_2",
+        "route_id": "aurora-forge",
+        "normal_seconds": 8,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 4,
+            "fuel_cost": 12
+          },
+          {
+            "level": "faster",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 24
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_2",
+        "route_id": "forge-haven",
+        "normal_seconds": 8,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 4,
+            "fuel_cost": 12
+          },
+          {
+            "level": "faster",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 24
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_2",
+        "route_id": "haven-aurora",
+        "normal_seconds": 8,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 4,
+            "fuel_cost": 12
+          },
+          {
+            "level": "faster",
+            "speed": 20,
+            "seconds": 2,
+            "fuel_cost": 24
+          }
+        ]
+      }
+    ]
+  },
+  "economy": {
+    "mode": "planet_supply_v1",
+    "status": "provisional",
+    "tick_seconds": 60,
+    "markets": [
+      {
+        "planet_id": "aurora",
+        "goods_id": "grain",
+        "target_stock": 200,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "alloy",
+        "target_stock": 80,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "medicine",
+        "target_stock": 50,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "grain",
+        "target_stock": 70,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "alloy",
+        "target_stock": 200,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "medicine",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "grain",
+        "target_stock": 100,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "alloy",
+        "target_stock": 80,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "medicine",
+        "target_stock": 150,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fusion_fuel",
+        "target_stock": 10,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fusion_fuel",
+        "target_stock": 10,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "fusion_fuel",
+        "target_stock": 10,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "dense_warp_fuel",
+        "target_stock": 4,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "dense_warp_fuel",
+        "target_stock": 4,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "dense_warp_fuel",
+        "target_stock": 4,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      }
+    ]
+  },
+  "development": {
+    "mode": "linear_units_v1",
+    "status": "provisional",
+    "credits_per_unit": {
+      "primary": 10,
+      "secondary": 20,
+      "tertiary": 25,
+      "quaternary": 50
+    },
+    "engineering_bonus_bps": 2500,
+    "planets": [
+      {
+        "planet_id": "aurora",
+        "initial_progress": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 0,
+          "quaternary": 0
+        },
+        "private_caps": {
+          "primary": 1000,
+          "secondary": 800,
+          "tertiary": 600,
+          "quaternary": 400
+        },
+        "resources": [
+          {
+            "resource_id": "agricultural",
+            "abundance": 7500,
+            "rare": false
+          },
+          {
+            "resource_id": "trace_minerals",
+            "abundance": 100,
+            "rare": true
+          }
+        ]
+      },
+      {
+        "planet_id": "forge",
+        "initial_progress": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 0,
+          "quaternary": 0
+        },
+        "private_caps": {
+          "primary": 1100,
+          "secondary": 900,
+          "tertiary": 700,
+          "quaternary": 500
+        },
+        "resources": [
+          {
+            "resource_id": "metallic",
+            "abundance": 8000,
+            "rare": false
+          },
+          {
+            "resource_id": "trace_minerals",
+            "abundance": 100,
+            "rare": true
+          }
+        ]
+      },
+      {
+        "planet_id": "haven",
+        "initial_progress": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 0,
+          "quaternary": 0
+        },
+        "private_caps": {
+          "primary": 1200,
+          "secondary": 1000,
+          "tertiary": 800,
+          "quaternary": 600
+        },
+        "resources": [
+          {
+            "resource_id": "crystalline",
+            "abundance": 6000,
+            "rare": false
+          },
+          {
+            "resource_id": "trace_minerals",
+            "abundance": 100,
+            "rare": true
+          }
+        ]
+      }
+    ]
+  },
+  "production": {
+    "mode": "per_planet_v1",
+    "status": "provisional",
+    "sources": [
+      {
+        "planet_id": "aurora",
+        "goods_id": "grain",
+        "industry": "primary",
+        "units_per_tick": 6
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "grain",
+        "industry": "primary",
+        "units_per_tick": 2
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "alloy",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "medicine",
+        "industry": "quaternary",
+        "units_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fusion_fuel",
+        "industry": "primary",
+        "units_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fusion_fuel",
+        "industry": "primary",
+        "units_per_tick": 1
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "dense_warp_fuel",
+        "industry": "quaternary",
+        "units_per_tick": 1
+      }
+    ],
+    "imports": [
+      {
+        "planet_id": "haven",
+        "goods_id": "grain",
+        "units_per_tick": 2
+      }
+    ]
+  },
+  "regional_prices": {
+    "mode": "distance_bias_v1",
+    "status": "provisional",
+    "metric": "shortest_configured_routes_v1",
+    "goods": [
+      {
+        "goods_id": "grain",
+        "origin_price": 100,
+        "price_per_distance": 20,
+        "unreachable_price": 200
+      },
+      {
+        "goods_id": "alloy",
+        "origin_price": 200,
+        "price_per_distance": 20,
+        "unreachable_price": 400
+      },
+      {
+        "goods_id": "medicine",
+        "origin_price": 300,
+        "price_per_distance": 20,
+        "unreachable_price": 600
+      },
+      {
+        "goods_id": "fusion_fuel",
+        "origin_price": 300,
+        "price_per_distance": 20,
+        "unreachable_price": 600
+      },
+      {
+        "goods_id": "dense_warp_fuel",
+        "origin_price": 1200,
+        "price_per_distance": 20,
+        "unreachable_price": 2400
+      }
+    ]
+  },
+  "market_events": {
+    "mode": "slot_shocks_v1",
+    "status": "provisional",
+    "seed": "trial-not-secret",
+    "interval_seconds": 60,
+    "duration_seconds": 30,
+    "targets": [
+      {
+        "planet_id": "aurora",
+        "goods_id": "grain",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "alloy",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "medicine",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "grain",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "alloy",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "medicine",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "grain",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "alloy",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "medicine",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fusion_fuel",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fusion_fuel",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "fusion_fuel",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "dense_warp_fuel",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "dense_warp_fuel",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "dense_warp_fuel",
+        "surge_bps": 1500,
+        "crash_bps": 1500,
+        "surge_credits": 200,
+        "crash_credits": 150
+      }
+    ]
+  }
+}
