@@ -181,6 +181,9 @@ class MasterService:
         if type(operation) is not str or operation not in OPERATIONS or not isinstance(arguments,dict):
             raise GameError('MASTER_REQUEST_INVALID')
         method,fields=OPERATIONS[operation]
+        expected_total=None
+        if operation in ('buy','sell') and 'expected_total' in arguments:
+            arguments=dict(arguments);expected_total=arguments.pop('expected_total');integer(expected_total,0)
         if set(arguments)!=set(fields):raise GameError('MASTER_REQUEST_INVALID')
         for key in ('goods_id','destination_id','ship_id','route_id'):
             if key in arguments:identifier(arguments[key])
@@ -209,7 +212,7 @@ class MasterService:
                                for r in self.app.engine.get_routes(world,pid)):
                         raise GameError('DISCLOSURE_DENIED')
             value=self.app._call(method,pid,*args,request_id=request_id,
-                                 target_guard=self._target_guard(context),access_guard=access,server_quote=operation=='navigate')
+                                 target_guard=self._target_guard(context),access_guard=access,server_quote=operation=='navigate',expected_total=expected_total)
         return response(operation,value,context.visibility)
 
     def result(self,context,operation,request_id):

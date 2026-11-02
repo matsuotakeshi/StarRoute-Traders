@@ -118,29 +118,5 @@ class Terminal:
         raise ValueError('command')
 
     def run(self,input_stream):
-        import threading
-        stop=threading.Event()
-        def heartbeat():
-            interval=max(5,getattr(self.backend,'config',{}).get('heartbeat_seconds',30))
-            while not stop.wait(interval):
-                try:self.backend.heartbeat()
-                except ClientError:self.emit(self.text('offline'));return
-        worker=threading.Thread(target=heartbeat,daemon=True);worker.start()
-        self.emit(self.text('welcome'));self.emit(self.text('help'))
-        try:
-            while True:
-                self.resize(input_stream)
-                self.emit('SRT>')
-                line=input_stream.readline(4097)
-                if not line:break
-                self.resize(input_stream)
-                if len(line)>4096:self.emit(self.text('invalid'));continue
-                try:
-                    if not self.execute(line):break
-                except ClientError as e:self.emit(self.text('offline') if e.code=='MASTER_UNAVAILABLE' else self.text('error')+': '+e.code)
-                except (ValueError,KeyError,TypeError):self.emit(self.text('invalid'))
-        finally:
-            stop.set();worker.join(timeout=1)
-            try:self.backend.logout()
-            except ClientError:pass
-            self.emit(self.text('goodbye'))
+        from .menu import Menu
+        Menu(self).run(input_stream)

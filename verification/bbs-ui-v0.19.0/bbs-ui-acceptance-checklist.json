@@ -1,0 +1,106 @@
+{
+  "version": "0.19.0",
+  "complete": true,
+  "criteria": [
+    {
+      "requirement": "起動直後のメイン画面",
+      "passed": true,
+      "evidence": "test_bbs_ui + standalone-startup"
+    },
+    {
+      "requirement": "左星図",
+      "passed": true,
+      "evidence": "main-ja"
+    },
+    {
+      "requirement": "右縦型メニュー",
+      "passed": true,
+      "evidence": "main-ja"
+    },
+    {
+      "requirement": "数字・文字操作",
+      "passed": true,
+      "evidence": "test_bbs_ui + telnet-ui.log"
+    },
+    {
+      "requirement": "既存CLI",
+      "passed": true,
+      "evidence": "430 regression + Telnet buy grain 1"
+    },
+    {
+      "requirement": "主要機能の対話操作",
+      "passed": true,
+      "evidence": "test_bbs_ui + telnet-ui.log"
+    },
+    {
+      "requirement": "商品売買",
+      "passed": true,
+      "evidence": "Telnet purchase/arrival/sell"
+    },
+    {
+      "requirement": "通常・ワープ航行",
+      "passed": true,
+      "evidence": "test_bbs_ui engine quote + Telnet warp"
+    },
+    {
+      "requirement": "投資・寄付",
+      "passed": true,
+      "evidence": "Telnet DB assertions"
+    },
+    {
+      "requirement": "ヘルプ・エラー",
+      "passed": true,
+      "evidence": "test_bbs_ui + help/flight-rejected"
+    },
+    {
+      "requirement": "名前切替",
+      "passed": true,
+      "evidence": "names-en + test_bbs_ui"
+    },
+    {
+      "requirement": "航行中画面",
+      "passed": true,
+      "evidence": "flight/flight-news/flight-who"
+    },
+    {
+      "requirement": "日英",
+      "passed": true,
+      "evidence": "main-ja + names-en"
+    },
+    {
+      "requirement": "80x24",
+      "passed": true,
+      "evidence": "all captured frame bounds"
+    },
+    {
+      "requirement": "NAWS",
+      "passed": true,
+      "evidence": "naws-100/70/50/80"
+    },
+    {
+      "requirement": "既存430件",
+      "passed": true,
+      "evidence": "Windows/FreeBSD tests.log"
+    },
+    {
+      "requirement": "UI追加38件",
+      "passed": true,
+      "evidence": "Windows/FreeBSD tests.log"
+    },
+    {
+      "requirement": "Liner隔離試遊",
+      "passed": true,
+      "evidence": "freebsd/telnet-result.json"
+    },
+    {
+      "requirement": "既存環境保護",
+      "passed": true,
+      "evidence": "changes.json + freebsd/result.json"
+    }
+  ],
+  "not_tested": [
+    "Production deployment",
+    "Windows Liner notes PTY"
+  ],
+  "phase5_acceptance_preserved": true
+}

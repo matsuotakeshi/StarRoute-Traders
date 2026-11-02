@@ -1,0 +1,27 @@
+{
+  "new": [
+    "BBS_UI_COMPLETE.md",
+    "scripts/bbs_ui_telnet_demo.py",
+    "starroute/ui_info.py",
+    "starroute_bbs/input.py",
+    "starroute_bbs/menu.py",
+    "starroute_bbs/screen.py",
+    "tests/test_bbs_ui.py"
+  ],
+  "changed": [
+    "pyproject.toml",
+    "README.md",
+    "starroute/application.py",
+    "starroute/master.py",
+    "starroute/network.py",
+    "starroute/__init__.py",
+    "starroute_bbs/terminal.py",
+    "starroute_bbs/locales/en.json",
+    "starroute_bbs/locales/ja.json"
+  ],
+  "removed": [],
+  "db_schema_change": false,
+  "liner_c_source_change": false,
+  "protected_local_files": 168,
+  "protected_local_unchanged": true
+}

@@ -64,7 +64,7 @@ class Application:
     def account_identity(self, bbs_id, local_user_id):
         return self.repository.account_identity(bbs_id, local_user_id)
 
-    def _call(self, method, *args, request_id=None, target_guard=None, access_guard=None, server_quote=False):
+    def _call(self, method, *args, request_id=None, target_guard=None, access_guard=None, server_quote=False, expected_total=None):
         mutation = method in ('create_player','buy_goods','sell_goods','depart','navigate','dock','invest','buy_ship','donate','insure','bankrupt')
         if request_id is not None:
             identifier(request_id)
@@ -73,6 +73,7 @@ class Application:
             if target_guard is not None:target_guard(world)
             actor = args[0] if args else ''
             payload = json.dumps([method, args], sort_keys=True, ensure_ascii=False)
+            if expected_total is not None:payload=json.dumps([method,args,expected_total],sort_keys=True,ensure_ascii=False)
             if mutation and request_id is not None:
                 row = self.repository.find_operation(world.season_id,actor,request_id)
                 if row:
@@ -88,6 +89,11 @@ class Application:
             if self.engine.catalog.phase3 is not None and actor in world.players and world.players[actor].destination_id is not None:
                 if method not in ('get_player','flight','news','events_sync'):raise GameError('IN_TRANSIT')
             if access_guard is not None:access_guard(world)
+            if expected_total is not None:
+                from .model import integer
+                integer(expected_total,0)
+                side='buy' if method=='buy_goods' else 'sell'
+                if self.engine.quote_trade(world,*args,side)['total']!=expected_total:raise GameError('PRICE_CHANGED')
             origin = world.players[actor].planet_id if actor in world.players else None
             if server_quote:
                 if method!='navigate':raise GameError('MASTER_REQUEST_INVALID')

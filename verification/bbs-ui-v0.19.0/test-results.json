@@ -1,0 +1,50 @@
+{
+  "Windows": {
+    "tests": 468,
+    "regression": 430,
+    "ui_added": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 354.914,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.14.7"
+  },
+  "FreeBSD": {
+    "tests": 468,
+    "regression": 430,
+    "ui_added": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 317.647,
+    "platform": "FreeBSD-15.1-RELEASE-amd64-64bit-ELF",
+    "python": "3.12.15 (main, Oct 15 2026, 01:09:06) [Clang 19.1.7 (https://github.com/llvm/llvm-project.git llvmorg-19.1.7-0-gcd7080"
+  },
+  "telnet": {
+    "standalone": {
+      "menu_trade_travel_invest_donate": true,
+      "ja_en": true,
+      "naws": [
+        80,
+        100,
+        70,
+        50
+      ],
+      "flight_who": true,
+      "return_and_resume": true,
+      "control_bracket": true,
+      "ansi_mono": true
+    },
+    "inter_bbs": {
+      "tls_menu_purchase": true,
+      "who": true,
+      "bbs_return": true
+    },
+    "integrity": "ok"
+  },
+  "protected_remote_files": 3119,
+  "protected_remote_unchanged": true,
+  "production_deployment": false,
+  "github_push": false
+}

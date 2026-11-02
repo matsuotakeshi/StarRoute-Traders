@@ -135,7 +135,6 @@ class Gateway:
                 c.execute('DELETE FROM p5_sessions WHERE token_hash=?',(security.digest(token),));security.audit(c,now,site['bbs_id'],user,'logout','OK');return {'logged_out':True}
             if path=='who':
                 if body:raise GameError('INVALID_REQUEST')
-                if c.execute('SELECT destination_id FROM player_state WHERE player_id=?',(pid,)).fetchone()[0]:raise GameError('IN_TRANSIT')
                 rows=c.execute('''SELECT s.bbs_id,s.user_id,MAX(s.display_name) AS display_name,b.name FROM p5_sessions s JOIN p5_sites b ON s.bbs_id=b.bbs_id
                   WHERE b.state='ENABLED' AND s.last_seen>=? AND s.universe_id=? AND s.round_id=? GROUP BY s.bbs_id,s.user_id,b.name ORDER BY b.name,display_name,s.bbs_id,s.user_id''',(now-self.session_seconds,ref['universe_id'],ref['round_id']))
                 people=[{'player':x['display_name'],'bbs':x['name']} for x in rows];result={'players':people,'count':len(people)}
@@ -146,10 +145,15 @@ class Gateway:
                 if set(body)!={'universe_id','round_id','operation','arguments','request_id'}:raise GameError('INVALID_REQUEST')
                 if (body['universe_id'],body['round_id'])!=(ref['universe_id'],ref['round_id']):raise GameError('WORLD_TARGET_MISMATCH')
                 op=body['operation']
-                if op in ('map','score','rankings','hall','rounds','exploration'):
+                if op in ('ui_info','map','score','rankings','hall','rounds','exploration'):
                     if body['arguments'] or body['request_id'] is not None:raise GameError('INVALID_REQUEST')
-                    if op!='map' and c.execute('SELECT destination_id FROM player_state WHERE player_id=?',(pid,)).fetchone()[0]:raise GameError('IN_TRANSIT')
-                    if op=='map':
+                    if op not in ('map','ui_info') and c.execute('SELECT destination_id FROM player_state WHERE player_id=?',(pid,)).fetchone()[0]:raise GameError('IN_TRANSIT')
+                    if op=='ui_info':
+                        from .ui_info import describe
+                        with r.transaction() as world:
+                            master._target_guard(ctx)(world)
+                            result=describe(app.engine,world,pid,ctx.visibility,site['bbs_id'],c)
+                    elif op=='map':
                         result=master.manifest(ctx)
                         from .universe import normal_planets
                         english={p['id']:p['en'] for p in normal_planets()}

@@ -1,0 +1,25 @@
+DOOR 1
+Game started. Ctrl-] returns to BBS.
+[0m[H[2JSTARROUTE TRADERS - BBS EDITION
+pilot | Normal test_high | 5,000 Cr | Round 1
++----------------------------------------------+------------------------------+
+|                                              |MAIN MENU                     |
+|                                              |1 Status                      |
+|                                              |2 Market                      |
+|                                              |3 Buy                         |
+|                                              |4 Sell                        |
+|                                              |5 Routes                      |
+|                                              |6 Go                          |
+|                                              |7 Warp                        |
+|                       [32m*[0m                      |8 Invest                      |
+|                                              |9 Donate                      |
+|                                              |S Shipyard                    |
+|  *                                           |I Insurance                   |
+|                                              |N News                        |
+|                                              |Page 1/2                      |
+|                                              |[>]Next [<]Prev [?]Help       |
+|                                              |                              |
++----------------------------------------------+------------------------------+
+Texia | Cargo 0/40 | Docked
+Welcome! 2 Market -> 3 Buy -> 6 Go. ? for a guide.
+Select > 

@@ -1,3 +1,5 @@
+> v0.19.0: BBS UI全面改修。常設星図・数字メニュー・対話型売買/航行/投資・日英・NAWS対応。[操作と配備手順](BBS_UI_COMPLETE.md)。本番適用は別途承認が必要です。
+
 > v0.18.0: Phase 5。TLSマスターAPI、BBSサイト認証、日英Door、共有世界、設定診断、通信復旧、参加・離脱を追加。[Phase 5運用手順](PHASE5_COMPLETE.md)と[API仕様](docs/PHASE5_API.md)を参照してください。実測結果は独立したPhase 5受け入れチェックリストに記録します。Inter-BBS参加BBSには薄いクライアント配布物のみを使用してください。以下は履歴。
 
 > v0.17.0: Phase 4の宇宙登録・クール・成績・殿堂・復旧。[Phase 4運用手順](PHASE4_COMPLETE.md)。
