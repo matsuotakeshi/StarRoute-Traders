@@ -1,0 +1,17 @@
+
+Updating StarRouteTest repository catalogue...
+pkg: Repository StarRouteTest has a wrong packagesite, need to re-create database
+[srt-pkg] Fetching meta.conf:   0%[srt-pkg] Fetching meta.conf: 100%     168 B   0.2 kB/s    00:01    
+[srt-pkg] Fetching data:   0%[srt-pkg] Fetching data: 100%    1560 B   1.6 kB/s    00:01    
+Processing entries:   0%Processing entries: 100%
+StarRouteTest repository update completed. 3 packages processed.
+StarRouteTest is up to date.
+pkg: warning: database version 42 is newer than libpkg(3) version 38, but still compatible
+starroute-traders 0.20.0
+starroute-traders-client 0.20.0
+starroute-traders-master 0.20.0
+PRESERVED: assets, coordinates/catalog, industries, rounds, hall, config and keys; DB integrity OK
+pkg: warning: database version 42 is newer than libpkg(3) version 38, but still compatible
+Checking starroute-traders*:   0%Checking starroute-traders*:   0%Checking starroute-traders*:  33%Checking starroute-traders*:  66%Checking starroute-traders*: 100%
+starroute_master is not running.
+RELEASE_REPOSITORY_VERIFIED_TEST_JAIL_STOPPED

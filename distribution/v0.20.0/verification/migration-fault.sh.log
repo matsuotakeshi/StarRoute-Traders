@@ -1,0 +1,4 @@
+
+MIGRATION_FAILURE_ORIGINAL_AND_BACKUP_PRESERVED
+BACKUP_RESTORE_COPY_PASS
+PRESERVED: assets, coordinates/catalog, industries, rounds, hall, config and keys; DB integrity OK

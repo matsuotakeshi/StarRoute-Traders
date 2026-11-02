@@ -1,0 +1,5 @@
+[
+{ type: install, message: "Configuration samples only. No database initialization, service startup or Door registration is performed. Review %%PREFIX%%/etc/starroute-traders/*.sample. Keep DBs, keys and logs outside the program directory." },
+{ type: upgrade, message: "Stop game writers explicitly, back up DB/config/keys, then upgrade. No service stop/start or DB migration is run by this package. Use starroute-maintain for explicit checks and migration copies." },
+{ type: remove, message: "Operational DBs, keys, logs and edited configuration are retained." }
+]

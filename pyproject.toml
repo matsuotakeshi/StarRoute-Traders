@@ -4,13 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "starroute-traders"
-version = "0.19.0"
+version = "0.20.0"
 description = "Shared-world space trading CLI with a UI-independent engine"
 requires-python = ">=3.10"
 
 [project.scripts]
 starroute = "starroute.__main__:main"
 starroute-admin = "starroute.admin:main"
+starroute-maintain = "starroute.maintenance:main"
 starroute-master = "starroute.network:main"
 starroute-sites = "starroute.network_admin:main"
 starroute-door = "starroute_bbs.door:main"

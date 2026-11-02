@@ -1,0 +1,13 @@
+{
+  "database": "/var/db/starroute-traders/world/game.db",
+  "reference_key": "/var/db/starroute-traders/world/reference.key",
+  "host": "127.0.0.1",
+  "port": 8443,
+  "certificate": "/var/db/starroute-traders/world/server-cert.pem",
+  "private_key": "/var/db/starroute-traders/world/server-key.pem",
+  "session_seconds": 300,
+  "timeout": 10,
+  "max_body": 16384,
+  "max_clients": 32,
+  "requests_per_minute": 120
+}

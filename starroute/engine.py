@@ -18,9 +18,20 @@ class Engine:
             if last-s['slot']>cfg['max_catchup_slots']:
                 if not partial:raise GameError('EVENT_CATCHUP_REQUIRED')
                 last=s['slot']+cfg['max_catchup_slots'];target=s['anchor']+last*cfg['event_interval']
-            for slot in range(s['slot']+1,last+1):
-                self._update_base(world,s['anchor']+slot*cfg['event_interval'],partial)
-                m.event_tick(self,world,slot)
+            ticks=[(s['anchor']+slot*cfg['event_interval'],0,slot) for slot in range(s['slot']+1,last+1)]
+            if 'world_events' in cfg:
+                interval=cfg['world_events']['interval_seconds']
+                previous=s.setdefault('world_slot',world.game_time//interval)
+                due=target//interval
+                if due-previous>cfg['max_catchup_slots']:
+                    if not partial:raise GameError('EVENT_CATCHUP_REQUIRED')
+                    due=previous+cfg['max_catchup_slots'];target=due*interval
+                ticks=[t for t in ticks if t[0]<=target]
+                ticks.extend((slot*interval,1,slot) for slot in range(previous+1,due+1))
+            for when,kind,slot in sorted(ticks):
+                self._update_base(world,when,partial)
+                if kind:m.world_tick(self,world,slot)
+                else:m.event_tick(self,world,slot)
             return self._update_base(world,target,partial)
         return self._update_base(world,now,partial)
 

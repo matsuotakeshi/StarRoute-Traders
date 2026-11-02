@@ -1,0 +1,6 @@
+
+ALL_STATE_PRESERVED add 39 tables 11 private/config/log files
+ALL_STATE_PRESERVED upgrade 39 tables 11 private/config/log files
+ALL_STATE_PRESERVED delete 39 tables 11 private/config/log files
+ALL_STATE_PRESERVED install 39 tables 11 private/config/log files
+ALL_TABLES_AND_RUNTIME_FILES_PRESERVED

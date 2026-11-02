@@ -1,0 +1,23 @@
+STARROUTE TRADERS - BBS EDITION
+pilot | Normal test_high | 4,789 Cr | Round 1
++----------------------------------------------+------------------------------+
+|                                              |Departure                     |
+|                                              |Ship: Normal test_high        |
+|                                              |Origin: Texia                 |
+|                                              |Destination: Nemelia          |
+|                                              |Mode: warp                    |
+|                                              |Speed level: fast             |
+|                                              |Seconds: 38                   |
+|                                              |Navigation Cr: 380            |
+|                       * Texia                |Warp speed: 20                |
+|                                              |[Y]Confirm [N]Cancel [0]Back  |
+|                                              |1/1 [>/<]Review pages         |
+|  * Orzef                                     |                              |
+|                                              |                              |
+|                                              |                              |
+|                                              |                              |
+|                                              |                              |
++----------------------------------------------+------------------------------+
+Texia | Cargo 1/40 | Docked
+[0]Back [M]Main [?]Help
+Select > 

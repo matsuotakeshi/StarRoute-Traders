@@ -68,6 +68,12 @@ class Application:
         mutation = method in ('create_player','buy_goods','sell_goods','depart','navigate','dock','invest','buy_ship','donate','insure','bankrupt')
         if request_id is not None:
             identifier(request_id)
+        if self.engine.catalog.phase3 is not None and 'world_events' in self.engine.catalog.phase3:
+            from .maintenance import advance
+            def guarded(world):
+                if target_guard:target_guard(world)
+                if access_guard:access_guard(world)
+            advance(self.repository,self.clock.now(),guarded)
         with self.repository.transaction() as world:
             self.repository.check_round(world,self.clock.now())
             if target_guard is not None:target_guard(world)

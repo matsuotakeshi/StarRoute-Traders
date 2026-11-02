@@ -1,0 +1,16 @@
+Updating StarRouteTest repository catalogue...
+[srt-pkg] Fetching meta.conf: . done
+[srt-pkg] Fetching data: . done
+pkg: -----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnWWE8maGejLoNwJNIAXP
+s87dRjb5jvla9VxE49RCGEQZD/n3uIM83T14HW21Oj3BxNKq2wuvXnHjrC9JJ/Zo
+RTwqjP1j5gNXfeJP8WsWXs4JI7MZGDCdWZ03iTZuBEspMUs7Y92SD4n9T4kpU5ob
+Kf4LfNiCrfKUib9NgCuN9/6LDU2gEfIoiXmjW2S8PCCH7SmXE6SEzijeUcNHoLdH
+plSCe8AeXiRZU/t/ux0tD7VZvlV0t0bXa587IXkiYrbO6zjJOsv0tydXFQN3bv8X
+S4ZVHkfbtHWUh+FhFgZGjQKNALC1S22Do6Ex3VREI+xvrf8ud1mTgYCW/vlq/dwm
+WQIDAQAB
+-----END PUBLIC KEY-----
+: rsa signature verification failure
+pkg: Invalid signature, removing repository.
+StarRouteTest repository is up to date.
+StarRouteTest is up to date.

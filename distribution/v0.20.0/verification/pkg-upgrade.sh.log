@@ -1,0 +1,90 @@
+
+Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:   0%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:   4%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:   8%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  12%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  37%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  58%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  75%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  79%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  83%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  87%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  91%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo:  95%Creating repository in /home/takeshi/starroute-ports-verification-20261102/runtime/repo: 100%
+Packing files for repository:   0%Packing files for repository:   0%Packing files for repository:  25%Packing files for repository:  50%Packing files for repository:  75%Packing files for repository: 100%
+Updating StarRouteTest repository catalogue...
+[srt-pkg] Fetching meta.conf:   0%[srt-pkg] Fetching meta.conf: 100%     168 B   0.2 kB/s    00:01    
+[srt-pkg] Fetching data:   0%[srt-pkg] Fetching data: 100%    8626 B   8.6 kB/s    00:01    
+Processing entries:   0%Processing entries:  41%Processing entries:  83%Processing entries: 100%
+StarRouteTest repository update completed. 24 packages processed.
+All repositories are up to date.
+PKG_SIGKILL_AT_PRECOMMIT_PROMPT -9
+pkg: warning: database version 42 is newer than libpkg(3) version 38, but still compatible
+starroute-traders 0.19.0
+starroute-traders-client 0.19.0
+starroute-traders-master 0.19.0
+
+INTERRUPTED_UPDATE_LEFT_OLD_PACKAGES_INTACT
+PRESERVED: assets, coordinates/catalog, industries, rounds, hall, config and keys; DB integrity OK
+Updating StarRouteTest repository catalogue...
+StarRouteTest repository is up to date.
+StarRouteTest is up to date.
+pkg: warning: database version 42 is newer than libpkg(3) version 38, but still compatible
+Checking integrity... done (0 conflicting)
+The following 3 package(s) will be affected (of 0 checked):
+
+Installed packages to be UPGRADED:
+	starroute-traders: 0.19.0 -> 0.20.0 [StarRouteTest]
+	starroute-traders-client: 0.19.0 -> 0.20.0 [StarRouteTest]
+	starroute-traders-master: 0.19.0 -> 0.20.0 [StarRouteTest]
+
+Number of packages to be upgraded: 3
+[srt-pkg] [1/3] Upgrading starroute-traders-client from 0.19.0 to 0.20.0...
+[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:   0%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:   0%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:   6%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  12%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  18%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  25%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  31%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  37%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  43%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  50%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  56%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  62%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  68%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  75%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  81%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  87%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0:  93%[srt-pkg] [1/3] Extracting starroute-traders-client-0.20.0: 100%
+[srt-pkg] [2/3] Upgrading starroute-traders from 0.19.0 to 0.20.0...
+[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   0%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   0%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   1%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   2%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   4%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   5%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   6%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   8%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:   9%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  10%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  12%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  13%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  15%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  16%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  17%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  19%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  20%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  21%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  23%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  24%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  26%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  27%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  28%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  30%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  31%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  32%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  34%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  35%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  36%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  38%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  39%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  41%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  42%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  43%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  45%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  46%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  47%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  49%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  50%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  52%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  53%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  54%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  56%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  57%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  58%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  60%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  61%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  63%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  64%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  65%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  67%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  68%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  69%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  71%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  72%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  73%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  75%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  76%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  78%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  79%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  80%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  82%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  83%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  84%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  86%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  87%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  89%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  90%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  91%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  93%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  94%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  95%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  97%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0:  98%[srt-pkg] [2/3] Extracting starroute-traders-0.20.0: 100%
+[srt-pkg] [3/3] Upgrading starroute-traders-master from 0.19.0 to 0.20.0...
+[srt-pkg] [3/3] Extracting starroute-traders-master-0.20.0:   0%[srt-pkg] [3/3] Extracting starroute-traders-master-0.20.0:   0%[srt-pkg] [3/3] Extracting starroute-traders-master-0.20.0:  20%[srt-pkg] [3/3] Extracting starroute-traders-master-0.20.0:  40%[srt-pkg] [3/3] Extracting starroute-traders-master-0.20.0:  60%[srt-pkg] [3/3] Extracting starroute-traders-master-0.20.0:  80%[srt-pkg] [3/3] Extracting starroute-traders-master-0.20.0: 100%
+=====
+Message from starroute-traders-client-0.20.0:
+
+--
+Stop game writers explicitly, back up DB/config/keys, then upgrade. No service stop/start or DB migration is run by this package. Use starroute-maintain for explicit checks and migration copies.
+You may need to manually remove /usr/local/etc/starroute-traders/standalone.json if it is no longer needed.
+=====
+Message from starroute-traders-0.20.0:
+
+--
+Stop game writers explicitly, back up DB/config/keys, then upgrade. No service stop/start or DB migration is run by this package. Use starroute-maintain for explicit checks and migration copies.
+=====
+Message from starroute-traders-master-0.20.0:
+
+--
+Stop game writers explicitly, back up DB/config/keys, then upgrade. No service stop/start or DB migration is run by this package. Use starroute-maintain for explicit checks and migration copies.
+pkg: warning: database version 42 is newer than libpkg(3) version 38, but still compatible
+starroute-traders-0.20.0
+starroute-traders-client-0.20.0
+starroute-traders-master-0.20.0
+PRESERVED: assets, coordinates/catalog, industries, rounds, hall, config and keys; DB integrity OK
+{
+  "schema": 11,
+  "supported_max": 11,
+  "rules_version": "phase3-complete-1",
+  "integrity": "ok"
+}
+{
+  "schema": 11,
+  "supported_max": 11,
+  "rules_version": "phase3-complete-1",
+  "integrity": "ok"
+}
+{
+  "before": {
+    "schema": 11,
+    "supported_max": 11,
+    "rules_version": "phase3-complete-1",
+    "integrity": "ok"
+  },
+  "backup": "/verification/migration-backup.db",
+  "state": "validated_copy",
+  "started_at": 1793610713,
+  "after": {
+    "schema": 11,
+    "supported_max": 11,
+    "rules_version": "phase3-complete-1",
+    "integrity": "ok"
+  },
+  "sha256": "707d14091a694b7ccdb1953d36cdeea882b181c71c4f11b92a31d5493e28098b",
+  "finished_at": 1793610714
+}
+PRESERVED: assets, coordinates/catalog, industries, rounds, hall, config and keys; DB integrity OK
+PKG_UPGRADE_PRESERVATION_PASS

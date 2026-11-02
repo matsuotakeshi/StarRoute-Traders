@@ -1,0 +1,11 @@
+{
+  "mode": "inter-bbs",
+  "url": "https://master.example.invalid:8443",
+  "profile": "/var/db/starroute-traders/world/site-profile.json",
+  "ca_file": "/var/db/starroute-traders/world/master-ca.pem",
+  "state_directory": "/var/db/starroute-traders/client-state",
+  "language": "ja",
+  "ansi": true,
+  "timeout": 5,
+  "heartbeat_seconds": 30
+}

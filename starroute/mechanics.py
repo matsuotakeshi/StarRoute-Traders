@@ -154,7 +154,7 @@ def draw(cfg,*keys):
 
 def event_tick(engine,world,slot):
     cfg=enabled(engine);interval=cfg['event_interval'];s=state(world)
-    for pid in sorted(engine.catalog.planets):
+    for pid in ([] if 'world_events' in cfg else sorted(engine.catalog.planets)):
         for kind in cfg['disaster_industries']:
             eid=f'planet:{slot}:{pid}:{kind}'
             if draw(cfg,eid)<cfg['event_probabilities'][kind]:apply_event(engine,world,eid,kind,pid)
@@ -173,6 +173,28 @@ def event_tick(engine,world,slot):
             eid=f'mineral:{slot}:{pid}'
             if draw(cfg,eid)<chance:apply_event(engine,world,eid,'mineral',pid)
     s['slot']=slot
+
+
+def world_tick(engine,world,slot):
+    """One draw per UTC interval for the entire universe; misses persist too."""
+    cfg=enabled(engine);policy=cfg['world_events'];s=state(world)
+    checks=s.setdefault('world_checks',{})
+    key=str(slot)
+    if key in checks:return checks[key]
+    eid=f'world:{slot}'
+    result={'slot':slot,'scheduled_at':slot*policy['interval_seconds'],'occurred':False}
+    if draw(cfg,eid,'occurrence')<policy['probability_bps']:
+        weights=sorted(policy['kind_weights'].items())
+        n=int.from_bytes(hashlib.sha256(canonical_bytes([cfg['event_seed'],eid,'kind'])).digest(),'big')%sum(v for _,v in weights)
+        for kind,weight in weights:
+            if n<weight:break
+            n-=weight
+        planets=sorted(engine.catalog.planets)
+        n=int.from_bytes(hashlib.sha256(canonical_bytes([cfg['event_seed'],eid,'planet'])).digest(),'big')%len(planets)
+        target=planets[n];apply_event(engine,world,eid,kind,target)
+        result.update(occurred=True,kind=kind,planet_id=target)
+    checks[key]=result;s['world_slot']=slot
+    return result
 
 
 def coordinates(catalog):

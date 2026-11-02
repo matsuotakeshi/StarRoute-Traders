@@ -14,7 +14,14 @@ def policy(data, profiles, grades):
               'mineral_base_bps','mineral_level_bps','mineral_abundance_divisor','rare_bps',
               'max_catchup_slots','investment_bonus_mode','ship_exchange_mode','cap_mode',
               'bankruptcy_mode','disaster_cap_mode','excess_stock_mode','disaster_effect_timing','insurance_mode','jackpot_mode'}
-    if not isinstance(raw,dict) or set(raw)!=required or raw['status']!='provisional':raise ValueError('phase3 fields')
+    if not isinstance(raw,dict) or set(raw)-{'world_events','navigation_min_distance_units'}!=required or raw['status']!='provisional':raise ValueError('phase3 fields')
+    if 'navigation_min_distance_units' in raw:integer(raw['navigation_min_distance_units'],1)
+    if 'world_events' in raw:
+        w=raw['world_events']
+        if not isinstance(w,dict) or set(w)!={'mode','interval_seconds','probability_bps','kind_weights'} or w['mode']!='global_slots_v1':raise ValueError('world events')
+        integer(w['interval_seconds'],1);integer(w['probability_bps'],0,10000)
+        if set(w['kind_weights'])!={'planet_raid','cyclone','factory_accident'}:raise ValueError('world event kinds')
+        for weight in w['kind_weights'].values():integer(weight,1)
     for k in ('route_cost_per_distance','event_interval','disaster_damage','loot_quantity','storm_delay','mineral_abundance_divisor','max_catchup_slots'):
         integer(raw[k],1)
     for k in ('jackpot_bps','route_bonus_bps','insurance_cash_bps','pirate_loss_bps','mineral_base_bps','mineral_level_bps','rare_bps'):

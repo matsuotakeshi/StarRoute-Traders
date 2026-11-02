@@ -1,0 +1,29 @@
+#!/bin/sh
+# PROVIDE: starroute_master
+# REQUIRE: LOGIN NETWORKING
+# KEYWORD: shutdown
+. /etc/rc.subr
+name="starroute_master"
+rcvar="starroute_master_enable"
+load_rc_config "$name"
+: ${starroute_master_enable:="NO"}
+: ${starroute_master_user:="starroute"}
+: ${starroute_master_config:="%%PREFIX%%/etc/starroute-traders/master.json"}
+: ${starroute_master_rundir:="/var/run/starroute-traders"}
+: ${starroute_master_log:="/var/log/starroute-traders/master.log"}
+pidfile="${starroute_master_rundir}/master.pid"
+command="/usr/sbin/daemon"
+procname="%%PYTHON_CMD%%"
+command_args="-p ${pidfile} -o ${starroute_master_log} %%PREFIX%%/bin/starroute-master --config ${starroute_master_config}"
+required_files="${starroute_master_config}"
+start_precmd="starroute_master_prestart"
+starroute_master_prestart()
+{
+    if [ "${starroute_master_user}" = "root" ]; then
+        warn "Configure a non-root starroute_master_user"
+        return 1
+    fi
+    id "${starroute_master_user}" >/dev/null 2>&1 || return 1
+    install -d -m 0700 -o "${starroute_master_user}" "${starroute_master_rundir}" "$(dirname "${starroute_master_log}")"
+}
+run_rc_command "$1"

@@ -1,0 +1,221 @@
+{
+  "version": "0.20.0",
+  "completed": "2026-11-02",
+  "status": "passed_isolated_acceptance",
+  "production_deployed": false,
+  "github_pushed": false,
+  "tests": {
+    "regression": 468,
+    "new": 17,
+    "total": 485,
+    "windows": {
+      "python": "3.14.7",
+      "passed": 485,
+      "failed": 0
+    },
+    "freebsd": {
+      "os": "15.1-RELEASE",
+      "python": "3.12.15",
+      "passed": 485,
+      "failed": 0
+    },
+    "package_runtime": {
+      "os": "15.1-RELEASE-p6",
+      "python": "3.12.13",
+      "telnet": "passed"
+    }
+  },
+  "criteria": [
+    {
+      "id": "standalone_port",
+      "requirement": "スタンドアロンPort",
+      "status": "pass",
+      "evidence": [
+        "verification/build/starroute-traders-0.20.0.log"
+      ]
+    },
+    {
+      "id": "master_port",
+      "requirement": "マスターPort・rc.d",
+      "status": "pass",
+      "evidence": [
+        "verification/service-test.sh.log"
+      ]
+    },
+    {
+      "id": "client_port",
+      "requirement": "BBSクライアントPort・秘密情報非同梱",
+      "status": "pass",
+      "evidence": [
+        "verification/package-audit.json"
+      ]
+    },
+    {
+      "id": "three_packages",
+      "requirement": "用途別pkg生成",
+      "status": "pass",
+      "evidence": [
+        "verification/bulk-020-sqlite.log"
+      ]
+    },
+    {
+      "id": "poudriere",
+      "requirement": "poudriere正常ビルド",
+      "status": "pass",
+      "evidence": [
+        "verification/bulk-020-sqlite.log"
+      ]
+    },
+    {
+      "id": "signed_repository",
+      "requirement": "独自署名付きrepo",
+      "status": "pass",
+      "evidence": [
+        "verification/release-verify-cleanup.sh.log"
+      ]
+    },
+    {
+      "id": "pkg_install",
+      "requirement": "新規インストール",
+      "status": "pass",
+      "evidence": [
+        "verification/pkg-reinstall-old.sh.log"
+      ]
+    },
+    {
+      "id": "pkg_upgrade",
+      "requirement": "更新",
+      "status": "pass",
+      "evidence": [
+        "verification/pkg-upgrade.sh.log"
+      ]
+    },
+    {
+      "id": "preservation",
+      "requirement": "DB全テーブル・運用ファイル保持",
+      "status": "pass",
+      "evidence": [
+        "verification/all-state-result.json"
+      ]
+    },
+    {
+      "id": "rollback",
+      "requirement": "旧版復旧と交易再開",
+      "status": "pass",
+      "evidence": [
+        "verification/rollback-play.sh.log"
+      ]
+    },
+    {
+      "id": "standalone_interbbs",
+      "requirement": "standalone・TLS Inter-BBS",
+      "status": "pass",
+      "evidence": [
+        "verification/telnet-result.json"
+      ]
+    },
+    {
+      "id": "liner_door",
+      "requirement": "Liner notes Door・日英・NAWS",
+      "status": "pass",
+      "evidence": [
+        "verification/telnet-020.log"
+      ]
+    },
+    {
+      "id": "hours",
+      "requirement": "数時間航行設定",
+      "status": "pass",
+      "evidence": [
+        "verification/freebsd-tests-acceptance.log"
+      ]
+    },
+    {
+      "id": "offline",
+      "requirement": "ログアウト中・再起動後の進行",
+      "status": "pass",
+      "evidence": [
+        "verification/freebsd-tests-acceptance.log"
+      ]
+    },
+    {
+      "id": "global_events",
+      "requirement": "7200秒の低確率世界抽選",
+      "status": "pass",
+      "evidence": [
+        "verification/freebsd-tests-acceptance.log"
+      ]
+    },
+    {
+      "id": "independent_cycles",
+      "requirement": "生産・相場と災害周期の独立",
+      "status": "pass",
+      "evidence": [
+        "verification/freebsd-tests-acceptance.log"
+      ]
+    },
+    {
+      "id": "regression",
+      "requirement": "既存468件＋新規17件",
+      "status": "pass",
+      "evidence": [
+        "verification/freebsd-tests-acceptance.log"
+      ]
+    },
+    {
+      "id": "freebsd_runtime",
+      "requirement": "FreeBSD 15.1実動作",
+      "status": "pass",
+      "evidence": [
+        "verification/telnet-020.log"
+      ]
+    },
+    {
+      "id": "production_protection",
+      "requirement": "既存環境非変更",
+      "status": "pass",
+      "evidence": [
+        "verification/protection.json"
+      ]
+    },
+    {
+      "id": "windows",
+      "requirement": "Windows 485件",
+      "status": "pass",
+      "evidence": [
+        "verification/windows-tests-final.log"
+      ]
+    },
+    {
+      "id": "migration_failure",
+      "requirement": "移行失敗・バックアップ復旧",
+      "status": "pass",
+      "evidence": [
+        "verification/migration-fault.sh.log"
+      ]
+    },
+    {
+      "id": "service_noninterference",
+      "requirement": "pkg更新のサービス非干渉・明示再起動",
+      "status": "pass",
+      "evidence": [
+        "verification/service-update-client.sh.log"
+      ]
+    },
+    {
+      "id": "untrusted_signature",
+      "requirement": "不正署名拒否",
+      "status": "pass",
+      "evidence": [
+        "verification/signature-test.sh.log"
+      ]
+    }
+  ],
+  "scope_limits": [
+    "No production deployment or external HTTPS pkg hosting",
+    "Test signing key only; private key excluded",
+    "Crash test killed pkg at pre-commit confirmation; no power-loss test during extraction",
+    "Long voyages use an injected clock; no hours-long real waiting",
+    "New long-duration rules require explicit generation/activation of a new universe; existing DB catalogs unchanged"
+  ]
+}

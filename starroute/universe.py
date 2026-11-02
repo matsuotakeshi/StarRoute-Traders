@@ -142,7 +142,8 @@ def validate(catalog):
         for ship in source.ships:
             base=next(r for (sid,_),r in source.navigation_plans.items() if sid==ship)
             plan=catalog.navigation_plans[ship,route['id']]
-            if plan['normal_seconds']!=base['normal_seconds']*dist or plan['warp_options']!=[{**o,'seconds':o['seconds']*dist,'fuel_cost':o['fuel_cost']*dist} for o in base['warp_options']]:raise ValueError('navigation rule binding')
+            time_factor=max(dist,(source.phase3 or {}).get('navigation_min_distance_units',1))
+            if plan['normal_seconds']!=base['normal_seconds']*time_factor or plan['warp_options']!=[{**o,'seconds':o['seconds']*time_factor,'fuel_cost':o['fuel_cost']*dist} for o in base['warp_options']]:raise ValueError('navigation rule binding')
     while True:
         old=len(seen)
         for r in catalog.data['routes']:

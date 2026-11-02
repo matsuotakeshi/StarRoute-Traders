@@ -1,0 +1,13 @@
+@sample etc/starroute-traders/remote.json.sample
+bin/starroute-door
+bin/starroute-node
+libexec/starroute-traders/starroute_bbs/__init__.py
+libexec/starroute-traders/starroute_bbs/client.py
+libexec/starroute-traders/starroute_bbs/door.py
+libexec/starroute-traders/starroute_bbs/input.py
+libexec/starroute-traders/starroute_bbs/locales/en.json
+libexec/starroute-traders/starroute_bbs/locales/ja.json
+libexec/starroute-traders/starroute_bbs/menu.py
+libexec/starroute-traders/starroute_bbs/node.py
+libexec/starroute-traders/starroute_bbs/screen.py
+libexec/starroute-traders/starroute_bbs/terminal.py

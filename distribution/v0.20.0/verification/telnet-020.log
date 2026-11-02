@@ -1,0 +1,90 @@
+INSTALLED_MODULES /usr/local/libexec/starroute-traders/starroute/__init__.py /usr/local/libexec/starroute-traders/starroute_bbs/__init__.py
+SCREEN standalone-startup 80x24 PASS
+SCREEN main-ja 80x24 PASS
+MENU m -> OK
+SCREEN market-ja 80x24 PASS
+MENU 2 -> OK
+MENU 1 -> OK
+MENU 0 -> OK
+MENU m -> OK
+MENU 3 -> OK
+MENU 1 -> OK
+MENU 1 -> OK
+SCREEN confirm-empty 80x24 PASS
+MENU  -> OK
+MENU y -> OK
+MENU m -> OK
+SCREEN routes 80x24 PASS
+MENU 5 -> OK
+MENU m -> OK
+MENU l -> OK
+MENU 2 -> OK
+SCREEN names-en 80x24 PASS
+MENU t -> OK
+MENU 8 -> OK
+MENU 1 -> OK
+MENU 100 -> OK
+MENU y -> OK
+MENU m -> OK
+MENU 9 -> OK
+MENU 1 -> OK
+MENU 10 -> OK
+MENU y -> OK
+MENU m -> OK
+MENU w -> OK
+MENU m -> OK
+MENU r -> OK
+MENU 1 -> OK
+MENU m -> OK
+MENU h -> OK
+MENU 1 -> OK
+MENU m -> OK
+MENU 7 -> OK
+MENU 1 -> OK
+SCREEN warp-confirm 80x24 PASS
+MENU 1 -> OK
+MENU y -> OK
+SCREEN flight 80x24 PASS
+MENU m -> OK
+SCREEN flight-news 80x24 PASS
+MENU n -> OK
+MENU m -> OK
+SCREEN flight-who 80x24 PASS
+MENU w -> OK
+MENU m -> OK
+SCREEN flight-rejected 80x24 PASS
+MENU 3 -> OK
+WAIT actual arrival
+WAIT actual arrival
+WAIT actual arrival
+WAIT actual arrival
+WAIT actual arrival
+WAIT actual arrival
+SCREEN arrived 80x24 PASS
+MENU m -> OK
+MENU 4 -> OK
+MENU 1 -> OK
+MENU 1 -> OK
+MENU y -> OK
+MENU m -> OK
+SCREEN naws-100 100x30 PASS
+SCREEN naws-70 70x24 PASS
+SCREEN naws-50 50x24 PASS
+SCREEN naws-80 80x24 PASS
+SCREEN help 80x24 PASS
+MENU ? -> OK
+MENU m -> OK
+MENU buy grain 1 -> OK
+MENU y -> OK
+MENU m -> OK
+MENU color off -> OK
+SCREEN inter-bbs-startup 80x24 PASS
+MENU 3 -> OK
+MENU 1 -> OK
+MENU 1 -> OK
+MENU y -> OK
+SCREEN remote-main 80x24 PASS
+MENU m -> OK
+SCREEN remote-who 80x24 PASS
+MENU w -> OK
+{"standalone": {"menu_trade_travel_invest_donate": true, "ja_en": true, "naws": [80, 100, 70, 50], "flight_who": true, "return_and_resume": true, "control_bracket": true, "ansi_mono": true}, "inter_bbs": {"tls_menu_purchase": true, "who": true, "bbs_return": true}, "integrity": "ok"}

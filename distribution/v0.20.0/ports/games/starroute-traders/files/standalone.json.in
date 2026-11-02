@@ -1,0 +1,9 @@
+{
+  "mode": "standalone",
+  "database": "/var/db/starroute-traders/world/local.db",
+  "reference_key": "/var/db/starroute-traders/world/local-reference.key",
+  "profile": "/var/db/starroute-traders/world/local-site-profile.json",
+  "language": "ja",
+  "ansi": true,
+  "heartbeat_seconds": 30
+}

@@ -1,0 +1,9 @@
+
+INVALID_SIGNATURE_REMOVES_REPOSITORY
+Updating StarRouteTest repository catalogue...
+[srt-pkg] Fetching meta.conf:   0%[srt-pkg] Fetching meta.conf: 100%     168 B   0.2 kB/s    00:01    
+[srt-pkg] Fetching data:   0%[srt-pkg] Fetching data: 100%    4755 B   4.8 kB/s    00:01    
+Processing entries:   0%Processing entries:  83%Processing entries: 100%
+StarRouteTest repository update completed. 12 packages processed.
+StarRouteTest is up to date.
+UNTRUSTED_KEY_REJECTED_TRUSTED_KEY_ACCEPTED

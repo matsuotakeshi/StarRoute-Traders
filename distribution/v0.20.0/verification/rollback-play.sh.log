@@ -1,0 +1,4 @@
+
+ROLLED_BACK_019_DOOR_TRADE_ON_RESTORED_DATABASE_PASS
+PRESERVED: assets, coordinates/catalog, industries, rounds, hall, config and keys; DB integrity OK
+LATEST_RESTORED_AFTER_ROLLBACK_GAMEPLAY

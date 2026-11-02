@@ -1,0 +1,11 @@
+{
+  "all_tables": 39,
+  "preserved_files": 11,
+  "actions": [
+    "downgrade",
+    "upgrade",
+    "delete",
+    "install"
+  ],
+  "integrity": "ok"
+}

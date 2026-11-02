@@ -1,0 +1,14 @@
+
+starroute_master_enable:  -> YES
+Starting starroute_master.
+starroute_master is running as pid 4832.
+NONROOT_SERVICE_USER_CONFIRMED
+Stopping starroute_master.
+Waiting for PIDS: 4832.
+Starting starroute_master.
+starroute_master is running as pid 4938.
+Stopping starroute_master.
+Waiting for PIDS: 4938.
+starroute_master is not running.
+starroute_master_enable: YES -> NO
+RC_START_STATUS_RESTART_STOP_PASS

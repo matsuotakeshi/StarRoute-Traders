@@ -1,0 +1,4 @@
+#!%%PYTHON_CMD%% -I
+import sys,runpy
+sys.path.insert(0, '%%PREFIX%%/libexec/starroute-traders')
+runpy.run_module('starroute_bbs.door',run_name='__main__')

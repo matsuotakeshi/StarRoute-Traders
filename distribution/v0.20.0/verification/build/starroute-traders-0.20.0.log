@@ -1,0 +1,265 @@
+=>> Building games/starroute-traders
+build started at 2026-11-02T18:04:44+09:00
+port directory: /usr/ports/games/starroute-traders
+package name: starroute-traders-0.20.0
+building for: FreeBSD srt151-srt-job-01 15.1-RELEASE-p6 FreeBSD 15.1-RELEASE-p6 amd64
+maintained by: ports@localhost
+port version: 0.20.0
+port revision: 0
+Makefile datestamp: Nov  2 17:44:17 2026
+=>> Inspecting /home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/ref//usr/ports/games/starroute-traders for modifications to git checkout... no
+Port dir unclean checkout: no
+Poudriere version: poudriere-git-5ba8498
+Host OSVERSION: 1501000
+Jail OSVERSION: 1501000
+Builder Id: 01
+Builder jail path: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/01
+Ref jail path: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/ref
+Job Idx: 2
+Jail Id (no networking)  : 32
+Jail Name (no networking): srt151-srt-job-01
+Jail Id (networking)     : 33
+Jail Name (networking)   : srt151-srt-job-01-n
+
+---Begin Environment---
+SHELL=/bin/sh
+OSVERSION=1501000
+UNAME_v=FreeBSD 15.1-RELEASE-p6
+UNAME_r=15.1-RELEASE-p6
+BLOCKSIZE=K
+MAIL=/var/mail/root
+MM_CHARSET=UTF-8
+LANG=C.UTF-8
+POUDRIERE_ETC=/home/takeshi/starroute-ports-verification-20261102/conf
+STATUS=1
+HOME=/root
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin
+MAKE_OBJDIR_CHECK_WRITABLE=0
+LOCALBASE=/usr/local
+USER=root
+POUDRIERE_NAME=poudriere-git
+POUDRIERE_VERSION=5ba8498
+LC_COLLATE=C
+POUDRIERE_BUILD_TYPE=bulk
+PACKAGE_BUILDING=yes
+SAVED_TERM=vt100
+GID=0
+OUTPUT_REDIRECTED_STDERR=4
+OUTPUT_REDIRECTED=1
+UID=0
+PWD=/home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/01/.p
+OUTPUT_REDIRECTED_STDOUT=3
+P_PORTS_FEATURES=FLAVORS SUBPACKAGES SELECTED_OPTIONS
+MASTERNAME=srt151-srt
+OLDPWD=/home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/ref/.p/pool
+POUDRIERE_PKGNAME=poudriere-git-5ba8498
+PREFIX=/usr/local
+POUDRIEREPATH=/home/takeshi/starroute-ports-verification-20261102/tools/bin/poudriere
+---End Environment---
+
+---Begin Poudriere Port Flags/Env---
+PORT_FLAGS=
+PKGENV=
+FLAVOR=
+MAKE_ARGS=
+---End Poudriere Port Flags/Env---
+
+---Begin OPTIONS List---
+---End OPTIONS List---
+
+--MAINTAINER--
+ports@localhost
+--End MAINTAINER--
+
+--PORTVERSION--
+0.20.0
+--End PORTVERSION--
+
+--PORTREVISION--
+0
+--End PORTREVISION--
+
+--CONFIGURE_ARGS--
+
+--End CONFIGURE_ARGS--
+
+--CONFIGURE_ENV--
+PYTHON="/usr/local/bin/python3.12" XDG_DATA_HOME=/wrkdirs/usr/ports/games/starroute-traders/work  XDG_CONFIG_HOME=/wrkdirs/usr/ports/games/starroute-traders/work  XDG_CACHE_HOME=/wrkdirs/usr/ports/games/starroute-traders/work/.cache  HOME=/wrkdirs/usr/ports/games/starroute-traders/work TMPDIR="/tmp" PATH=/wrkdirs/usr/ports/games/starroute-traders/work/.bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin PKG_CONFIG_LIBDIR=/wrkdirs/usr/ports/games/starroute-traders/work/.pkgconfig:/usr/local/libdata/pkgconfig:/usr/local/share/pkgconfig:/usr/libdata/pkgconfig SHELL=/bin/sh CONFIG_SHELL=/bin/sh
+--End CONFIGURE_ENV--
+
+--MAKE_ENV--
+XDG_DATA_HOME=/wrkdirs/usr/ports/games/starroute-traders/work  XDG_CONFIG_HOME=/wrkdirs/usr/ports/games/starroute-traders/work  XDG_CACHE_HOME=/wrkdirs/usr/ports/games/starroute-traders/work/.cache  HOME=/wrkdirs/usr/ports/games/starroute-traders/work TMPDIR="/tmp" PATH=/wrkdirs/usr/ports/games/starroute-traders/work/.bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin PKG_CONFIG_LIBDIR=/wrkdirs/usr/ports/games/starroute-traders/work/.pkgconfig:/usr/local/libdata/pkgconfig:/usr/local/share/pkgconfig:/usr/libdata/pkgconfig MK_DEBUG_FILES=no MK_KERNEL_SYMBOLS=no SHELL=/bin/sh NO_LINT=YES PREFIX=/usr/local  LOCALBASE=/usr/local  CC="cc" CFLAGS="-O2 -pipe  -fstack-protector-strong -fno-strict-aliasing "  CPP="cpp" CPPFLAGS=""  LDFLAGS=" " LIBS=""  CXX="c++" CXXFLAGS="-O2 -pipe -fstack-protector-strong -fno-strict-aliasing   " BSD_INSTALL_PROGRAM="install  -s -m 555"  BSD_INSTALL_LIB="install  -s -m 0644"  BSD_INSTALL_SCRIPT="install  -m 555"  BSD_INSTALL_DATA="install  -m 0644"  BSD_INSTALL_MAN="install  -m 444"
+--End MAKE_ENV--
+
+--PLIST_SUB--
+PYTHON_CMD=/usr/local/bin/python3.12 PYTHON_INCLUDEDIR=include/python3.12  PYTHON_LIBDIR=lib/python3.12  PYTHON_PLATFORM=freebsd15  PYTHON_SITELIBDIR=lib/python3.12/site-packages  PYTHON_SUFFIX=312  PYTHON_BASESUFFIX=312  PYTHON_TAG=.cpython-312  PYTHON_SOABI=.cpython-312  PYTHON_VER=3.12  PYTHON_BASEVER=3.12  PYTHON_VERSION=python3.12 PYTHON2="@comment " PYTHON3="" OSREL=15.1 PREFIX=%D LOCALBASE=/usr/local  RESETPREFIX=/usr/local LIB32DIR=lib DOCSDIR="share/doc/starroute-traders"  EXAMPLESDIR="share/examples/starroute-traders"  DATADIR="share/starroute-traders"  WWWDIR="www/starroute-traders"  ETCDIR="etc/starroute-traders"
+--End PLIST_SUB--
+
+--SUB_LIST--
+PYTHON_CMD=/usr/local/bin/python3.12 PYTHON_INCLUDEDIR=/usr/local/include/python3.12  PYTHON_LIBDIR=/usr/local/lib/python3.12  PYTHON_PLATFORM=freebsd15  PYTHON_SITELIBDIR=/usr/local/lib/python3.12/site-packages  PYTHON_SUFFIX=312  PYTHON_BASESUFFIX=312  PYTHON_TAG=.cpython-312  PYTHON_SOABI=.cpython-312  PYTHON_VER=3.12  PYTHON_BASEVER=3.12  PYTHON_VERSION=python3.12 PYTHON2="@comment " PYTHON3="" PREFIX=/usr/local LOCALBASE=/usr/local  DATADIR=/usr/local/share/starroute-traders DOCSDIR=/usr/local/share/doc/starroute-traders EXAMPLESDIR=/usr/local/share/examples/starroute-traders  WWWDIR=/usr/local/www/starroute-traders ETCDIR=/usr/local/etc/starroute-traders
+--End SUB_LIST--
+
+---Begin make.conf---
+USE_PACKAGE_DEPENDS=yes
+BATCH=yes
+WRKDIRPREFIX=/wrkdirs
+PORTSDIR=/usr/ports
+PACKAGES=/packages
+DISTDIR=/distfiles
+FORCE_PACKAGE=yes
+PACKAGE_BUILDING=yes
+PACKAGE_BUILDING_FLAVORS=yes
+#### /home/takeshi/starroute-ports-verification-20261102/conf/poudriere.d/make.conf ####
+DEFAULT_VERSIONS+= python=3.12
+#### Misc Poudriere ####
+.include "/etc/make.conf.ports_env"
+---End make.conf---
+--Resource limits--
+cpu time               (seconds, -t)  unlimited
+file size           (512-blocks, -f)  unlimited
+data seg size           (kbytes, -d)  33554432
+stack size              (kbytes, -s)  524288
+core file size      (512-blocks, -c)  unlimited
+max memory size         (kbytes, -m)  unlimited
+locked memory           (kbytes, -l)  unlimited
+max user processes              (-u)  5734
+open files                      (-n)  8192
+virtual mem size        (kbytes, -v)  unlimited
+swap limit              (kbytes, -w)  unlimited
+socket buffer size       (bytes, -b)  unlimited
+pseudo-terminals                (-p)  unlimited
+kqueues                         (-k)  unlimited
+umtx shared locks               (-o)  unlimited
+pipebuf                         (-y)  unlimited
+--End resource limits--
+times start [shell] (user/sys/real): 0m0.011s 0m0.000s 0m52.000s
+times start [child] (user/sys/real): 0m0.049s 0m0.274s 0m52.000s
+=======================<phase: check-sanity   >============================
+===== env: NO_DEPENDS=yes USER=nobody UID=65534 GID=65534
+===>  License Private accepted by the user
+===========================================================================
+=======================<phase: pkg-depends    >============================
+===== env: USE_PACKAGE_DEPENDS_ONLY=1 USER=root UID=0 GID=0
+===>   starroute-traders-0.20.0 depends on file: /usr/local/sbin/pkg - not found
+===>   Installing existing package /packages/All/pkg-2.6.2_1.pkg
+[srt151-srt-job-01] Installing pkg-2.6.2_1...
+[srt151-srt-job-01] Extracting pkg-2.6.2_1: .......... done
+===>   starroute-traders-0.20.0 depends on file: /usr/local/sbin/pkg - found
+===>   Returning to build of starroute-traders-0.20.0
+===========================================================================
+=======================<phase: fetch-depends  >============================
+===== env: USE_PACKAGE_DEPENDS_ONLY=1 USER=root UID=0 GID=0
+===========================================================================
+=======================<phase: fetch          >============================
+===== env: NO_DEPENDS=yes USER=root UID=0 GID=0
+===>  License Private accepted by the user
+===> Fetching all distfiles required by starroute-traders-0.20.0 for building
+===========================================================================
+=======================<phase: checksum       >============================
+===== env: NO_DEPENDS=yes USER=root UID=0 GID=0
+===>  License Private accepted by the user
+===> Fetching all distfiles required by starroute-traders-0.20.0 for building
+=> SHA256 Checksum OK for starroute-traders-0.20.0.tar.gz.
+===========================================================================
+=======================<phase: extract-depends>============================
+===== env: USE_PACKAGE_DEPENDS_ONLY=1 USER=root UID=0 GID=0
+===========================================================================
+=======================<phase: extract        >============================
+===== env: NO_DEPENDS=yes USER=nobody UID=65534 GID=65534
+===>  License Private accepted by the user
+===> Fetching all distfiles required by starroute-traders-0.20.0 for building
+===>  Extracting for starroute-traders-0.20.0
+=> SHA256 Checksum OK for starroute-traders-0.20.0.tar.gz.
+===========================================================================
+=======================<phase: patch-depends  >============================
+===== env: USE_PACKAGE_DEPENDS_ONLY=1 USER=root UID=0 GID=0
+===========================================================================
+=======================<phase: patch          >============================
+===== env: NO_DEPENDS=yes USER=nobody UID=65534 GID=65534
+===>  Patching for starroute-traders-0.20.0
+===========================================================================
+=======================<phase: build-depends  >============================
+===== env: USE_PACKAGE_DEPENDS_ONLY=1 USER=root UID=0 GID=0
+===========================================================================
+=======================<phase: lib-depends    >============================
+===== env: USE_PACKAGE_DEPENDS_ONLY=1 USER=root UID=0 GID=0
+===========================================================================
+=======================<phase: configure      >============================
+===== env: NO_DEPENDS=yes USER=nobody UID=65534 GID=65534
+===>  Configuring for starroute-traders-0.20.0
+===========================================================================
+=======================<phase: build          >============================
+===== env: NO_DEPENDS=yes USER=nobody UID=65534 GID=65534
+===========================================================================
+=======================<phase: run-depends    >============================
+===== env: USE_PACKAGE_DEPENDS_ONLY=1 USER=root UID=0 GID=0
+===>   starroute-traders-0.20.0 depends on package: starroute-traders-client=0.20.0 - not found
+===>   Installing existing package /packages/All/starroute-traders-client-0.20.0.pkg
+[srt151-srt-job-01] Installing starroute-traders-client-0.20.0...
+[srt151-srt-job-01] `-- Installing py312-sqlite3-3.12.13_10...
+[srt151-srt-job-01] |   `-- Installing python312-3.12.13_2...
+[srt151-srt-job-01] |   | `-- Installing gettext-runtime-1.0...
+[srt151-srt-job-01] |   |   `-- Installing indexinfo-0.3.1_1...
+[srt151-srt-job-01] |   |   `-- Extracting indexinfo-0.3.1_1: .... done
+[srt151-srt-job-01] |   | `-- Extracting gettext-runtime-1.0: .......... done
+[srt151-srt-job-01] |   | `-- Installing libffi-3.5.1...
+[srt151-srt-job-01] |   | `-- Extracting libffi-3.5.1: .......... done
+[srt151-srt-job-01] |   | `-- Installing mpdecimal-4.0.1...
+[srt151-srt-job-01] |   | `-- Extracting mpdecimal-4.0.1: .......... done
+[srt151-srt-job-01] |   | `-- Installing readline-8.3.3...
+[srt151-srt-job-01] |   | `-- Extracting readline-8.3.3: .......... done
+[srt151-srt-job-01] |   `-- Extracting python312-3.12.13_2: .......... done
+[srt151-srt-job-01] |   `-- Installing sqlite3-3.50.4_2,1...
+[srt151-srt-job-01] |   | `-- Installing libedit-3.1.20251016_1,1...
+[srt151-srt-job-01] |   | `-- Extracting libedit-3.1.20251016_1,1: .......... done
+[srt151-srt-job-01] |   `-- Extracting sqlite3-3.50.4_2,1: .......... done
+[srt151-srt-job-01] `-- Extracting py312-sqlite3-3.12.13_10: ......... done
+[srt151-srt-job-01] Extracting starroute-traders-client-0.20.0: .......... done
+=====
+Message from python312-3.12.13_2:
+
+--
+Note that some standard Python modules are provided as separate ports
+as they require additional dependencies. They are available as:
+
+py312-gdbm       databases/py-gdbm@py312
+py312-sqlite3    databases/py-sqlite3@py312
+py312-tkinter    x11-toolkits/py-tkinter@py312
+=====
+Message from starroute-traders-client-0.20.0:
+
+--
+Configuration samples only. No database initialization, service startup or Door registration is performed. Review /usr/local/etc/starroute-traders/*.sample. Keep DBs, keys and logs outside the program directory.
+===>   starroute-traders-0.20.0 depends on package: starroute-traders-client=0.20.0 - found
+===>   Returning to build of starroute-traders-0.20.0
+===>   starroute-traders-0.20.0 depends on file: /usr/local/bin/python3.12 - found
+===========================================================================
+=======================<phase: stage          >============================
+===== env: NO_DEPENDS=yes USER=nobody UID=65534 GID=65534
+===>  Staging for starroute-traders-0.20.0
+===>   Generating temporary packing list
+/bin/mkdir -p /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/libexec/starroute-traders /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/etc/starroute-traders /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/share/doc/starroute-traders /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/share/examples/starroute-traders
+(cd /wrkdirs/usr/ports/games/starroute-traders/work/starroute-traders-0.20.0 && /bin/sh -c '(/usr/bin/find -Ed $1 $3 | /usr/bin/cpio -dumpl $2 >/dev/null 2>&1) &&  /usr/bin/find -Ed $1 $3 \(   -type d -exec /bin/sh -c '\''cd '\''$2'\'' && chmod 755 "$@"'\'' . {} +  -o -type f -exec /bin/sh -c '\''cd '\''$2'\'' && chmod 0644 "$@"'\'' . {} + \)' COPYTREE_SHARE "starroute srt_universe_generator" /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/libexec/starroute-traders)
+install  -m 555 /wrkdirs/usr/ports/games/starroute-traders/work/starroute /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/bin
+install  -m 555 /wrkdirs/usr/ports/games/starroute-traders/work/starroute-admin /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/bin
+install  -m 555 /wrkdirs/usr/ports/games/starroute-traders/work/starroute-maintain /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/bin
+install  -m 555 /wrkdirs/usr/ports/games/starroute-traders/work/starroute-master /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/bin
+install  -m 555 /wrkdirs/usr/ports/games/starroute-traders/work/starroute-sites /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/bin
+install  -m 555 /wrkdirs/usr/ports/games/starroute-traders/work/starroute-universe /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/bin
+install  -m 0644 /wrkdirs/usr/ports/games/starroute-traders/work/standalone.json /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/etc/starroute-traders/standalone.json.sample
+install  -m 0644 /wrkdirs/usr/ports/games/starroute-traders/work/starroute-traders-0.20.0/examples/long-duration-template.json /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/etc/starroute-traders/game.json.sample
+install  -m 0644 /wrkdirs/usr/ports/games/starroute-traders/work/starroute-traders-0.20.0/examples/phase3-generator.json /wrkdirs/usr/ports/games/starroute-traders/work/starroute-traders-0.20.0/examples/industry-levels-trial.json /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/share/examples/starroute-traders
+install  -m 0644 /wrkdirs/usr/ports/games/starroute-traders/work/starroute-traders-0.20.0/PORTS_COMPLETE.md /wrkdirs/usr/ports/games/starroute-traders/work/stage/usr/local/share/doc/starroute-traders
+====> Compressing man pages (compress-man)
+===========================================================================
+=======================<phase: package        >============================
+===== env: 'PKG_NOTES=port_checkout_unclean' 'PKG_NOTE_port_checkout_unclean=no' NO_DEPENDS=yes USER=nobody UID=65534 GID=65534
+===>  Building packages for starroute-traders-0.20.0
+===>   Building starroute-traders-0.20.0
+===========================================================================
+=>> Cleaning up wrkdir
+===>  Cleaning for starroute-traders-0.20.0
+build of games/starroute-traders | starroute-traders-0.20.0 ended at 2026-11-02T18:05:01+09:00
+build time: 00:00:18
+times end [shell] (user/sys/real): 0m0.036s 0m0.000s 0m18.000s
+times end [child] (user/sys/real): 0m2.082s 0m3.371s 0m18.000s

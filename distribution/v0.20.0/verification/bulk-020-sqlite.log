@@ -1,0 +1,60 @@
+[00:00:00] Creating the reference jail... done
+[00:00:16] Mounting system devices for srt151-srt
+[00:00:16] Stashing existing package repository
+[00:00:16] Mounting ports from: /home/takeshi/starroute-ports-verification-20261102/ports
+[00:00:16] Mounting packages from: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/packages/srt151-srt
+[00:00:16] Mounting distfiles from: /home/takeshi/starroute-ports-verification-20261102/distfiles
+[00:00:16] Appending to make.conf: /home/takeshi/starroute-ports-verification-20261102/conf/poudriere.d/make.conf
+/etc/resolv.conf -> /home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/ref/etc/resolv.conf
+[00:00:16] Starting jail srt151-srt
+Updating /var/run/os-release done.
+[00:00:16] Will build as nobody:nobody (65534:65534)
+[00:00:19] Ports supports: FLAVORS SUBPACKAGES SELECTED_OPTIONS
+[00:00:19] Acquiring build logs lock for srt151-srt... done
+[00:00:19] Logs: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/logs/bulk/srt151-srt/2026-11-02_18h03m52s
+[00:00:19] Loading MOVED for /home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/ref/usr/ports
+[00:00:20] Gathering ports metadata
+[00:00:20] Calculating ports order and dependencies
+[00:00:21] Sanity checking the repository
+[00:00:21] -C specified, cleaning listed packages
+[00:00:21] (-C) Flushing package deletions
+[00:00:21] Trimming IGNORED and blacklisted ports
+[00:00:21] Checking packages for incremental rebuild needs
+[00:00:21] Deleting starroute-traders-0.19.0.pkg: new version: 0.20.0
+[00:00:21] Deleting starroute-traders-client-0.19.0.pkg: new version: 0.20.0
+[00:00:21] Deleting starroute-traders-master-0.19.0.pkg: new version: 0.20.0
+[00:00:21] Deleting stale symlinks... done
+[00:00:21] Deleting empty directories... done
+[00:00:21] Unqueueing existing packages
+[00:00:21] Unqueueing orphaned build dependencies
+[00:00:21] Sanity checking build queue
+[00:00:21] [srt151-srt] [2026-11-02_18h03m52s] [pkgqueue_sanity_check] Time: 00:00:02
+           Queued: 3 Inspected: 0 Ignored: 0 Built: 0 Failed: 0 Skipped: 0 Fetched: 0 Remaining: 3
+[00:00:21] Recording filesystem state for prepkg... done
+[00:00:21] Processing PRIORITY_BOOST
+[00:00:21] Building 3 packages using up to 2 builders
+[00:00:21] Hit CTRL+t at any time to see build progress and stats
+[00:00:22] [01] [00:00:00] Builder starting
+[00:00:34] [01] [00:00:12] Builder started
+[00:00:34] [01] [00:00:00] Building   games/starroute-traders-client | starroute-traders-client-0.20.0
+[00:00:51] [01] [00:00:17] Finished   games/starroute-traders-client | starroute-traders-client-0.20.0: Success
+[00:00:51] [01] [00:00:00] Building   games/starroute-traders | starroute-traders-0.20.0
+[00:01:09] [01] [00:00:18] Finished   games/starroute-traders | starroute-traders-0.20.0: Success
+[00:01:09] [01] [00:00:00] Building   games/starroute-traders-master | starroute-traders-master-0.20.0
+[00:01:27] [01] [00:00:18] Finished   games/starroute-traders-master | starroute-traders-master-0.20.0: Success
+[00:01:27] Stopping up to 2 builders
+[00:01:29] [97778:pkg_cacher_main] Signal TERM caught
+[00:01:29] Creating pkg repository
+Creating repository in /tmp/packages: .......... done
+Packing files for repository: .... done
+[00:01:29] Committing packages to repository: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/packages/srt151-srt/.real_1793610321 via .latest symlink
+[00:01:29] Removing old packages
+[00:01:29] Built ports: games/starroute-traders-client games/starroute-traders games/starroute-traders-master
+[00:01:29] [srt151-srt] [2026-11-02_18h03m52s] [committing] Time: 00:01:10
+           Queued: 3 Inspected: 0 Ignored: 0 Built: 3 Failed: 0 Skipped: 0 Fetched: 0 Remaining: 0
+[00:01:29] Logs: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/logs/bulk/srt151-srt/2026-11-02_18h03m52s
+[00:01:29] [97127:html_json_main] Signal TERM caught
+[00:01:29] Cleaning up
+[00:01:29] Stopping up to 2 builders
+[00:01:29] Unmounting file systems
+Exiting with status 0

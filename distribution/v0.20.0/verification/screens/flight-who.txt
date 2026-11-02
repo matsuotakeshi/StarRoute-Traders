@@ -1,0 +1,23 @@
+STARROUTE TRADERS - IN FLIGHT
+pilot | Normal test_high | 4,409 Cr | Round 1
++----------------------------------------------+------------------------------+
+|                                              |WHO                           |
+|                                              |Players:                      |
+|                                              |Player: pilot                 |
+|                                              |BBS: standalone               |
+|                                              |Online pilots: 1              |
+|                                              |Page 1/1                      |
+|                                              |[N/P]Page [0]Back [M]Main     |
+|                                              |                              |
+|                       +                      |                              |
+|                        * Texia               |                              |
+|                                              |                              |
+|                                              |                              |
+|   * Orzef                                    |                              |
+|                                              |                              |
+|                                              |                              |
+|                                              |                              |
++----------------------------------------------+------------------------------+
+Texia -> Nemelia  ETA 00:00:35  warp fast
+[0]Back [M]Main [?]Help
+Select > 

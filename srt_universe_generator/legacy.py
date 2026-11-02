@@ -65,8 +65,9 @@ def _compile(template,params,seed,universe_id):
             base=next(row for (sid,_),row in c.navigation_plans.items() if sid==ship)
             for route in d['routes']:
                 factor=route['distance']
-                d['navigation']['plans'].append(dict(ship_id=ship,route_id=route['id'],normal_seconds=base['normal_seconds']*factor,
-                    warp_options=[{**o,'seconds':o['seconds']*factor,'fuel_cost':o['fuel_cost']*factor} for o in base['warp_options']]))
+                time_factor=max(factor,(c.phase3 or {}).get('navigation_min_distance_units',1))
+                d['navigation']['plans'].append(dict(ship_id=ship,route_id=route['id'],normal_seconds=base['normal_seconds']*time_factor,
+                    warp_options=[{**o,'seconds':o['seconds']*time_factor,'fuel_cost':o['fuel_cost']*factor} for o in base['warp_options']]))
         d['markets']=[];d['economy']['markets']=[];d['production']['sources']=[];d['production']['imports']=[]
         d['development']['planets']=[];d['industry_effects']['planets']=[]
         if c.market_events['mode']!='disabled':d['market_events']['targets']=[]

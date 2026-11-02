@@ -1,0 +1,86 @@
+[00:00:00] Creating the reference jail... done
+[00:00:11] Mounting system devices for srt151-srt
+[00:00:11] Stashing existing package repository
+[00:00:11] Mounting ports from: /home/takeshi/starroute-ports-verification-20261102/ports
+[00:00:11] Mounting packages from: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/packages/srt151-srt
+[00:00:11] Mounting distfiles from: /home/takeshi/starroute-ports-verification-20261102/distfiles
+[00:00:11] Appending to make.conf: /home/takeshi/starroute-ports-verification-20261102/conf/poudriere.d/make.conf
+/etc/resolv.conf -> /home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/ref/etc/resolv.conf
+[00:00:11] Starting jail srt151-srt
+Updating /var/run/os-release done.
+[00:00:11] Will build as nobody:nobody (65534:65534)
+[00:00:13] Ports supports: FLAVORS SUBPACKAGES SELECTED_OPTIONS
+[00:00:13] Acquiring build logs lock for srt151-srt... done
+[00:00:13] Logs: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/logs/bulk/srt151-srt/2026-11-02_17h55m06s
+[00:00:13] Loading MOVED for /home/takeshi/starroute-ports-verification-20261102/poudriere/data/.m/srt151-srt/ref/usr/ports
+[00:00:13] Gathering ports metadata
+[00:00:14] Calculating ports order and dependencies
+[00:00:14] Sanity checking the repository
+[00:00:14] -C specified, cleaning listed packages
+[00:00:14] (-C) Flushing package deletions
+[00:00:14] Trimming IGNORED and blacklisted ports
+[00:00:14] Checking packages for incremental rebuild needs
+[00:00:14] Deleting starroute-traders-0.20.0.pkg: new version: 0.19.0
+[00:00:14] Deleting starroute-traders-client-0.20.0.pkg: new version: 0.19.0
+[00:00:14] Deleting starroute-traders-master-0.20.0.pkg: new version: 0.19.0
+[00:00:14] Deleting stale symlinks... done
+[00:00:14] Deleting empty directories... done
+[00:00:14] Unqueueing existing packages
+[00:00:14] Unqueueing orphaned build dependencies
+[00:00:14] Sanity checking build queue
+[00:00:14] [srt151-srt] [2026-11-02_17h55m06s] [pkgqueue_sanity_check] Time: 00:00:01
+           Queued: 15 Inspected: 0 Ignored: 0 Built: 0 Failed: 0 Skipped: 0 Fetched: 0 Remaining: 15
+[00:00:14] Recording filesystem state for prepkg... done
+[00:00:14] Processing PRIORITY_BOOST
+[00:00:14] Building 15 packages using up to 2 builders
+[00:00:14] Hit CTRL+t at any time to see build progress and stats
+[00:00:15] [01] [00:00:00] Builder starting
+[00:00:15] [02] [00:00:00] Builder starting
+[00:01:09] [02] [00:00:54] Builder started
+[00:01:09] [01] [00:00:54] Builder started
+[00:01:09] [02] [00:00:00] Building   lang/tcl86 | tcl86-8.6.17
+[00:01:09] [01] [00:00:00] Building   devel/libedit | libedit-3.1.20251016_1,1
+[00:01:36] [01] [00:00:27] Finished   devel/libedit | libedit-3.1.20251016_1,1: Success
+[00:01:37] [01] [00:00:00] Building   devel/py-flit-core@py312 | py312-flit-core-3.12.0
+[00:02:38] [01] [00:01:01] Finished   devel/py-flit-core@py312 | py312-flit-core-3.12.0: Success
+[00:02:38] [01] [00:00:00] Building   devel/py-installer@py312 | py312-installer-0.7.0
+[00:03:22] [02] [00:02:13] Finished   lang/tcl86 | tcl86-8.6.17: Success
+[00:03:24] [02] [00:00:00] Building   databases/sqlite3@default | sqlite3-3.50.4_2,1
+[00:03:59] [01] [00:01:21] Finished   devel/py-installer@py312 | py312-installer-0.7.0: Success
+[00:03:59] [01] [00:00:00] Building   devel/py-packaging@py312 | py312-packaging-26.0
+[00:05:15] [01] [00:01:16] Finished   devel/py-packaging@py312 | py312-packaging-26.0: Success
+[00:05:16] [01] [00:00:00] Building   devel/py-pyproject-hooks@py312 | py312-pyproject-hooks-1.2.0
+[00:05:42] [01] [00:00:26] Finished   devel/py-pyproject-hooks@py312 | py312-pyproject-hooks-1.2.0: Success
+[00:05:43] [01] [00:00:00] Building   devel/py-build@py312 | py312-build-1.4.0
+[00:06:07] [01] [00:00:24] Finished   devel/py-build@py312 | py312-build-1.4.0: Success
+[00:06:08] [01] [00:00:00] Building   devel/py-wheel@py312 | py312-wheel-0.46.3_1
+[00:06:36] [01] [00:00:28] Finished   devel/py-wheel@py312 | py312-wheel-0.46.3_1: Success
+[00:06:37] [01] [00:00:00] Building   devel/py-wheel044@py312 | py312-wheel044-0.44.0_1
+[00:06:50] [02] [00:03:26] Finished   databases/sqlite3@default | sqlite3-3.50.4_2,1: Success
+[00:06:58] [01] [00:00:21] Finished   devel/py-wheel044@py312 | py312-wheel044-0.44.0_1: Success
+[00:06:59] [01] [00:00:00] Building   devel/py-setuptools@py312 | py312-setuptools-63.1.0_3
+[00:07:24] [01] [00:00:25] Finished   devel/py-setuptools@py312 | py312-setuptools-63.1.0_3: Success
+[00:07:25] [01] [00:00:00] Building   databases/py-sqlite3@py312 | py312-sqlite3-3.12.13_10
+[00:07:54] [01] [00:00:29] Finished   databases/py-sqlite3@py312 | py312-sqlite3-3.12.13_10: Success
+[00:07:54] [01] [00:00:00] Building   games/starroute-traders-client | starroute-traders-client-0.19.0
+[00:08:09] [01] [00:00:15] Finished   games/starroute-traders-client | starroute-traders-client-0.19.0: Success
+[00:08:09] [01] [00:00:00] Building   games/starroute-traders | starroute-traders-0.19.0
+[00:08:24] [01] [00:00:15] Finished   games/starroute-traders | starroute-traders-0.19.0: Success
+[00:08:25] [01] [00:00:00] Building   games/starroute-traders-master | starroute-traders-master-0.19.0
+[00:08:42] [01] [00:00:17] Finished   games/starroute-traders-master | starroute-traders-master-0.19.0: Success
+[00:08:42] Stopping up to 2 builders
+[00:08:44] [52225:pkg_cacher_main] Signal TERM caught
+[00:08:44] Creating pkg repository
+Creating repository in /tmp/packages: .......... done
+Packing files for repository: .... done
+[00:08:44] Committing packages to repository: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/packages/srt151-srt/.real_1793610231 via .latest symlink
+[00:08:44] Removing old packages
+[00:08:45] Built ports: devel/libedit devel/py-flit-core@py312 lang/tcl86 devel/py-installer@py312 devel/py-packaging@py312 devel/py-pyproject-hooks@py312 devel/py-build@py312 devel/py-wheel@py312 databases/sqlite3@default devel/py-wheel044@py312 devel/py-setuptools@py312 databases/py-sqlite3@py312 games/starroute-traders-client games/starroute-traders games/starroute-traders-master
+[00:08:45] [srt151-srt] [2026-11-02_17h55m06s] [committing] Time: 00:08:32
+           Queued: 15 Inspected: 0 Ignored: 0 Built: 15 Failed: 0 Skipped: 0 Fetched: 0 Remaining: 0
+[00:08:45] Logs: /home/takeshi/starroute-ports-verification-20261102/poudriere/data/logs/bulk/srt151-srt/2026-11-02_17h55m06s
+[00:08:45] [51665:html_json_main] Signal TERM caught
+[00:08:45] Cleaning up
+[00:08:45] Stopping up to 2 builders
+[00:08:45] Unmounting file systems
+Exiting with status 0

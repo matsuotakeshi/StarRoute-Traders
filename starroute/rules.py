@@ -91,7 +91,8 @@ def effective_rules(catalog):
 
 
 def fingerprint(catalog):
-    payload={'rules_version':RULES_VERSION,'config_schema_version':CONFIG_SCHEMA_VERSION,
+    modern=catalog.phase3 is not None and bool({'world_events','navigation_min_distance_units'} & set(catalog.phase3))
+    payload={'rules_version':'world-time-1' if modern else RULES_VERSION,'config_schema_version':11 if modern else CONFIG_SCHEMA_VERSION,
              'canonicalization':CANONICALIZATION,'game_rules':effective_rules(catalog)}
     return {k:v for k,v in payload.items() if k!='game_rules'} | {
         'algorithm':'sha256','sha256':hashlib.sha256(canonical_bytes(payload)).hexdigest()}

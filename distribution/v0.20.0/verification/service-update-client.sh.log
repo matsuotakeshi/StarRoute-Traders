@@ -1,0 +1,26 @@
+
+Starting starroute_master.
+starroute_master is running as pid 5337.
+PKG_REINSTALL_DID_NOT_STOP_SERVICE_OR_TOUCH_LOG
+starroute_master is not running.
+Starting starroute_master.
+starroute_master is running as pid 5480.
+Stopping starroute_master.
+Waiting for PIDS: 5480.
+CRASH_EXPLICIT_RESTART_PASS
+usage: starroute-door [-h] --config CONFIG
+
+options:
+  -h, --help       show this help message and exit
+  --config CONFIG
+usage: starroute-node [-h] --config CONFIG {recover,join,leave} ...
+
+positional arguments:
+  {recover,join,leave}
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG
+PRESERVED: assets, coordinates/catalog, industries, rounds, hall, config and keys; DB integrity OK
+CLIENT_ONLY_INSTALL_HAS_NO_ENGINE_OR_MASTER_TOOLS
+SERVICE_UPDATE_CRASH_AND_CLIENT_BOUNDARY_PASS
