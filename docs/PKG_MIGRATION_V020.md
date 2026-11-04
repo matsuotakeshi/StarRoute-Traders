@@ -117,14 +117,19 @@ PY
 
 ## 4. 初回pkgインストール
 
-初回移行は`pkg upgrade`ではなく`pkg install`です。FreeBSD公式リポジトリは無効化しません。依存のPython・SQLiteは既存の公式配布元から取得します。`-n`で提案される変更を確認し、無関係なパッケージ削除・置換があれば実行せず調査してください。
+ローカルの配布ファイルは`pkg add`で導入します。本番で成功した方法です。`pkg install -n`で表示できても、続く実行でファイルを取得できたことにはなりません。毎回、同じシェルの`STAGE`と実ファイルを確認してください。
+
+`pkg add`は不足する依存を公式リポジトリから自動取得する手順ではありません。まず配布pkgに記録された依存を確認し、不足があれば公式repoから該当する名前のパッケージを`pkg install -n`で確認して導入します。公式repoは無効化せず、`-f`や依存無視オプションで回避しません。今回の本番では既存依存で2パッケージの追加に成功しています。
 
 ```sh
-pkg install -n \
-    "$STAGE/repo/All/starroute-traders-client-0.20.0.pkg" \
-    "$STAGE/repo/All/starroute-traders-0.20.0.pkg"
+: "${STAGE:?先ほどの実際の展開先を指定してください}"
+test -f "$STAGE/repo/All/starroute-traders-client-0.20.0.pkg"
+test -f "$STAGE/repo/All/starroute-traders-0.20.0.pkg"
+ls -l "$STAGE/repo/All/"
+pkg info -F "$STAGE/repo/All/starroute-traders-client-0.20.0.pkg" -d
+pkg info -F "$STAGE/repo/All/starroute-traders-0.20.0.pkg" -d
 
-pkg install \
+pkg add \
     "$STAGE/repo/All/starroute-traders-client-0.20.0.pkg" \
     "$STAGE/repo/All/starroute-traders-0.20.0.pkg"
 
@@ -200,6 +205,8 @@ pkg delete starroute-traders starroute-traders-client
 ```
 
 ## 8. 次回以降の署名付きrepo運用
+
+2026-11-03追補：実際の署名環境・手動転送・隔離検証・本番登録は [署名付き更新先の運用手順](PKG_REPOSITORY_SETUP.md) にまとめます。以下は一般例です。新しい鍵を毎回生成せず、承認した鍵を継続使用してください。
 
 初回のローカルpkg導入でpkg管理は開始できます。継続更新用repoは、本番用の署名鍵を管理するビルド環境で作成します。同梱の検証用公開鍵を恒久設定へ流用しません。
 

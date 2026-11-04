@@ -1,0 +1,17 @@
+{
+  "record_date_jst": "2026-11-03",
+  "source": "current VM verification and user-provided production outputs",
+  "signed_catalogue_verified": true,
+  "all_three_packages_fetched_identical": true,
+  "wrong_key_empty_database_rejected": true,
+  "host_package_inventory_unchanged": true,
+  "bootstrap_verify_only_passed": true,
+  "bootstrap_activate_on_srv": "pending manual execution",
+  "production_gameplay": "user reports startup; detailed scenarios not separately confirmed",
+  "game_code_changed": false,
+  "full_game_suite_rerun": false,
+  "archive_sha256": "ad5d854342c37f001a6b0b1c29053a8ed21837d96ca1b1e5970be9d78c540314",
+  "public_key_sha256": "4a1be877f157f60e26d712f3ae00734445e3bad104be90e9136ec2d1b6978ebd",
+  "private_key_exported": false,
+  "github_push_performed": false
+}

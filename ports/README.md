@@ -44,11 +44,13 @@ pkg repo /srv/pkg/starroute rsa:/private/signing/starroute.key
 
 ## インストールと更新
 
+既存手動環境からのローカルpkg初回導入は [pkg addによる移行手順](../docs/PKG_MIGRATION_V020.md)、署名済みrepoの本番登録は [更新先設定](../docs/PKG_REPOSITORY_SETUP.md) を参照してください。以下はrepo登録済みの場合です。公式repoを有効なままにして依存を解決します。
+
 ```sh
 pkg update -r StarRoute
-pkg install -r StarRoute starroute-traders         # スタンドアロン
-pkg install -r StarRoute starroute-traders-master  # マスター
-pkg install -r StarRoute starroute-traders-client  # 参加BBSのみ
+pkg install starroute-traders         # スタンドアロン
+pkg install starroute-traders-master  # マスター
+pkg install starroute-traders-client  # 参加BBSのみ
 pkg info -g 'starroute-traders*'
 ```
 

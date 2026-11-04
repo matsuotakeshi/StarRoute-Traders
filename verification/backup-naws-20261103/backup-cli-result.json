@@ -1,0 +1,13 @@
+{
+  "cron_minimal_environment": true,
+  "three_runs_keep_two": true,
+  "restore_existing_refused": true,
+  "restored_database_matches_original": true,
+  "original_database_unchanged": true,
+  "restored_game_inspection": {
+    "schema": 11,
+    "supported_max": 11,
+    "rules_version": "phase3-complete-1",
+    "integrity": "ok"
+  }
+}

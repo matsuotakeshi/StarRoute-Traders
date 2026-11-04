@@ -1,0 +1,13 @@
+{
+  "destination": "/var/backups/starroute-traders",
+  "database": "/var/db/starroute-traders/world/game.db",
+  "files": [
+    "/usr/local/etc/starroute-traders/door.json",
+    "/var/db/starroute-traders/world/reference.key",
+    "/var/db/starroute-traders/world/site-profile.json",
+    "/usr/local/etc/liner-notes/doors.conf",
+    "/usr/local/libexec/liner-notes/starroute-door"
+  ],
+  "keep": 14,
+  "timeout_seconds": 120
+}

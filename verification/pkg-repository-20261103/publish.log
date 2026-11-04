@@ -1,0 +1,49 @@
+
+Creating repository in /root/starroute-pkg-publish-20261103/bundle/repo:   0%
+Creating repository in /root/starroute-pkg-publish-20261103/bundle/repo:  33%
+Creating repository in /root/starroute-pkg-publish-20261103/bundle/repo: 100%
+Packing files for repository:   0%
+Packing files for repository:   0%
+Packing files for repository:  25%
+Packing files for repository:  50%
+Packing files for repository:  75%
+Packing files for repository: 100%
+Updating StarRoute repository catalogue...
+Fetching meta.conf:   0%
+Fetching meta.conf: 100%     168 B   0.2 kB/s    00:01    
+Fetching data:   0%
+Fetching data: 100%    1704 B   1.7 kB/s    00:01    
+Processing entries:   0%
+Processing entries: 100%
+StarRoute repository update completed. 3 packages processed.
+StarRoute is up to date.
+Updating StarRoute repository catalogue...
+StarRoute repository is up to date.
+StarRoute is up to date.
+The following packages will be fetched:
+
+New packages to be FETCHED:
+	starroute-traders: 0.20.0 (82 KiB: 75.92% of the 108 KiB to download)
+	starroute-traders-client: 0.20.0 (24 KiB: 21.97% of the 108 KiB to download)
+	starroute-traders-master: 0.20.0 (2 KiB: 2.11% of the 108 KiB to download)
+
+Number of packages to be fetched: 3
+
+108 KiB to be downloaded.
+Fetching starroute-traders-master-0.20.0:   0%
+Fetching starroute-traders-master-0.20.0: 100%    2330 B   2.3 kB/s    00:01    
+Fetching starroute-traders-0.20.0:   0%
+Fetching starroute-traders-0.20.0: 100%    82 KiB  83.7 kB/s    00:01    
+Fetching starroute-traders-client-0.20.0:   0%
+Fetching starroute-traders-client-0.20.0: 100%    24 KiB  24.2 kB/s    00:01    
+: signature verification failure
+pkg: Invalid signature, removing repository.
+SHA256 (/home/takeshi/starroute-signed-repo-20261103/starroute-pkg-repo-v0.20.0.tar.gz) = ad5d854342c37f001a6b0b1c29053a8ed21837d96ca1b1e5970be9d78c540314
+SHA256 (/home/takeshi/starroute-signed-repo-20261103/repository.pub) = 4a1be877f157f60e26d712f3ae00734445e3bad104be90e9136ec2d1b6978ebd
+SIGNED_REPOSITORY_CHECK=PASS
+WRONG_KEY_REJECTED=PASS
+FETCHED_PACKAGES_IDENTICAL=PASS
+HOST_PACKAGES_UNCHANGED=PASS
+2.8.4
+drwx------ root /root/starroute-pkg-signing
+-rw------- root /root/starroute-pkg-signing/repository.key

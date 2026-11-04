@@ -1,0 +1,22 @@
+{
+  "original_runtime_sha256": "51ffa5e6ed1134b562691974d77d071ce8029600cbb578f5757b3106d7c52fa3",
+  "original_files": 301,
+  "commands": {
+    "backup-tests": 0,
+    "telnet-ui": 0
+  },
+  "python": "3.12.15 (main, Oct 15 2026, 01:09:06) [Clang 19.1.7 (https://github.com/llvm/llvm-project.git llvmorg-19.1.7-0-gcd7080",
+  "doors.c": {
+    "door_resize_present": true,
+    "TIOCSWINSZ_present": true
+  },
+  "doors.h": {
+    "door_resize_present": true,
+    "TIOCSWINSZ_present": false
+  },
+  "runtime.c": {
+    "door_resize_present": true,
+    "TIOCSWINSZ_present": false
+  },
+  "original_unchanged": true
+}

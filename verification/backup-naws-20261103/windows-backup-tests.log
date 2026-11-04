@@ -1,0 +1,16 @@
+test_concurrent_lock_rejected (test_scheduled_backup.BackupTests.test_concurrent_lock_rejected) ... ok
+test_config_change_during_snapshot_fails (test_scheduled_backup.BackupTests.test_config_change_during_snapshot_fails) ... ok
+test_existing_restore_target_refused (test_scheduled_backup.BackupTests.test_existing_restore_target_refused) ... ok
+test_failure_does_not_publish_or_prune (test_scheduled_backup.BackupTests.test_failure_does_not_publish_or_prune) ... ok
+test_missing_source_refused (test_scheduled_backup.BackupTests.test_missing_source_refused) ... ok
+test_path_traversal_in_manifest_rejected (test_scheduled_backup.BackupTests.test_path_traversal_in_manifest_rejected) ... ok
+test_private_permissions_and_symlink_rejection (test_scheduled_backup.BackupTests.test_private_permissions_and_symlink_rejection) ... skipped 'POSIX permissions and symlinks'
+test_retention_opt_in_only_and_foreign_directory_preserved (test_scheduled_backup.BackupTests.test_retention_opt_in_only_and_foreign_directory_preserved) ... ok
+test_tampered_backup_rejected_before_restore_and_prune (test_scheduled_backup.BackupTests.test_tampered_backup_rejected_before_restore_and_prune) ... ok
+test_uncommitted_transaction_is_not_in_snapshot (test_scheduled_backup.BackupTests.test_uncommitted_transaction_is_not_in_snapshot) ... ok
+test_wal_snapshot_and_verified_restore_preserve_live_data (test_scheduled_backup.BackupTests.test_wal_snapshot_and_verified_restore_preserve_live_data) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.292s
+
+OK (skipped=1)

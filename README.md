@@ -1,5 +1,11 @@
 > v0.20.0: Private Ports・pkg配布、明示的なDB保守、長時間航行・2時間周期の世界イベント設定。[実装内容](PORTS_COMPLETE.md)、[運用コマンド](ports/README.md)、[検証結果](docs/PORTS_ACCEPTANCE.md)、[本番の手動配置からpkg管理へ移行](docs/PKG_MIGRATION_V020.md)、[配布ZIP](distribution/starroute-traders-0.20.0-freebsd.zip)。既存宇宙・本番環境を自動変更しません。
 
+> 2026-11-03運用追補：[本番pkg移行の確認記録](docs/PRODUCTION_MIGRATION_V020.md)、[署名付きpkg更新先の登録](docs/PKG_REPOSITORY_SETUP.md)。srvへの登録は手動で実施します。
+
+> 2026-11-03保守ツール：[定期バックアップ](docs/SCHEDULED_BACKUP.md)、[バックアップ・NAWS検証結果](docs/BACKUP_NAWS_VERIFICATION.md)。本番cronは自動登録しません。
+
+> 2026-11-04配布：[保守ツールZIP](distribution/starroute-operations-tools-20261103.zip)、[署名済みpkg更新先](distribution/pkg-repository-20261103/starroute-pkg-repo-v0.20.0.tar.gz)、[公開鍵](distribution/pkg-repository-20261103/repository.pub)。導入手順と固定ハッシュは上記運用文書を参照してください。
+
 > v0.19.0: BBS UI全面改修。常設星図・数字メニュー・対話型売買/航行/投資・日英・NAWS対応。[操作と配備手順](BBS_UI_COMPLETE.md)。本番適用は別途承認が必要です。
 
 > v0.18.0: Phase 5。TLSマスターAPI、BBSサイト認証、日英Door、共有世界、設定診断、通信復旧、参加・離脱を追加。[Phase 5運用手順](PHASE5_COMPLETE.md)と[API仕様](docs/PHASE5_API.md)を参照してください。実測結果は独立したPhase 5受け入れチェックリストに記録します。Inter-BBS参加BBSには薄いクライアント配布物のみを使用してください。以下は履歴。
