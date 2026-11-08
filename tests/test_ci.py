@@ -65,7 +65,7 @@ class CIPolicyTests(unittest.TestCase):
             self.assertTrue(Path(temp).exists())
     def test_workflow_fixed_checks_and_no_privileged_pr(self):
         text=(ROOT/'.github/workflows/starroute-ci.yml').read_text()
-        self.assertNotIn('pull_request_target',text);self.assertIn('StarRoute / Required',text);self.assertIn('StarRoute / Native required',text)
+        self.assertIn('    if: always()',text.split('  native-required:')[1]);self.assertNotIn('pull_request_target',text);self.assertIn('StarRoute / Required',text);self.assertIn('StarRoute / Native required',text)
         self.assertIn("github.ref == 'refs/heads/main'",text);self.assertIn('starroute-native]',text)
         import re
         for action in re.findall(r'uses: ([^\s]+)',text):self.assertRegex(action,r'@[a-f0-9]{40}$')

@@ -81,7 +81,7 @@ jobs:
 
   native-required:
     name: StarRoute / Native required
-    if: ${{ always() && github.repository == 'matsuotakeshi/StarRoute-Traders' && ((github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')) || (github.event_name == 'pull_request' && github.event.pull_request.user.login == 'matsuotakeshi' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.base.ref == 'main')) }}
+    if: always()
     needs: [native]
     runs-on: ubuntu-24.04
     steps:
