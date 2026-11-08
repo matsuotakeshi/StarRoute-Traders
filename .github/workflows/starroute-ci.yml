@@ -1,0 +1,91 @@
+name: StarRoute CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+concurrency:
+  group: starroute-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  hosted:
+    name: Hosted / ${{ matrix.os }} / Python ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-24.04, python: '3.10'}
+          - {os: ubuntu-24.04, python: '3.14'}
+          - {os: windows-2025, python: '3.14'}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Existing regression suite and CLI demo
+        run: python ci/run_tests.py --output "${{ runner.temp }}/starroute-results"
+      - name: Retain test counts and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: starroute-hosted-${{ matrix.os }}-${{ matrix.python }}
+          path: ${{ runner.temp }}/starroute-results/tests.json
+          if-no-files-found: error
+          retention-days: 30
+
+  required:
+    name: StarRoute / Required
+    if: always()
+    needs: [hosted]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Reject any failed, missing or cancelled hosted suite
+        env:
+          RESULT: ${{ needs.hosted.result }}
+        run: test "$RESULT" = success
+
+  native:
+    name: Native / FreeBSD + Rocky + Ubuntu
+    needs: [required]
+    if: ${{ github.repository == 'matsuotakeshi/StarRoute-Traders' && ((github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')) || (github.event_name == 'pull_request' && github.event.pull_request.user.login == 'matsuotakeshi' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.base.ref == 'main')) }}
+    runs-on: [self-hosted, Linux, X64, starroute-native]
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Exact-commit native regression and isolated Telnet Door
+        run: python3 ci/native_ci.py --output "$RUNNER_TEMP/starroute-native-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+      - name: Retain per-OS logs and results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: starroute-native-results
+          path: |
+            ${{ runner.temp }}/starroute-native-${{ github.run_id }}-${{ github.run_attempt }}/*.log
+            ${{ runner.temp }}/starroute-native-${{ github.run_id }}-${{ github.run_attempt }}/*.json
+          if-no-files-found: error
+          retention-days: 30
+
+  native-required:
+    name: StarRoute / Native required
+    if: always()
+    needs: [native]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require all three native OS suites on this commit
+        env:
+          RESULT: ${{ needs.native.result }}
+        run: test "$RESULT" = success
