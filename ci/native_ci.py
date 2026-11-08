@@ -190,7 +190,10 @@ def main():
     args = parser.parse_args()
     sha = os.environ.get("GITHUB_SHA", "")
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-    require_trusted_main(os.environ, sha, head)
+    from runner_admission import allowed
+    event=json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
+    if sha != head or not allowed(os.environ,event):
+        raise ValueError('Native checkout or trusted event mismatch')
     if subprocess.check_output(["git", "diff", "HEAD", "--", "ci/native_ci.py", "ci/native_remote.py"], cwd=ROOT):
         raise ValueError("Native supervisor differs from committed source")
     output = args.output.resolve()

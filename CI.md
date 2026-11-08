@@ -9,8 +9,8 @@ Python要件は3.10以上、現行ゲームのunittestは496件。CI自身の検
 1. PRごとに `.github/workflows/starroute-ci.yml` のGitHub-hosted Ubuntu/Python 3.10・3.14とWindows/Python 3.14を実行する。
 2. 固定チェック **`StarRoute / Required`** が成功するまでmainへマージしない。ブランチ保護にこの名称を登録する。欠落・キャンセル・失敗は成功にならない。
 3. main更新とmain指定の手動実行では、10.0.0.54上のStarRoute専用登録runnerから3OSを並列検証する。固定チェック **`StarRoute / Native required`** は3OSすべてが成功した場合のみPASS。
-4. リリース候補の昇格は同じmain SHAの両チェック成功を前提とする。ネイティブ検査はmain統合後なので、PR前検査と区別する。ネイティブ固有の不具合が判明した場合はリリースを停止して修正PRを作る。
-5. 手動実行もmain限定。PRや任意ブランチを自宅VMへ流す例外操作は用意しない。本番自動デプロイは実装しない。
+4. リリース候補の昇格は同じmain SHAの両チェック成功を前提とする。所有者matsuotakeshiが同一リポジトリ内で作成したmain向けPRも3OSで検証し、Native requiredをmainの必須チェックにする。外部PRはhostedのみ検証し、そのままマージせず、レビュー済み変更を所有者の同一リポジトリ内PRへ取り込んで3OS検証する。
+5. 手動実行もmain限定。任意ブランチの手動実行は許可しない。本番自動デプロイは実装しない。
 
 ## 設備と認証
 
@@ -32,7 +32,7 @@ Linerのrunner登録・サービス・鍵を置き換えない。runner登録と
 導入時のリポジトリ公開範囲はpublic。外部PRはGitHub-hostedだけで検証する。
 YAMLのmain判定に加え、StarRoute専用runnerにはroot所有の起動前フックを配置する。
 `ci/runner_admission.py` をcheckout外に設置し、repository/ref/event/SHAとWebhookイベント本文を照合する。
-PR本文を含むイベント、main以外、別リポジトリ、push/手動以外をcheckout前に失敗させる。
+所有者の同一リポジトリ内PRは、作者・head/baseリポジトリ・対象main・PR番号とmerge refを照合して許可する。外部PR、他の作者、任意ブランチ、別リポジトリをcheckout前に拒否する。
 フックはリポジトリからジョブ中に上書きしない。ポリシー更新は別途管理者作業とする。
 
 公式根拠: [GitHub runner pre-job hooks](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/run-scripts)、[self-hosted runner security](https://docs.github.com/en/actions/reference/security/secure-use)。

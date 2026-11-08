@@ -59,7 +59,7 @@ jobs:
   native:
     name: Native / FreeBSD + Rocky + Ubuntu
     needs: [required]
-    if: ${{ github.repository == 'matsuotakeshi/StarRoute-Traders' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    if: ${{ github.repository == 'matsuotakeshi/StarRoute-Traders' && ((github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')) || (github.event_name == 'pull_request' && github.event.pull_request.user.login == 'matsuotakeshi' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.base.ref == 'main')) }}
     runs-on: [self-hosted, Linux, X64, starroute-native]
     timeout-minutes: 60
     steps:
@@ -81,7 +81,7 @@ jobs:
 
   native-required:
     name: StarRoute / Native required
-    if: ${{ always() && github.repository == 'matsuotakeshi/StarRoute-Traders' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    if: ${{ always() && github.repository == 'matsuotakeshi/StarRoute-Traders' && ((github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')) || (github.event_name == 'pull_request' && github.event.pull_request.user.login == 'matsuotakeshi' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.base.ref == 'main')) }}
     needs: [native]
     runs-on: ubuntu-24.04
     steps:

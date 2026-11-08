@@ -20,6 +20,15 @@ class CIPolicyTests(unittest.TestCase):
         self.assertTrue(allowed(self.env(),event));event['pull_request']={};self.assertFalse(allowed(self.env(),event))
         event.pop('pull_request');event['ref']='feature';self.assertFalse(allowed(self.env(),event))
         self.assertFalse(allowed({},{}))
+    def test_owner_pr_only_on_native(self):
+        env=dict(self.env(),GITHUB_EVENT_NAME='pull_request',GITHUB_REF='refs/pull/1/merge')
+        repo={'full_name':env['GITHUB_REPOSITORY']}
+        event={'repository':repo,'action':'opened','number':1,'pull_request':{'user':{'login':'matsuotakeshi'},'head':{'repo':dict(repo),'sha':SHA},'base':{'repo':dict(repo),'ref':'main'}}}
+        self.assertTrue(allowed(env,event))
+        event['pull_request']['head']['repo']['full_name']='outsider/fork';self.assertFalse(allowed(env,event))
+        event['pull_request']['head']['repo']=dict(repo)
+        event['pull_request']['user']['login']='outsider';self.assertFalse(allowed(env,event))
+        event['pull_request']['user']['login']='matsuotakeshi';event['number']=2;self.assertFalse(allowed(env,event))
     def test_commands_use_unittest_not_bbs_make_check(self):
         for target in ('freebsd','rocky','ubuntu'):
             commands=commands_for(target);self.assertIn('ci/run_tests.py',commands[0]);self.assertNotIn('check',commands[1]);self.assertIn('runtime',commands[1]);self.assertIn('scripts/bbs_ui_telnet_demo.py',commands[2])
