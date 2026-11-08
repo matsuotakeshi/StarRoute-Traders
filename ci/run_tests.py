@@ -27,7 +27,7 @@ def main():
         report['environment']=environment();print(json.dumps(report['environment']),flush=True)
         # All generated DBs/keys remain in a private run-specific directory, not in the checkout.
         with tempfile.TemporaryDirectory(prefix='starroute-tests-') as private:
-            previous=tempfile.tempdir;tempfile.tempdir=private
+            previous=tempfile.tempdir;tempfile.tempdir=str(Path(private).resolve())
             try:report.update(execute(unittest.defaultTestLoader.discover(str(ROOT/'tests'),top_level_dir=None)))
             finally:tempfile.tempdir=previous
         if report['ok']:
