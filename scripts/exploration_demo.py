@@ -18,7 +18,14 @@ def main():
         r=subprocess.run([sys.executable,'-m',module,*map(str,args)],cwd=ROOT,capture_output=True,text=True,encoding='utf8')
         if r.returncode:raise RuntimeError(module+' failed')
         return json.loads(r.stdout)
-    generated=run('srt_universe_generator','--template','examples/exploration-trial.json','--parameters','examples/connected-universe-trial.json','--levels','examples/industry-levels-trial.json','--seed','exploration-demo','--output',package)
+    # This acceptance scenario verifies exploration and naming, not random voyage
+    # incidents (covered by the engine regression suite). Keep its ETA deterministic
+    # without changing shipped game templates or production rules.
+    template=json.loads((ROOT/'examples/exploration-trial.json').read_text())
+    for incident in ('pirate','patrol','storm','failure','wreck'):
+        template['phase3']['event_probabilities'][incident]=0
+    trial_template=base/'demo-template.json';save(trial_template,template)
+    generated=run('srt_universe_generator','--template',trial_template,'--parameters','examples/connected-universe-trial.json','--levels','examples/industry-levels-trial.json','--seed','exploration-demo','--output',package)
     uid=generated['universe_id'];admin=lambda *args:run('starroute.admin','--db',db,*args)
     for command in (('init',),('stage','--package',package),('validate','--universe',uid),('register','--universe',uid),('prepare','--universe',uid,'--round',1),('activate','--universe',uid,'--round',1)):admin(*command)
     clock=ManualClock(int(time.time()));key=os.urandom(32);save(base/'profile.json',{})
