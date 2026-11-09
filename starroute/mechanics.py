@@ -47,6 +47,15 @@ def buy_ship(engine,world,pid,sid):
     return dict(ship_id=sid,old_ship_id=old,paid_credits=offer['price'])
 
 
+def route_progress(engine,world,pid,rid):
+    p=engine.player(world,pid);r=world.routes[rid];cfg=enabled(engine)
+    rec=world.phase3_state.get('routes',{}).get(rid,{})
+    target=r['distance']*cfg['route_cost_per_distance'];remaining=0 if r['is_open'] else max(0,target-rec.get('effect',0))
+    bonus=cfg['route_bonus_bps'] if engine.catalog.ship_profiles[p.ship_id].ship_type=='engineering' else 0
+    required=max(0,(remaining*10000-rec.get('remainder',0)+10000+bonus-1)//(10000+bonus))
+    return dict(donated_credits=rec.get('paid',0),development_effect=rec.get('effect',0),required_effect=target,remaining_effect=remaining,remaining_credits=required)
+
+
 def donate(engine,world,pid,rid,paid):
     from .catalog import identifier
     identifier(rid)
@@ -66,7 +75,7 @@ def donate(engine,world,pid,rid,paid):
     if opened:
         r['is_open']=True;rec['jackpot_paid']=True;rec['winner']=pid;rec['reward']=reward
         news(world,'route:'+rid,'route_open',route_id=rid,reward=reward)
-    return dict(route_id=rid,paid_credits=paid,effect_units=effect,opened=opened,jackpot=reward)
+    return dict(route_id=rid,paid_credits=paid,effect_units=effect,opened=opened,jackpot=reward,**route_progress(engine,world,pid,rid))
 
 
 def insure(engine,world,pid):
@@ -138,6 +147,8 @@ def apply_event(engine,world,event_id,kind,target):
             # Rebase interpolation so a delay cannot make the displayed ship jump backwards.
             trip=player_state(world,target).get('voyage')
             if trip:trip.update(segment_start=world.game_time,segment_position=position)
+            coordinate_trip=world.phase3_state.get('exploration',{}).get('players',{}).get(target,{}).get('trip')
+            if coordinate_trip:coordinate_trip.update(segment_start=world.game_time,segment_position=position)
             result['arrival_at']=p.arrival_at
         elif kind=='failure':
             loss=min(p.cash,cfg['repair_cost']);p.cash-=loss;result['loss']=loss
@@ -159,6 +170,7 @@ def event_tick(engine,world,slot):
             eid=f'planet:{slot}:{pid}:{kind}'
             if draw(cfg,eid)<cfg['event_probabilities'][kind]:apply_event(engine,world,eid,kind,pid)
     for pid,p in sorted(world.players.items()):
+        if world.phase3_state.get('exploration',{}).get('players',{}).get(pid,{}).get('space') and p.destination_id is None:continue
         ps=player_state(world,pid);profile=engine.catalog.ship_profiles[p.ship_id]
         if p.destination_id is not None and p.arrival_at>world.game_time:
             for kind in ('pirate','patrol','storm','failure','wreck'):
@@ -202,6 +214,10 @@ def coordinates(catalog):
 
 
 def flight(engine,world,pid):
+    if engine.catalog.exploration is not None:
+        from .exploration import flight as coordinate_flight
+        result=coordinate_flight(engine,world,pid)
+        if result is not None:return result
     p=engine.player(world,pid);coords=coordinates(engine.catalog);position=coords.get(p.planet_id,[0,0])
     trip=player_state(world,pid).get('voyage',{})
     if p.destination_id and p.destination_id in coords:

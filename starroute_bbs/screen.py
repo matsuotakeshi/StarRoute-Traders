@@ -22,8 +22,9 @@ def geometry(columns,rows):
         right=min(32,max(26,w//3+4));return w,h,w-right-3,right,False
     map_h=max(2,h//3);return w,h,w-2,w-2,True
 
-def starmap(definition,flight,status,w,h,names=False,ansi=False):
-    x,y=flight.get('position',[0,0]);left=max(0,min(240-w,x-w//2));top=max(0,min(120-h,y-h//2))
+def _chart(definition,flight,status,w,h,names=False,ansi=False,center=None):
+    x,y=flight.get('position',[0,0]);cx,cy=center or (x,y)
+    left=max(0,min(240-w,cx-w//2));top=max(0,min(120-h,cy-h//2))
     grid=[[' ']*w for _ in range(h)];marks=[];occupied=set()
     for p in definition.get('planets',[]):
         coords=p.get('coordinates')
@@ -31,20 +32,43 @@ def starmap(definition,flight,status,w,h,names=False,ansi=False):
         px,py=coords['x']-left,coords['y']-top
         if 0<=px<w and 0<=py<h:
             marks.append((px,py,p));occupied.add((px,py))
+    occupied.add((x-left,y-top))
     for px,py,p in marks:
         grid[py][px]='*'
         if names:
-            for i,ch in enumerate(' '+clean(p['name'])):
-                tx=px+1+i
-                if tx>=w or (tx,py) in occupied:break
+            tx=px+1
+            for ch in ' '+clean(p['name']):
+                cells=width(ch)
+                if not cells:continue
+                if tx+cells>w or any((xx,py) in occupied for xx in range(tx,tx+cells)):break
                 grid[py][tx]=ch
+                for xx in range(tx+1,tx+cells):grid[py][xx]=''
+                tx+=cells
     sx,sy=x-left,y-top;highlight=None
     if 0<=sx<w and 0<=sy<h:
-        grid[sy][sx]='+' if status.get('destination_id') else '*';highlight=(sx,sy)
+        grid[sy][sx]='+' if status.get('destination_id') or status.get('planet_id') is None else '*';highlight=(sx,sy)
     rows=[]
     for py,row in enumerate(grid):
         rows.append(''.join('\x1b[32m'+ch+'\x1b[0m' if ansi and (px,py)==highlight else ch for px,ch in enumerate(row)))
     return rows
+
+def starmap(definition,flight,status,w,h,names=False,ansi=False,center=None):
+    """Axes occupy reserved cells, never the planet/ship drawing area."""
+    iw=min(240,max(1,w-4));ih=min(120,max(1,h-2))
+    x,y=flight.get('position',[0,0]);cx,cy=center or (x,y)
+    left=max(0,min(240-iw,cx-iw//2));top=max(0,min(120-ih,cy-ih//2))
+    axis=[' ']*iw
+    for value in range(((left+4)//5)*5,left+iw,5):
+        offset=value-left;label=str(value)
+        if offset+len(label)<=iw:axis[offset:offset+len(label)]=label
+    rows=[pad('X   '+''.join(axis),w)]
+    chart=_chart(definition,flight,status,iw,ih,names,ansi,center)
+    for i,row in enumerate(chart):
+        absolute=top+i;label=f'{absolute:3} ' if absolute%5==0 or i==0 else '    '
+        rows.append(label+row+' '*max(0,w-iw-4))
+    rows.append(pad(f'POS X={x} Y={y}',w))
+    return rows[:h]
+
 
 def compose(columns,rows,title,summary,map_rows,panel,footer,notice,prompt):
     w,h,lw,rw,stacked=geometry(columns,rows)

@@ -15,6 +15,7 @@ libexec/starroute-traders/starroute/adapters/__init__.py
 libexec/starroute-traders/starroute/adapters/cli.py
 libexec/starroute-traders/starroute/admin.py
 libexec/starroute-traders/starroute/application.py
+libexec/starroute-traders/starroute/buyback.py
 libexec/starroute-traders/starroute/catalog.py
 libexec/starroute-traders/starroute/clock.py
 libexec/starroute-traders/starroute/config/distribution.json
@@ -29,8 +30,11 @@ libexec/starroute-traders/starroute/distribution.py
 libexec/starroute-traders/starroute/economy.py
 libexec/starroute-traders/starroute/engine.py
 libexec/starroute-traders/starroute/events.py
+libexec/starroute-traders/starroute/exploration.py
+libexec/starroute-traders/starroute/exploration_policy.py
 libexec/starroute-traders/starroute/generate.py
 libexec/starroute-traders/starroute/generation_contract.py
+libexec/starroute-traders/starroute/hidden_world.py
 libexec/starroute-traders/starroute/import_local.py
 libexec/starroute-traders/starroute/industry_effects.py
 libexec/starroute-traders/starroute/local_door.py
@@ -62,9 +66,13 @@ libexec/starroute-traders/starroute/ships.py
 libexec/starroute-traders/starroute/starmap.py
 libexec/starroute-traders/starroute/statistics.py
 libexec/starroute-traders/starroute/ui_info.py
+libexec/starroute-traders/starroute/trade_view.py
 libexec/starroute-traders/starroute/universe.py
 libexec/starroute-traders/starroute/universe_package.py
 libexec/starroute-traders/srt_universe_generator/__init__.py
 libexec/starroute-traders/srt_universe_generator/__main__.py
 libexec/starroute-traders/srt_universe_generator/legacy.py
 libexec/starroute-traders/srt_universe_generator/levels.py
+libexec/starroute-traders/srt_universe_generator/hidden.py
+%%EXAMPLESDIR%%/connected-universe-trial.json
+%%EXAMPLESDIR%%/release-world.json

@@ -2,6 +2,9 @@
 from .model import integer
 from .development import INDUSTRIES
 
+CONNECTED_VERSION='srt-universe-connected-v3'
+CONNECTED_RULES_VERSION='universe-connected-1'
+CONNECTED_MODE='grid_mst_connected_v2'
 LEVEL_VERSION='srt-universe-levels-v2'
 LEVEL_RULES_VERSION='phase3-industry-levels-1'
 
@@ -19,11 +22,17 @@ def level_parameters(raw):
 def parameters(raw):
     fields={'mode','status','width','height','extra_neighbors','initial_open_routes',
             'production_percent_min','production_percent_max','max_attempts'}
-    if not isinstance(raw,dict) or set(raw)!=fields or raw['mode']!='grid_mst_templates_v1' or raw['status']!='provisional':
+    connected=isinstance(raw,dict) and raw.get('mode')==CONNECTED_MODE
+    if connected:fields|={'hidden_min_distance','hidden_reference_max_distance'}
+    if not isinstance(raw,dict) or set(raw)!=fields or raw['mode'] not in ('grid_mst_templates_v1',CONNECTED_MODE) or raw['status']!='provisional':
         raise ValueError('generator policy')
     integer(raw['width'],2,240);integer(raw['height'],2,128)
     if raw['width']*raw['height']<48:raise ValueError('insufficient coordinate cells')
-    integer(raw['extra_neighbors'],0,8);integer(raw['initial_open_routes'],1,46)
+    integer(raw['extra_neighbors'],1 if connected else 0,8)
+    integer(raw['initial_open_routes'],47 if connected else 1,47 if connected else 46)
+    if connected:
+        if (raw['width'],raw['height'])!=(240,120):raise ValueError('connected chart dimensions')
+        integer(raw['hidden_min_distance'],1,240);integer(raw['hidden_reference_max_distance'],1,240)
     integer(raw['production_percent_min'],1,10000)
     integer(raw['production_percent_max'],raw['production_percent_min'],10000)
     integer(raw['max_attempts'],1,128)

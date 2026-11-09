@@ -48,12 +48,13 @@ def price_sum(base,lo,count,row):
     return integer(count*row['min_price']+positive(a-row['min_price'])-positive(a-row['max_price']))
 
 
-def quote(catalog,market,planet,good,quantity,buying):
+def quote(catalog,market,planet,good,quantity,buying,buyback_remaining=None):
     integer(quantity,1)
     row=parameters(catalog,planet,good,market)
     if buying and quantity>market.stock:raise GameError('INSUFFICIENT_STOCK')
     if not buying:integer(market.stock+quantity)
-    if row and not buying and market.stock+quantity>row['stock_limit']:raise GameError('MARKET_FULL')
+    if not buying and buyback_remaining is not None and quantity>buyback_remaining:raise GameError('INSUFFICIENT_BUYBACK')
+    if row and not buying and buyback_remaining is None and market.stock+quantity>row['stock_limit']:raise GameError('MARKET_FULL')
     if row:
         lo=market.stock-quantity if buying else market.stock
         base=base_price(catalog,market,planet,good)
@@ -61,10 +62,14 @@ def quote(catalog,market,planet,good,quantity,buying):
         first=price_at(base,market.stock-1 if buying else market.stock,row)
         last=price_at(base,lo if buying else lo+quantity-1,row)
     else:total=integer(market.price*quantity);first=last=market.price
+    after=market.stock-quantity if buying else market.stock+quantity
+    if not buying and buyback_remaining is not None and row:
+        # Resale shelves remain bounded; excess purchased goods satisfy local demand.
+        after=min(after,row['stock_limit'])
     return {'side':'buy' if buying else 'sell','goods_id':good,'quantity':quantity,
             'unit_price':first,'first_unit_price':first,'last_unit_price':last,'total':total,
             'pricing_mode':catalog.economy['mode'],'stock_before':market.stock,
-            'stock_after':market.stock-quantity if buying else market.stock+quantity}
+            'stock_after':after}
 
 
 def update(catalog,world):

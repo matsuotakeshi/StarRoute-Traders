@@ -1,5 +1,5 @@
 PORTNAME=	starroute-traders-master
-DISTVERSION=	0.20.0
+DISTVERSION=	0.21.0
 CATEGORIES=	games
 MASTER_SITES=	# Private local distfile: preseed DISTDIR; no invented release URL.
 MASTER_SITE_BACKUP=

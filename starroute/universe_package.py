@@ -21,7 +21,7 @@ def digest(package):
 def export_package(data,created_at=None):
     from .catalog import Catalog
     c=Catalog(data)
-    if data['universe']['format_version']!=2:raise ValueError('level universe required')
+    if data['universe']['format_version'] not in (2,3,4):raise ValueError('level universe required')
     names={r['id']:r for r in normal_planets()};u=data['universe']
     coords={r['planet_id']:{k:r[k] for k in ('x','y')} for r in u['coordinates']}
     initial={(r['planet_id'],r['goods_id']):r for r in data['markets']}
@@ -30,11 +30,13 @@ def export_package(data,created_at=None):
         commodities=copy.deepcopy(data['goods']),vessels=copy.deepcopy(data['ships']),grades=copy.deepcopy(data['ship_grades']),
         economy=common('economy',{'markets'}),investment=common('development',{'planets'}),
         production=common('production',{'sources','imports'}),industry_effects=common('industry_effects',{'planets'}),
-        regional_prices=copy.deepcopy(data['regional_prices']),events=copy.deepcopy(c.market_events),navigation_status=data['navigation']['status'])
+        regional_prices=copy.deepcopy(data['regional_prices']),events=copy.deepcopy(data.get('market_events',{'mode':'disabled'})),navigation_status=data['navigation']['status'])
     if c.phase3 is not None:rules['phase3']=copy.deepcopy(c.phase3)
+    if c.market_buyback is not None:rules['market_buyback']=copy.deepcopy(c.market_buyback)
+    if c.exploration is not None:rules['exploration']=copy.deepcopy(c.exploration)
     targets=rules['events'].pop('targets',[])
     planets=[]
-    for pid in sorted(c.planets):
+    for pid in sorted(names):
         dev=c.development_planets[pid]
         planets.append(dict(planet_id=pid,names={k:names[pid][k] for k in ('ja','en')},position=coords[pid],
             industries={i:dict(initial_level=dev['initial_progress'][i],maximum_level=dev['private_caps'][i]) for i in INDUSTRIES},
@@ -44,13 +46,17 @@ def export_package(data,created_at=None):
             markets=[dict(goods_id=g,initial_price=initial[pid,g]['price'],initial_stock=initial[pid,g]['stock'],
                 pricing={k:v for k,v in c.economy_markets[pid,g].items() if k not in ('planet_id','goods_id')}) for g in sorted(c.goods)],
             effects={k:copy.deepcopy(v) for k,v in c.industry_effect_planets[pid].items() if k!='planet_id'}))
-    package=dict(format=FORMAT,schema_version=SCHEMA_VERSION,
+    package=dict(format=FORMAT,schema_version=2 if c.market_buyback is not None else SCHEMA_VERSION,
         metadata=dict(universe_id=u['universe_id'],generator_version=u['generator_version'],game_rules_version=u['game_rules_version'],
                       created_at=created_at or datetime.now(timezone.utc).isoformat(),universe_data_version=u['definition_hash']),
         reproduction=dict(recipe_schema_version=1,seed=u['seed'],parameters=copy.deepcopy(u['parameters']),industry_levels=copy.deepcopy(u['industry_levels']),
                           template_format='srt-catalog-v2',template=copy.deepcopy(u['template'])),
         rules=rules,world=dict(start_planet=data['starting']['planet_id'],planets=planets,
                               routes=copy.deepcopy(data['routes']),travel_plans=copy.deepcopy(data['navigation']['plans']),event_targets=copy.deepcopy(targets)))
+    if u['format_version']==3:
+        package['schema_version']=3
+        package['private_world']=copy.deepcopy(u['private_world'])
+    if c.exploration is not None:package['schema_version']=4
     package['integrity']={'algorithm':'sha256','sha256':digest(package)}
     to_catalog(package)
     return package
@@ -62,8 +68,8 @@ def fields(row,expected):
 
 def to_catalog(package):
     """Validate all 192 level pairs and adapt a private package to runtime data."""
-    fields(package,'format schema_version metadata reproduction rules world integrity')
-    if package['format']!=FORMAT or type(package['schema_version']) is not int or package['schema_version']!=SCHEMA_VERSION:raise ValueError('unsupported package version')
+    fields(package,'format schema_version metadata reproduction rules world integrity'+(' private_world' if package.get('schema_version') in (3,4) else ''))
+    if package['format']!=FORMAT or type(package['schema_version']) is not int or package['schema_version'] not in (SCHEMA_VERSION,2,3,4):raise ValueError('unsupported package version')
     fields(package['integrity'],'algorithm sha256')
     if package['integrity']['algorithm']!='sha256' or package['integrity']['sha256']!=digest(package):raise ValueError('package checksum mismatch')
     m=package['metadata'];fields(m,'universe_id generator_version game_rules_version created_at universe_data_version')
@@ -71,7 +77,7 @@ def to_catalog(package):
     if timestamp.tzinfo is None:raise ValueError('generation time requires timezone')
     recipe=package['reproduction'];fields(recipe,'recipe_schema_version seed parameters industry_levels template_format template')
     if type(recipe['recipe_schema_version']) is not int or recipe['recipe_schema_version']!=1 or recipe['template_format']!='srt-catalog-v2':raise ValueError('unsupported recipe')
-    r=package['rules'];fields({k:v for k,v in r.items() if k!='phase3'},'catalog_format initial_credits initial_ship commodities vessels grades economy investment production industry_effects regional_prices events navigation_status')
+    r=package['rules'];fields({k:v for k,v in r.items() if k not in ('phase3','market_buyback','exploration')},'catalog_format initial_credits initial_ship commodities vessels grades economy investment production industry_effects regional_prices events navigation_status')
     w=package['world'];fields(w,'start_planet planets routes travel_plans event_targets')
     names={p['id']:p for p in normal_planets()};seen=set();coordinates=[]
     data=dict(format_version=r['catalog_format'],starting=dict(cash=r['initial_credits'],ship_id=r['initial_ship'],planet_id=w['start_planet']),
@@ -79,6 +85,10 @@ def to_catalog(package):
         economy=copy.deepcopy(r['economy']),development=copy.deepcopy(r['investment']),production=copy.deepcopy(r['production']),
         industry_effects=copy.deepcopy(r['industry_effects']),regional_prices=copy.deepcopy(r['regional_prices']),market_events=copy.deepcopy(r['events']),
         navigation=dict(status=r['navigation_status'],plans=copy.deepcopy(w['travel_plans'])))
+    if ('market_buyback' in r)!=(package['schema_version'] in (2,3,4)):raise ValueError('buyback package version')
+    if 'market_buyback' in r:data['market_buyback']=copy.deepcopy(r['market_buyback'])
+    if ('exploration' in r)!=(package['schema_version']==4):raise ValueError('exploration package version')
+    if 'exploration' in r:data['exploration']=copy.deepcopy(r['exploration'])
     if 'phase3' in r:data['phase3']=copy.deepcopy(r['phase3'])
     for group,key in [('economy','markets'),('development','planets'),('production','sources'),('production','imports'),('industry_effects','planets')]:
         if key in data[group]:raise ValueError('world data mixed into shared rules')
@@ -113,8 +123,9 @@ def to_catalog(package):
             data['markets'].append(dict(planet_id=pid,goods_id=row['goods_id'],price=row['initial_price'],stock=row['initial_stock']))
             data['economy']['markets'].append(dict(planet_id=pid,goods_id=row['goods_id'],**row['pricing']))
     if seen!=set(names):raise ValueError('planet coverage')
-    data['universe']=dict(format_version=2,universe_id=m['universe_id'],generator_version=m['generator_version'],game_rules_version=m['game_rules_version'],
+    data['universe']=dict(format_version=3 if package['schema_version'] in (3,4) else 2,universe_id=m['universe_id'],generator_version=m['generator_version'],game_rules_version=m['game_rules_version'],
         seed=recipe['seed'],parameters=copy.deepcopy(recipe['parameters']),industry_levels=copy.deepcopy(recipe['industry_levels']),template=copy.deepcopy(recipe['template']),coordinates=coordinates)
+    if package['schema_version'] in (3,4):data['universe']['private_world']=copy.deepcopy(package['private_world'])
     seal_manifest(data)
     if data['universe']['definition_hash']!=m['universe_data_version']:raise ValueError('universe data version mismatch')
     from .catalog import Catalog

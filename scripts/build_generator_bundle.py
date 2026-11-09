@@ -4,15 +4,15 @@ from pathlib import Path
 import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
-VALIDATORS=('__init__','model','catalog','ships','navigation','economy','production','development',
-            'regional','events','industry_effects','rules','generation_contract','universe','universe_package','settings','phase3_policy')
+VALIDATORS=('__init__','model','catalog','ships','navigation','economy','buyback','production','development',
+            'regional','events','industry_effects','rules','generation_contract','universe','universe_package','settings','phase3_policy','hidden_world','exploration_policy')
 
 
 def build(output):
     paths=[ROOT/'starroute'/(name+'.py') for name in VALIDATORS]
     paths += [ROOT/'starroute/data/normal-planets.json']
     paths += list((ROOT/'srt_universe_generator').glob('*.py'))
-    paths += [ROOT/'examples'/name for name in ('industry-effects-trial.json','universe-generator-trial.json','industry-levels-trial.json','phase3-trial.json','phase3-generator.json')]
+    paths += [ROOT/'examples'/name for name in ('industry-effects-trial.json','universe-generator-trial.json','industry-levels-trial.json','phase3-trial.json','phase3-generator.json','market-buyback-trial.json','connected-universe-trial.json','exploration-trial.json','exploration-operations.json')]
     with zipfile.ZipFile(output,'x',zipfile.ZIP_DEFLATED) as bundle:
         for path in paths:bundle.write(path,path.relative_to(ROOT).as_posix())
         bundle.writestr('README.txt',

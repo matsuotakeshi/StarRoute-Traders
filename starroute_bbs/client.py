@@ -6,7 +6,7 @@ from urllib.request import Request,build_opener,HTTPSHandler,HTTPRedirectHandler
 from urllib.parse import urlsplit
 from urllib.error import HTTPError,URLError
 
-MUTATIONS={'register','buy','sell','invest','navigate','dock','buy_ship','donate','insure','bankrupt'}
+MUTATIONS={'register','buy','sell','invest','navigate','dock','buy_ship','donate','insure','bankrupt','buy_device','coordinate_depart','guild','name_star'}
 CACHEABLE={'map','market','development','production','routes','news','rankings','hall','rounds','exploration'}
 
 
@@ -111,6 +111,9 @@ class Client:
             old=json.loads(self.cache.read_text()) if self.cache.exists() else {}
             if old.get('target')!=self.target():old={'target':self.target(),'items':{}}
             value=[r for r in result if r.get('public') is True] if operation=='news' else result
+            if operation=='market':
+                # Personal cargo and cash-derived limits must not enter public cache.
+                value={**result,'entries':[{k:v for k,v in row.items() if k not in ('owned','free_capacity','max_buy','max_sell')} for row in result['entries']]}
             old['items'][operation]={'at':int(time.time()),'value':value};save(self.cache,old)
         return result
 

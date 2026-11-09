@@ -11,7 +11,7 @@ from starroute_bbs.client import save
 from starroute_bbs.terminal import ANSI,width
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--directory',required=True);p.add_argument('--liner',required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--directory',required=True);p.add_argument('--liner',required=True);p.add_argument('--template');a=p.parse_args()
     base=Path(a.directory);base.mkdir(mode=0o700,parents=True,exist_ok=False);liner=Path(a.liner)
     sys.path.insert(0,str(liner/'tests'));from test_board import Server
     from test_telnet import Client
@@ -57,9 +57,13 @@ def main():
             command(c,'>');result=command(c,'y')
         raise AssertionError('confirmation paging')
     try:
-        db,key=setup_world(base/'local','phase3-complete-demo',open_routes=1)
+        db,key=setup_world(base/'local','phase3-complete-demo',open_routes=1,template=a.template)
         cfg={'mode':'standalone','database':str(db),'reference_key':str(base/'local/reference.key'),'profile':profile(db,key,'standalone'),'language':'ja','ansi':True}
         c=start('standalone',cfg)
+        drain(c);c.send(b'menu');raw=c.until(b'\x1b[KMENU');assert b'\x1b[KMENU' in raw
+        c.send(b'\n');c.until(b'Select > ')
+        command(c,'l','language-bilingual');command(c,'0')
+        results['uppercase_live_echo']=True
         main=command(c,'m','main-ja');assert '1 ステータス' in main and '|' in main
         market=command(c,'2','market-ja');assert '星穀' in market
         command(c,'1');command(c,'0');command(c,'m');command(c,'3');command(c,'1');command(c,'1')
@@ -101,7 +105,7 @@ def main():
         # Control-] returns to the BBS through its existing Door adapter.
         c.cmd('DOOR 1',b'Select > ');drain(c);c.send(b'\x1d');assert b'Back to BBS' in c.until();assert b'PONG' in c.cmd('PING')
         results['standalone']={'menu_trade_travel_invest_donate':True,'ja_en':True,'naws':[80,100,70,50],'flight_who':True,'return_and_resume':True,'control_bracket':True,'ansi_mono':True}
-        shared,sign=setup_world(base/'shared','phase3-complete-demo');cert,tlskey=certificate(base)
+        shared,sign=setup_world(base/'shared','phase3-complete-demo',template=a.template);cert,tlskey=certificate(base)
         master=TLSServer(('127.0.0.1',0),Gateway(shared,sign),cert,tlskey,requests_per_minute=1000)
         threading.Thread(target=master.serve_forever,daemon=True).start()
         remote={'mode':'inter-bbs','url':f'https://127.0.0.1:{master.server_port}','profile':profile(shared,sign,'remote'),'ca_file':cert,'state_directory':str(base/'client-state'),'language':'en','ansi':True}

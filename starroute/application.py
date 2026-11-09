@@ -65,7 +65,7 @@ class Application:
         return self.repository.account_identity(bbs_id, local_user_id)
 
     def _call(self, method, *args, request_id=None, target_guard=None, access_guard=None, server_quote=False, expected_total=None):
-        mutation = method in ('create_player','buy_goods','sell_goods','depart','navigate','dock','invest','buy_ship','donate','insure','bankrupt')
+        mutation = method in ('create_player','buy_goods','sell_goods','depart','navigate','dock','invest','buy_ship','donate','insure','bankrupt','buy_device','coordinate_depart','guild','name_star')
         if request_id is not None:
             identifier(request_id)
         if self.engine.catalog.phase3 is not None and 'world_events' in self.engine.catalog.phase3:
@@ -107,7 +107,12 @@ class Application:
                 result=self.engine.navigate(world,*args,quote_id=quote['quote_id'])
             else:
                 result = getattr(self.engine, method)(world, *args)
+            if method=='discoverers':
+                from .exploration import archived_arrivals
+                result=archived_arrivals(self.repository)+result
             if mutation:
+                from .exploration import after_operation
+                after_operation(self.engine,world,actor,method,result)
                 after = asdict(world.players[actor])
                 operation_id=request_id or uuid.uuid4().hex
                 self.repository.record_operation(world.season_id,actor,operation_id,payload,result,before,after,world.game_time)

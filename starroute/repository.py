@@ -366,7 +366,7 @@ class SQLiteRepository:
 
     def _seed(self, now):
         c = self.connection
-        d = self.catalog.data
+        d = getattr(self.catalog,'runtime_data',self.catalog.data)
         c.executemany("INSERT INTO metadata VALUES (?,?)", [
             ("schema_version", str(SCHEMA_VERSION)), ("catalog", self.catalog.canonical())])
         c.execute("INSERT INTO seasons VALUES (1,'active',?,?)", (now, now))
@@ -443,7 +443,7 @@ class SQLiteRepository:
     def _save(self, world):
         c = self.connection
         sid = world.season_id
-        if self.catalog.phase3 is not None:
+        if self.catalog.phase3 is not None or self.catalog.market_buyback is not None:
             c.execute('INSERT INTO phase3_state VALUES (?,?) ON CONFLICT(season_id) DO UPDATE SET state_json=excluded.state_json',(sid,json.dumps(world.phase3_state,ensure_ascii=False)))
         c.execute("UPDATE event_clock SET last_slot=? WHERE season_id=?",(world.event_slot,sid))
         for e in world.pending_events:

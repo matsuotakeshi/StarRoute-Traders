@@ -1,7 +1,7 @@
 {
   "version": 1,
   "status": "provisional",
-  "round_seconds": 2592000,
+  "round_seconds": 31536000,
   "trade": "fifo_realized_v1",
   "planet": "effect_units",
   "route": "effect_units",

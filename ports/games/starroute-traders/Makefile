@@ -1,5 +1,5 @@
 PORTNAME=	starroute-traders
-DISTVERSION=	0.20.0
+DISTVERSION=	0.21.0
 CATEGORIES=	games
 MASTER_SITES=	# Private local distfile: preseed DISTDIR; no invented release URL.
 MASTER_SITE_BACKUP=
@@ -36,7 +36,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/starroute-universe ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKDIR}/standalone.json ${STAGEDIR}${PREFIX}/etc/starroute-traders/standalone.json.sample
 	${INSTALL_DATA} ${WRKSRC}/examples/long-duration-template.json ${STAGEDIR}${PREFIX}/etc/starroute-traders/game.json.sample
-	${INSTALL_DATA} ${WRKSRC}/examples/phase3-generator.json ${WRKSRC}/examples/industry-levels-trial.json ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/examples/phase3-generator.json ${WRKSRC}/examples/industry-levels-trial.json ${WRKSRC}/examples/connected-universe-trial.json ${WRKSRC}/examples/release-world.json ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/PORTS_COMPLETE.md ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -24,6 +24,7 @@ def _definition(data):
     result=copy.deepcopy({k:v for k,v in data.items() if k!='universe'})
     for group in ('planets','goods','ships'):
         for row in result[group]:row.pop('name',None)
+    if 'private_world' in data['universe']:result['private_world']=copy.deepcopy(data['universe']['private_world'])
     result['coordinates']=copy.deepcopy(data['universe']['coordinates'])
     from .rules import canonical_bytes
     def normalized(value):
@@ -56,19 +57,28 @@ def validate(catalog):
     """Structural/rule validation and corruption detection, NOT authentication."""
     raw=catalog.data.get('universe')
     if raw is None:return
-    from .generation_contract import parameters,_template,level_parameters,LEVEL_VERSION,LEVEL_RULES_VERSION
+    from .generation_contract import parameters,_template,level_parameters,LEVEL_VERSION,LEVEL_RULES_VERSION,CONNECTED_VERSION,CONNECTED_RULES_VERSION
     from .catalog import identifier
     from .rules import canonical_bytes
     required={'format_version','generator_version','game_rules_version','universe_id','seed','parameters','template','coordinates','definition_hash'}
-    if not isinstance(raw,dict) or set(raw)-required-{'manifest_hash','industry_levels'} or required-set(raw):raise ValueError('universe fields')
-    modern=raw['generator_version']==LEVEL_VERSION
-    if type(raw['format_version']) is not int or raw['format_version']!=(2 if modern else 1):raise ValueError('universe format')
+    if not isinstance(raw,dict) or set(raw)-required-{'manifest_hash','industry_levels','private_world'} or required-set(raw):raise ValueError('universe fields')
+    connected=raw['generator_version']==CONNECTED_VERSION
+    modern=raw['generator_version'] in (LEVEL_VERSION,CONNECTED_VERSION)
+    if type(raw['format_version']) is not int or raw['format_version']!=(3 if connected else 2 if modern else 1):raise ValueError('universe format')
     from .rules import RULES_VERSION
-    expected_rules=RULES_VERSION if modern and 'phase3' in catalog.data else LEVEL_RULES_VERSION if modern else GENERATION_RULES_VERSION
-    if raw['generator_version'] not in (VERSION,LEVEL_VERSION) or raw['game_rules_version']!=expected_rules:raise ValueError('universe version')
+    expected_rules=CONNECTED_RULES_VERSION if connected else RULES_VERSION if modern and 'phase3' in catalog.data else LEVEL_RULES_VERSION if modern else GENERATION_RULES_VERSION
+    if raw['generator_version'] not in (VERSION,LEVEL_VERSION,CONNECTED_VERSION) or raw['game_rules_version']!=expected_rules:raise ValueError('universe version')
     if not isinstance(raw['universe_id'],str) or str(uuid.UUID(raw['universe_id']))!=raw['universe_id']:raise ValueError('universe id')
     identifier(raw['seed']);params=parameters(raw['parameters']);source=_template(raw['template'])
+    if connected!=(params['mode']=='grid_mst_connected_v2'):raise ValueError('generator policy version')
+    if connected:
+        if catalog.market_buyback is None:raise ValueError('missing buyback policy')
+        from .hidden_world import validate_hidden
+        validate_hidden(catalog)
+    elif 'private_world' in raw:raise ValueError('unexpected private world')
     if catalog.phase3!=source.phase3:raise ValueError('phase3 rule mismatch')
+    if catalog.exploration!=source.exploration:raise ValueError('exploration rule mismatch')
+    if catalog.market_buyback!=source.market_buyback:raise ValueError('buyback rule mismatch')
     if catalog.phase3 is not None and (params['width'],params['height'])!=(240,120):raise ValueError('phase3 chart dimensions')
     if modern:level_parameters(raw['industry_levels'])
     elif 'industry_levels' in raw:raise ValueError('unexpected level policy')
@@ -150,6 +160,15 @@ def validate(catalog):
             if r['from'] in seen or r['to'] in seen:seen.update((r['from'],r['to']))
         if len(seen)==old:break
     if seen!=expected:raise ValueError('disconnected universe')
+    if connected:
+        reached={catalog.data['starting']['planet_id']}
+        while True:
+            previous=len(reached)
+            for route in catalog.data['routes']:
+                if route['is_open'] and ({route['from'],route['to']} & reached):reached.update((route['from'],route['to']))
+            if previous==len(reached):break
+        if reached!=expected:raise ValueError('disconnected initial routes')
+        if not any(not route['is_open'] for route in catalog.data['routes']):raise ValueError('missing donation routes')
     if sum(r['is_open'] for r in catalog.data['routes'])!=params['initial_open_routes']:raise ValueError('initial route count')
 
 
@@ -163,7 +182,7 @@ def rules(catalog):
     plans={row['ship_id']:{k:v for k,v in row.items() if k!='route_id'} for row in template_rules['navigation']}
     template_rules['navigation']=[plans[k] for k in sorted(plans)]
     extra={}
-    if raw['format_version']==2:
+    if raw['format_version']>=2:
         template_rules['development']['mode']='linear_levels_v1'
         for row in template_rules['development']['planets']:
             row.pop('initial_progress');row.pop('private_caps')

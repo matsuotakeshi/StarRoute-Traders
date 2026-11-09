@@ -21,6 +21,10 @@ def visibility(repo,pid):
     for route in c.execute('SELECT * FROM routes WHERE season_id=?',(r['season_id'],)):
         if route['from_id'] in known or route['to_id'] in known:
             routes.add(route['id']);planets.update((route['from_id'],route['to_id']))
+    if repo.catalog.exploration is not None:
+        from .exploration import discovered,HIDDEN
+        if discovered(repo._load(),pid):planets.add(HIDDEN)
+        else:planets.discard(HIDDEN)
     return Visibility(frozenset(planets),frozenset(planets),frozenset(routes))
 
 
@@ -145,7 +149,14 @@ class Gateway:
                 if set(body)!={'universe_id','round_id','operation','arguments','request_id'}:raise GameError('INVALID_REQUEST')
                 if (body['universe_id'],body['round_id'])!=(ref['universe_id'],ref['round_id']):raise GameError('WORLD_TARGET_MISMATCH')
                 op=body['operation']
-                if op in ('ui_info','map','score','rankings','hall','rounds','exploration'):
+                if op=='trade_history':
+                    from .trade_view import history
+                    if body['request_id'] is not None:raise GameError('INVALID_REQUEST')
+                    with r.transaction() as world:
+                        master._target_guard(ctx)(world)
+                        if world.players[pid].destination_id is not None:raise GameError('IN_TRANSIT')
+                        result=history(r,world,pid,body['arguments'])
+                elif op in ('ui_info','map','score','rankings','hall','rounds','exploration'):
                     if body['arguments'] or body['request_id'] is not None:raise GameError('INVALID_REQUEST')
                     if op not in ('map','ui_info') and c.execute('SELECT destination_id FROM player_state WHERE player_id=?',(pid,)).fetchone()[0]:raise GameError('IN_TRANSIT')
                     if op=='ui_info':

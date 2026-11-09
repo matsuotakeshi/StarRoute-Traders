@@ -1,5 +1,5 @@
 """Game rules only: no IO, SQL, HTML, CLI parsing or wall clock access."""
-from . import economy, development, production, events
+from . import economy, development, production, events, buyback
 import hashlib
 import json
 from .catalog import Catalog, display_name, identifier
@@ -7,8 +7,10 @@ from .model import GameError, Player, World, integer
 
 
 class Engine:
-    def __init__(self, catalog: Catalog):
+    def __init__(self, catalog: Catalog, random_below=None):
+        import secrets
         self.catalog = catalog
+        self.random_below=random_below or secrets.randbelow
 
     def update(self, world: World, now: int, partial=False):
         if self.catalog.phase3 is not None:
@@ -37,12 +39,15 @@ class Engine:
 
     def _update_base(self, world: World, now: int, partial=False):
         world.game_time = events.time_limit(self.catalog,world,max(world.game_time,integer(now)),partial)
+        buyback.update(self.catalog, world)
         economy.update(self.catalog, world)
         events.update(self.catalog,world)
         if self.catalog.phase3 is not None:
             from .mechanics import news
             for e in world.pending_events:
                 news(world,f"market:{e['slot']}:{e['planet_id']}:{e['goods_id']}",e['kind'],planet_id=e['planet_id'],goods_id=e['goods_id'],delta=e['delta'],occurred_at=e['starts_at'])
+        from .exploration import settle
+        settle(self,world)
         for player in world.players.values():
             if player.arrival_at is not None and player.arrival_at <= world.game_time:
                 world.exploration_events.append((player.id,player.destination_id,player.arrival_at,'arrival'))
@@ -65,6 +70,11 @@ class Engine:
         player = self.player(world, player_id)
         if player.destination_id is not None:
             raise GameError("IN_TRANSIT")
+        from .exploration import player_state,discovered,HIDDEN
+        if self.catalog.exploration is not None:
+            s=player_state(world,player_id)
+            if s['space']:raise GameError('NOT_AT_PLANET')
+            if player.planet_id==HIDDEN and not discovered(world,player_id):raise GameError('DISCLOSURE_DENIED')
         return player
 
     def create_player(self, world, player_id, handle):
@@ -73,8 +83,13 @@ class Engine:
         if player_id in world.players:
             raise GameError("PLAYER_EXISTS")
         start = self.catalog.data["starting"]
+        planet=start['planet_id']
+        if self.catalog.data.get('universe',{}).get('format_version')==3:
+            import secrets
+            planet=secrets.choice(sorted(p for p in self.catalog.planets if p!='hidden-001'))
+            world.phase3_state.setdefault('initial_planets',{})[player_id]=planet
         world.players[player_id] = Player(player_id, handle, start["cash"],
-                                           start["ship_id"], start["planet_id"])
+                                           start["ship_id"], planet)
         if self.catalog.phase3 is not None:
             from .mechanics import player_state
             player_state(world,player_id)
@@ -86,7 +101,7 @@ class Engine:
     def get_player(self, world, player_id):
         p = self.player(world, player_id)
         ship = self.catalog.ships[p.ship_id]
-        return {"player_id": p.id, "handle": p.handle, "season_id": world.season_id,
+        result={"player_id": p.id, "handle": p.handle, "season_id": world.season_id,
                 "cash": p.cash, "ship_id": p.ship_id, "ship_name": ship["name"],
                 "capacity": ship["capacity"], "used_capacity": self.used_capacity(p),
                 "planet_id": p.planet_id, "planet_name": self.catalog.planets[p.planet_id]["name"],
@@ -94,6 +109,13 @@ class Engine:
                 "remaining_seconds": max(0, p.arrival_at - world.game_time) if p.arrival_at else 0,
                 "cargo": [{"goods_id": g, "name": self.catalog.goods[g]["name"], "quantity": q}
                           for g, q in sorted(p.cargo.items())]}
+        if self.catalog.exploration is not None:
+            from .exploration import player_state,HIDDEN
+            s=player_state(world,player_id)
+            if s['trip']:result['destination_id']='coordinates'
+            if s['space']:result.update(planet_id=None,planet_name='Space')
+            elif p.planet_id==HIDDEN:result['planet_name']=s['name'] or 'Undiscovered'
+        return result
 
     def get_ship(self, world, player_id):
         p = self.docked(world, player_id) if self.catalog.phase3 is not None else self.player(world, player_id)
@@ -135,11 +157,31 @@ class Engine:
         p = self.docked(world, player_id)
         if planet_id is not None and planet_id != p.planet_id:
             raise GameError("REMOTE_MARKET_UNAVAILABLE")
-        return {"planet_id": p.planet_id, "pricing_mode":self.catalog.economy["mode"],
-                "entries": [{"goods_id": g, "name": good["name"], "volume": good["volume"],
-                             "price": (economy.price_at(economy.base_price(self.catalog,world.markets[p.planet_id,g],p.planet_id,g), max(0,world.markets[p.planet_id,g].stock-1), self.catalog.economy_markets[p.planet_id,g]) if self.catalog.economy["mode"]!="fixed" else world.markets[p.planet_id,g].price),
-                             "stock": world.markets[p.planet_id, g].stock}
-                            for g, good in self.catalog.goods.items()]}
+        entries=[]
+        free=self.catalog.ships[p.ship_id]['capacity']-self.used_capacity(p)
+        for g,good in self.catalog.goods.items():
+            market=world.markets[p.planet_id,g]
+            row=economy.parameters(self.catalog,p.planet_id,g,market)
+            base=economy.base_price(self.catalog,market,p.planet_id,g)
+            bid=economy.price_at(base,market.stock,row) if row else market.price
+            ask=economy.price_at(base,max(0,market.stock-1),row) if row else market.price
+            quota=buyback.available(self.catalog,world,p.planet_id,g)
+            if quota is None:
+                from .model import MAX_VALUE
+                quota=max(0,(row['stock_limit'] if row else MAX_VALUE)-market.stock)
+            low,high=0,min(market.stock,free//good['volume'])
+            while low<high:
+                mid=(low+high+1)//2
+                try:affordable=economy.quote(self.catalog,market,p.planet_id,g,mid,True)['total']<=p.cash
+                except GameError:affordable=False
+                if affordable:low=mid
+                else:high=mid-1
+            owned=p.cargo.get(g,0)
+            entries.append({'goods_id':g,'name':good['name'],'volume':good['volume'],
+                'price':ask,'buy_price':ask,'sell_price':bid,'stock':market.stock,
+                'buyback_available':quota,'owned':owned,'free_capacity':free,
+                'max_buy':low,'max_sell':min(owned,quota)})
+        return {'planet_id':p.planet_id,'pricing_mode':self.catalog.economy['mode'],'entries':entries}
 
     def _trade(self, world, player_id, goods_id, quantity, buying):
         integer(quantity, 1)
@@ -148,7 +190,8 @@ class Engine:
         if goods_id not in self.catalog.goods:
             raise GameError("GOODS_NOT_FOUND")
         m = world.markets[p.planet_id, goods_id]
-        receipt = economy.quote(self.catalog,m,p.planet_id,goods_id,quantity,buying)
+        receipt = economy.quote(self.catalog,m,p.planet_id,goods_id,quantity,buying,
+                                buyback.available(self.catalog,world,p.planet_id,goods_id))
         total = receipt["total"]
         owned = p.cargo.get(goods_id, 0)
         if buying:
@@ -168,7 +211,8 @@ class Engine:
             integer(p.cash + total)
             integer(m.stock + quantity)
             p.cash += total
-            m.stock += quantity
+            buyback.consume(self.catalog,world,p.planet_id,goods_id,quantity)
+            m.stock = receipt["stock_after"]
             if owned == quantity:
                 p.cargo.pop(goods_id)
             else:
@@ -182,7 +226,8 @@ class Engine:
         identifier(goods_id)
         p=self.docked(world,player_id)
         if goods_id not in self.catalog.goods:raise GameError('GOODS_NOT_FOUND')
-        return economy.quote(self.catalog,world.markets[p.planet_id,goods_id],p.planet_id,goods_id,quantity,side=='buy')
+        return economy.quote(self.catalog,world.markets[p.planet_id,goods_id],p.planet_id,goods_id,quantity,side=='buy',
+                             buyback.available(self.catalog,world,p.planet_id,goods_id))
 
     def buy_goods(self, world, player_id, goods_id, quantity):
         return self._trade(world, player_id, goods_id, quantity, True)
@@ -202,6 +247,9 @@ class Engine:
                                "distance": r["distance"], "fee": 0,
                                "seconds": self.catalog.navigation_plans.get((p.ship_id,route_id), {}).get("normal_seconds", max(1, (r["seconds"] + speed - 1) // speed)),
                                "is_open": r["is_open"]})
+                if self.catalog.phase3 is not None:
+                    from .mechanics import route_progress
+                    result[-1].update(origin_id=p.planet_id,origin_name=self.catalog.planets[p.planet_id]['name'],**route_progress(self,world,player_id,route_id))
         return result
 
     def quote_navigation(self, world, player_id, destination_id, mode='normal', level=None):
@@ -228,7 +276,10 @@ class Engine:
         quote=dict(season_id=world.season_id,player_id=player_id,ship_id=p.ship_id,origin_id=p.planet_id,
                    destination_id=destination_id,route_id=route['route_id'],mode=mode,level=level,
                    seconds=seconds,fuel_cost=cost,warp_speed=speed,policy_status=self.catalog.navigation_status)
-        quote['quote_id']=hashlib.sha256((self.catalog.canonical()+json.dumps(quote,sort_keys=True)).encode()).hexdigest()
+        from .rules import fingerprint
+        binding=json.dumps(fingerprint(self.catalog),sort_keys=True) if self.catalog.exploration is not None else self.catalog.canonical()
+        quote['quote_id']=hashlib.sha256((binding+json.dumps(quote,sort_keys=True)).encode()).hexdigest()
+        quote.update(distance=route['distance'],estimated_arrival_at=integer(world.game_time+seconds))
         return quote
 
     def navigate(self, world, player_id, destination_id, mode='normal', level=None, quote_id=None):
@@ -280,3 +331,39 @@ class Engine:
     def news(self,world,pid):
         from .mechanics import news_view
         return news_view(self,world,pid)
+
+    def buy_device(self,world,pid):
+        from .exploration import buy_device
+        return buy_device(self,world,pid)
+
+    def coordinate_quote(self,world,pid, x, y, mode, level):
+        from .exploration import quote
+        return quote(self,world,pid, x, y, mode, level)
+
+    def coordinate_depart(self,world,pid, x, y, mode, level, quote_id):
+        from .exploration import depart
+        return depart(self,world,pid, x, y, mode, level, quote_id)
+
+    def explorer_info(self,world,pid):
+        from .exploration import info
+        return info(self,world,pid)
+
+    def nearby(self,world,pid):
+        from .exploration import nearby
+        return nearby(self,world,pid)
+
+    def guild(self,world,pid):
+        from .exploration import guild
+        return guild(self,world,pid)
+
+    def notebook(self,world,pid):
+        from .exploration import notebook
+        return notebook(self,world,pid)
+
+    def name_star(self,world,pid, value):
+        from .exploration import name
+        return name(self,world,pid, value)
+
+    def discoverers(self,world,pid):
+        from .exploration import arrivals
+        return arrivals(self,world,pid)

@@ -1,0 +1,13 @@
+{
+  "mode": "grid_mst_connected_v2",
+  "status": "provisional",
+  "width": 240,
+  "height": 120,
+  "extra_neighbors": 1,
+  "initial_open_routes": 47,
+  "production_percent_min": 50,
+  "production_percent_max": 250,
+  "max_attempts": 32,
+  "hidden_min_distance": 10,
+  "hidden_reference_max_distance": 40
+}
