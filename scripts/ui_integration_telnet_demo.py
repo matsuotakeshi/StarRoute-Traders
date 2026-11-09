@@ -13,6 +13,12 @@ from starroute_bbs.terminal import ANSI,width
 def main():
     p=argparse.ArgumentParser();p.add_argument('--directory',required=True);p.add_argument('--liner',required=True);p.add_argument('--template');a=p.parse_args()
     base=Path(a.directory);base.mkdir(mode=0o700,parents=True,exist_ok=False);liner=Path(a.liner)
+    # UI acceptance has a fixed arrival/cargo scenario. Voyage incidents have
+    # separate engine tests; remove their randomness only in this private fixture.
+    template=json.loads(Path(a.template or ROOT/'examples/phase3-trial.json').read_text(encoding='utf8'))
+    for incident in ('pirate','patrol','storm','failure','wreck'):
+        template['phase3']['event_probabilities'][incident]=0
+    a.template=base/'ui-template.json';save(a.template,template)
     sys.path.insert(0,str(liner/'tests'));from test_board import Server
     from test_telnet import Client
     servers=[];clients=[];master=None;results={};screens=base/'screens';screens.mkdir()
