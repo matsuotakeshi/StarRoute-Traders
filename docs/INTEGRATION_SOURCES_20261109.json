@@ -1,0 +1,233 @@
+{
+  "source": "starroute-traders-ui-integration-20261109",
+  "files": [
+    {
+      "path": "starroute/application.py",
+      "source_sha256": "03c3b660cc3115ec2a57f09c962391e4d776b7e0bcc6fcf1272fcf7b12503af5"
+    },
+    {
+      "path": "starroute/buyback.py",
+      "source_sha256": "7e9b7c7ccc0d23d94edd6c149dad295e9e8673467f79ba0b468edb1bf454dec2"
+    },
+    {
+      "path": "starroute/catalog.py",
+      "source_sha256": "3c923b936798d8caa258eb2d834b9cfdeccea681ec1c85a640354334755285e3"
+    },
+    {
+      "path": "starroute/economy.py",
+      "source_sha256": "136545caa87a4b6ff30f99a8601534f0f3e64207af4c9b8149ea50276a4ef90b"
+    },
+    {
+      "path": "starroute/engine.py",
+      "source_sha256": "8523853e859b3b1707b5a248e5c8e121cbbd798913c83f3570e9c0ff7508fbb5"
+    },
+    {
+      "path": "starroute/exploration.py",
+      "source_sha256": "3f8b7a4c4119d5bdf51c0ed88ee04e1fdd4ab1ed118a54b1ea58d805fce83419"
+    },
+    {
+      "path": "starroute/exploration_policy.py",
+      "source_sha256": "cfb61a7612f2d5a0165199c4900c67fe4068aa019e8dce17e1de18d8abbe1832"
+    },
+    {
+      "path": "starroute/generation_contract.py",
+      "source_sha256": "f01654985bd781008b07d584311b9a499d9c00a67727b64d8fb63a30ec468cdb"
+    },
+    {
+      "path": "starroute/hidden_world.py",
+      "source_sha256": "df664a4c9212fe2aa2403b9e364e2f84b5206ccfb7fbdc7b4d1d084d3329ae14"
+    },
+    {
+      "path": "starroute/master.py",
+      "source_sha256": "fd569c93a4d5eac81c195a52ba283f3b9e081cc4c489082fcabd77b35f2ad017"
+    },
+    {
+      "path": "starroute/mechanics.py",
+      "source_sha256": "9e5bda283e8dcdf824fb8fb2558ccb3b87ea145c08a28037a02c87e5b4e09f9f"
+    },
+    {
+      "path": "starroute/network.py",
+      "source_sha256": "4942484d0f6adc46c43e43f3917c25e6d17d76b5bf79ccb51eacac2696b161a3"
+    },
+    {
+      "path": "starroute/repository.py",
+      "source_sha256": "fc706c7b5809402c1d6e86a4fa772b3b1f5236199dbd44c5a7df860b59096d67"
+    },
+    {
+      "path": "starroute/rules.py",
+      "source_sha256": "ea406f7c95d6853a9103ab03c695d1e0fce789ff71244b5f51a1afeaa327c0a9"
+    },
+    {
+      "path": "starroute/statistics.py",
+      "source_sha256": "12773b836481ede002ab664803549fec232922b3c69744b041ee286f10f4cb36"
+    },
+    {
+      "path": "starroute/trade_view.py",
+      "source_sha256": "8ce885dd3069472e07479cd14924d5679236eee5269b5c11a3770faac07f9099"
+    },
+    {
+      "path": "starroute/ui_info.py",
+      "source_sha256": "f92b973fd57ac55f737c870c3be878535ec6b8bc8ed065250af748fa55e8be6e"
+    },
+    {
+      "path": "starroute/universe.py",
+      "source_sha256": "1e08f9729e435af08f97468a8152acb36b5c9c76db9189ce04f03b6b3889c8a1"
+    },
+    {
+      "path": "starroute/universe_package.py",
+      "source_sha256": "226d27bb902720092f51623010a3d76f7e6c202fb7806ea1870612b80c815acb"
+    },
+    {
+      "path": "starroute/config/phase4.json",
+      "source_sha256": "ded4c51d94b0654b5a4c5854116afde8d77b6bdb5c790d607d70945fccfb90a0"
+    },
+    {
+      "path": "starroute/presentation/schema.json",
+      "source_sha256": "30c99d1a78bcec1159712d56ba7f5f47e64ffde4712b2f7ae1518afc99b387b6"
+    },
+    {
+      "path": "starroute/presentation/locales/en.json",
+      "source_sha256": "7117f654bd4814b9b3ccc7ac88d0ed173946aeabb4903203ef08325b89da1728"
+    },
+    {
+      "path": "starroute/presentation/locales/ja.json",
+      "source_sha256": "bc913dd1107e905ee85ebe93b00d3457b7ca849538f506ec7dd348320e3c1a65"
+    },
+    {
+      "path": "starroute_bbs/client.py",
+      "source_sha256": "02f33f83c2c0e704cbaf2869bffdf41508edbb53017af6c0e171aaa11c481677"
+    },
+    {
+      "path": "starroute_bbs/exploration_menu.py",
+      "source_sha256": "26654b761a5f9d9d97fe79a3df6cf8a164bef4d57651c5bb8c8ee0e54baa6f31"
+    },
+    {
+      "path": "starroute_bbs/map_menu.py",
+      "source_sha256": "4c9d9aa0c2adf97facf71599c3c4a8ae35118647bdfe5af28eb1971b76d28a81"
+    },
+    {
+      "path": "starroute_bbs/menu.py",
+      "source_sha256": "66883135313e11cc797710fd7a44231dddc497b8d631ca35a7ae889fe44672f0"
+    },
+    {
+      "path": "starroute_bbs/screen.py",
+      "source_sha256": "7a007f6ef5d0ab9a9075b6fb6c971c8f67da13cfbf33f8c923415b190d52e296"
+    },
+    {
+      "path": "starroute_bbs/locales/en.json",
+      "source_sha256": "5577a44ab27f3d7727f5b463276a61195778a8c5d49fab92e26c8636c334f20d"
+    },
+    {
+      "path": "starroute_bbs/locales/ja.json",
+      "source_sha256": "5e3d95a0ce2ded91c73d1872964dc51626aa2763be8ccc5f940f13242fd4ba66"
+    },
+    {
+      "path": "srt_universe_generator/hidden.py",
+      "source_sha256": "b06b435ca4c59c670ba4a03ed41cbebf7d3f387ea437db9deb495a5b2cdd44d7"
+    },
+    {
+      "path": "srt_universe_generator/legacy.py",
+      "source_sha256": "b80b7a1c26f4492bfe5f1b7b5f0fd4a5cf276b0ce6c7381fc382a60c5c7d7ad0"
+    },
+    {
+      "path": "srt_universe_generator/levels.py",
+      "source_sha256": "7a287ba645ae9a82b1a45386319239c8bbef3d7e01856c2ded0775dc17b818c1"
+    },
+    {
+      "path": "examples/connected-universe-trial.json",
+      "source_sha256": "a79d3eba8891b5cc47b853e4768027db07443b7ff9ffcafbb3c1faf52369a7ef"
+    },
+    {
+      "path": "examples/exploration-operations.json",
+      "source_sha256": "1baef964cfe0468e8d1138053719a5d0543afccbd15c3bcde9d372bf730a22fb"
+    },
+    {
+      "path": "examples/exploration-trial.json",
+      "source_sha256": "580b86f1a45bc00de168ca091105a0b336a210d594646a67f8c5a892578ed4f3"
+    },
+    {
+      "path": "examples/market-buyback-trial.json",
+      "source_sha256": "c1e8c95c66914286108ef17fbdc573c40bd56e3e7fdd4d3faf5303ba929cff98"
+    },
+    {
+      "path": "scripts/bbs_ui_telnet_demo.py",
+      "source_sha256": "f70f43d1919f4159a73273cdec42fe0aaeffab12eaa2d7c7db238e4600df9344"
+    },
+    {
+      "path": "scripts/build_generator_bundle.py",
+      "source_sha256": "cf50b4f4d148e5df0385e177fc198abe02a6adfb3a4fa82ddfbfb043506de965"
+    },
+    {
+      "path": "scripts/exploration_demo.py",
+      "source_sha256": "6a4951c01c38d5c87fcc7f14583a0417fc53764adc9f04ce4d4594064ec86f7f"
+    },
+    {
+      "path": "scripts/exploration_telnet_demo.py",
+      "source_sha256": "df57416fb24ae6bd00b331fbbbe8fd7caef4660a8427c2160f86f05ad8bb8ead"
+    },
+    {
+      "path": "scripts/phase5_telnet_demo.py",
+      "source_sha256": "f7ad53eeb82e61058a191590f4828ec0753ed3ad4a2caf1ecccfa18d35bd897e"
+    },
+    {
+      "path": "scripts/trade_cycle_demo.py",
+      "source_sha256": "87c146b3c65839a7dddb5617fc748f3506cee985206d44838656669fbbbdc762"
+    },
+    {
+      "path": "scripts/ui_integration_telnet_demo.py",
+      "source_sha256": "841a7bd742ba4f3f3a7ed7347a321e0d355c9f635f12487119d5b8a692dbd715"
+    },
+    {
+      "path": "scripts/universe_foundation_demo.py",
+      "source_sha256": "e53fb0f8c8506ca7343f53d3e81231c80c0d80f0386bd470c9de6023699b9000"
+    },
+    {
+      "path": "tests/test_bbs_ui.py",
+      "source_sha256": "1215ca2245ee4f3825ebd2848d46c26da118d53f37d9e423cdd94fc501f5c1a5"
+    },
+    {
+      "path": "tests/test_buyback.py",
+      "source_sha256": "7d113eb62bf335521c008c2b9bde8d36c06899ec2c0ac3bf680864587e5c5a1c"
+    },
+    {
+      "path": "tests/test_buyback_network.py",
+      "source_sha256": "e010d39bd4b07fb2737de3ee2bc59dcb126d3781cf91b1498f624a863e99e6fb"
+    },
+    {
+      "path": "tests/test_connected_network.py",
+      "source_sha256": "43037c97532610dc5b9e48447b38f00d940d58e9535e667ae44399ac02483d7f"
+    },
+    {
+      "path": "tests/test_connected_universe.py",
+      "source_sha256": "73944001288555025e973284219b8248ddd0668935c9b15eac2737f772831004"
+    },
+    {
+      "path": "tests/test_exploration.py",
+      "source_sha256": "6456ee0be2740df5f941c06049510ce56289b086f8c016893d23a99f378d2135"
+    },
+    {
+      "path": "tests/test_exploration_network.py",
+      "source_sha256": "f2268c64c1d5498666ea109eccae475d2e14bdc3db2c885fd277ad76556934f0"
+    },
+    {
+      "path": "tests/test_exploration_ui.py",
+      "source_sha256": "82df72a7ee990332644a37412562e732e1e7b08aab7e69be6a233babb4bb8fb2"
+    },
+    {
+      "path": "tests/test_ui_integration.py",
+      "source_sha256": "c11359d57297241bf8197cd0a4956518b22063a8c2c6b845904ce793cca78f45"
+    },
+    {
+      "path": "tests/test_ui_integration_network.py",
+      "source_sha256": "92ff017d636aea5fa1d27f7f4e6b08d929faa6ab1f5b6848d03146c7e05d94d0"
+    },
+    {
+      "path": "ports/games/starroute-traders/pkg-plist",
+      "source_sha256": "47f1a98b83c14c9cbdd8bb8350046f58fa890247f3459198ea3a96248068ae35"
+    },
+    {
+      "path": "ports/games/starroute-traders-client/pkg-plist",
+      "source_sha256": "f0b2252f48668923245e22a743c10237cccc0a8aa67a018927db5862e873d93f"
+    }
+  ]
+}

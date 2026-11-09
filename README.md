@@ -1,3 +1,5 @@
+> v0.21.0: 2026-11-09追加開発を統合。交易・探索・星図UI、新規宇宙作成とFreeBSD配布。詳しくは [リリース手順](docs/RELEASE_021.md)。
+
 > v0.20.0: Private Ports・pkg配布、明示的なDB保守、長時間航行・2時間周期の世界イベント設定。[実装内容](PORTS_COMPLETE.md)、[運用コマンド](ports/README.md)、[検証結果](docs/PORTS_ACCEPTANCE.md)、[本番の手動配置からpkg管理へ移行](docs/PKG_MIGRATION_V020.md)、[配布ZIP](distribution/starroute-traders-0.20.0-freebsd.zip)。既存宇宙・本番環境を自動変更しません。
 
 > 2026-11-03運用追補：[本番pkg移行の確認記録](docs/PRODUCTION_MIGRATION_V020.md)、[署名付きpkg更新先の登録](docs/PKG_REPOSITORY_SETUP.md)。srvへの登録は手動で実施します。

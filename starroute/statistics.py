@@ -12,7 +12,7 @@ def calculate(c,round_id,settings=None):
              for r in c.execute('SELECT p.*,a.bbs_id,a.local_user_id FROM players p JOIN bbs_accounts a ON a.player_id=p.id JOIN player_state s ON s.player_id=p.id WHERE s.season_id=?',(round_id,))}
     stats={pid:{**row,**dict.fromkeys(('trade_profit','purchases','sales','navigation_cost','planet_paid','planet_effect','planet_bonus',
           'route_paid','route_effect','route_bonus','jackpot','insurance_premium','insurance_claim','restart_grant','bankruptcy_cash_removed',
-          'ship_cost','pirate_loss','repair_cost','exploration','unpriced_units'),0)} for pid,row in players.items()}
+          'ship_cost','device_cost','guild_cost','pirate_loss','repair_cost','exploration','unpriced_units'),0)} for pid,row in players.items()}
     lots={pid:{} for pid in players}
     epochs={pid:0 for pid in players}
     def consume(pid,good,count):
@@ -43,7 +43,7 @@ def calculate(c,round_id,settings=None):
             lots[pid].setdefault(result['goods_id'],[]).append([result['quantity'],result['total']]);s['purchases']+=result['total']
         elif method=='sell_goods':
             cost=consume(pid,result['goods_id'],result['quantity']);s['sales']+=result['total'];s['trade_profit']+=result['total']-cost
-        elif method in ('depart','navigate'):s['navigation_cost']+=result.get('fuel_cost',result.get('fee',0)) or 0
+        elif method in ('depart','navigate','coordinate_depart'):s['navigation_cost']+=result.get('fuel_cost',result.get('fee',0)) or 0
         elif method=='invest':
             s['planet_paid']+=result['paid_credits'];s['planet_effect']+=result['effect_units']
             # The catalog is the frozen effective policy for this current round.
@@ -53,6 +53,8 @@ def calculate(c,round_id,settings=None):
         elif method=='donate':
             s['route_paid']+=result['paid_credits'];s['route_effect']+=result['effect_units'];s['route_bonus']+=result['effect_units']-result['paid_credits'];s['jackpot']+=result['jackpot']
         elif method=='insure':s['insurance_premium']+=result['paid_credits']
+        elif method=='buy_device':s['device_cost']+=result['paid_credits']
+        elif method=='guild':s['guild_cost']+=result['paid_credits']
         elif method=='buy_ship':s['ship_cost']+=result['paid_credits']
         elif method=='bankrupt':
             s['restart_grant']+=result['cash'];s['bankruptcy_cash_removed']+=(before or {}).get('cash',0)

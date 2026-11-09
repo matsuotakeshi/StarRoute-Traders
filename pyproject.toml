@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "starroute-traders"
-version = "0.20.0"
+version = "0.21.0"
 description = "Shared-world space trading CLI with a UI-independent engine"
 requires-python = ">=3.10"
 

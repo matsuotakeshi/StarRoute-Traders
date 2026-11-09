@@ -44,7 +44,7 @@ def effective_rules(catalog):
         if not isinstance(row,dict) or set(row)-set(required)-set(optional) or set(required)-set(row):
             raise GameError("CONFIG_VERIFICATION_FAILED")
     fields(d, ('format_version','starting','planets','goods','ships','routes','markets'),
-           ('ship_grades','navigation','economy','development','production','regional_prices','market_events','industry_effects','phase3'))
+           ('ship_grades','navigation','economy','development','production','regional_prices','market_events','industry_effects','phase3','market_buyback','exploration'))
     fields(d['starting'], ('cash','planet_id','ship_id'))
     groups={
         'planets': ('id','name'),
@@ -73,6 +73,9 @@ def effective_rules(catalog):
         plans.append({**row,'warp_options':sorted(row['warp_options'],key=lambda o:o['level'])})
     result['navigation']=plans
     result['economy']={k:v for k,v in catalog.economy.items() if k!='status'}
+    if catalog.market_buyback is not None:
+        result['market_buyback']={k:v for k,v in catalog.market_buyback.items() if k!='status'}
+    if catalog.exploration is not None:result['exploration']={k:v for k,v in catalog.exploration.items() if k!='status'}
     result['development']={k:v for k,v in catalog.development.items() if k!='status'}
     result['industry_effects']={k:v for k,v in catalog.industry_effects.items() if k!='status'}
     result['production']={k:v for k,v in catalog.production.items() if k!='status'}
@@ -94,6 +97,11 @@ def fingerprint(catalog):
     modern=catalog.phase3 is not None and bool({'world_events','navigation_min_distance_units'} & set(catalog.phase3))
     payload={'rules_version':'world-time-1' if modern else RULES_VERSION,'config_schema_version':11 if modern else CONFIG_SCHEMA_VERSION,
              'canonicalization':CANONICALIZATION,'game_rules':effective_rules(catalog)}
+    if catalog.market_buyback is not None:
+        payload.update(rules_version='market-buyback-1',config_schema_version=12)
+    if catalog.data.get('universe',{}).get('format_version')==3:
+        payload.update(rules_version='universe-connected-1',config_schema_version=13)
+    if catalog.exploration is not None:payload.update(rules_version='exploration-1',config_schema_version=14)
     return {k:v for k,v in payload.items() if k!='game_rules'} | {
         'algorithm':'sha256','sha256':hashlib.sha256(canonical_bytes(payload)).hexdigest()}
 

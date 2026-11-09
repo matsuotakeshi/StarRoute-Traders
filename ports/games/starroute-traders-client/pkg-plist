@@ -8,6 +8,8 @@ libexec/starroute-traders/starroute_bbs/input.py
 libexec/starroute-traders/starroute_bbs/locales/en.json
 libexec/starroute-traders/starroute_bbs/locales/ja.json
 libexec/starroute-traders/starroute_bbs/menu.py
+libexec/starroute-traders/starroute_bbs/map_menu.py
+libexec/starroute-traders/starroute_bbs/exploration_menu.py
 libexec/starroute-traders/starroute_bbs/node.py
 libexec/starroute-traders/starroute_bbs/screen.py
 libexec/starroute-traders/starroute_bbs/terminal.py

@@ -35,5 +35,10 @@ def generate(template,parameters,levels,seed,universe_id=None):
     if 'phase3' in data:
         from starroute.rules import RULES_VERSION
         data['universe']['game_rules_version']=RULES_VERSION
+    if parameters['mode']=='grid_mst_connected_v2':
+        if Catalog(template).market_buyback is None:raise ValueError('connected worlds require market buyback policy')
+        from .hidden import generate_hidden
+        from starroute.generation_contract import CONNECTED_VERSION,CONNECTED_RULES_VERSION
+        data['universe'].update(format_version=3,generator_version=CONNECTED_VERSION,game_rules_version=CONNECTED_RULES_VERSION,private_world=generate_hidden(data,seed,draw))
     seal_manifest(data);Catalog(data)
     return data

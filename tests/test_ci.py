@@ -31,7 +31,7 @@ class CIPolicyTests(unittest.TestCase):
         event['pull_request']['user']['login']='matsuotakeshi';event['number']=2;self.assertFalse(allowed(env,event))
     def test_commands_use_unittest_not_bbs_make_check(self):
         for target in ('freebsd','rocky','ubuntu'):
-            commands=commands_for(target);self.assertIn('ci/run_tests.py',commands[0]);self.assertNotIn('check',commands[1]);self.assertIn('runtime',commands[1]);self.assertIn('scripts/bbs_ui_telnet_demo.py',commands[2])
+            commands=commands_for(target);self.assertIn('ci/run_tests.py',commands[0]);self.assertNotIn('check',commands[1]);self.assertIn('runtime',commands[1]);self.assertIn('scripts/ui_integration_telnet_demo.py',commands[2])
     def test_ssh_never_disables_host_key_or_falls_back_to_password(self):
         opts=ssh_options('/key');self.assertIn('StrictHostKeyChecking=yes',opts);self.assertIn('PasswordAuthentication=no',opts);self.assertIn('IdentitiesOnly=yes',opts)
     def test_all_os_gate_rejects_missing_duplicates_and_failure(self):

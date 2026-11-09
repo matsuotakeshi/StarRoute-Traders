@@ -33,6 +33,12 @@ def main():
         if report['ok']:
             code=subprocess.call([sys.executable,'scripts/demo.py'],cwd=ROOT)
             report['cli_exit_code']=code;report['ok']=code==0
+            if report['ok']:
+                with tempfile.TemporaryDirectory(prefix='srt-release-demos-') as demo:
+                    for name in ('trade_cycle','exploration'):
+                        code=subprocess.call([sys.executable,'scripts/'+name+'_demo.py','--directory',str(Path(demo)/name)],cwd=ROOT)
+                        report[name+'_exit_code']=code
+                        if code:report['ok']=False;break
     except Exception as error:report['error']=str(error)
     (output/'tests.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
     print('SRT_UNIT_SUMMARY '+json.dumps({k:v for k,v in report.items() if k not in ('failed_tests','environment')}),flush=True)

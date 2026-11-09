@@ -146,6 +146,7 @@ def execute_target(target, archive, digest, sha, output, cancelled, fixture, fix
             result["tests"] = record["tests"]
             result["liner_fixture_sha"] = LINER_SHA
             run_setup(["scp", *ssh_options(key), host+":"+directory+"/door-demo/result.json", str(output/(target+"-door.json"))], log, cancelled)
+            run_setup(["scp", *ssh_options(key), host+":"+directory+"/exploration-demo/result.json", str(output/(target+"-exploration.json"))], log, cancelled)
             result["status"] = "passed"
         except Exception as error:
             result["status"] = "cancelled" if cancelled.is_set() else "failed"

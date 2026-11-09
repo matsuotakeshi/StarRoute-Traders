@@ -13,10 +13,10 @@ from starroute.catalog import Catalog
 from srt_universe_generator.levels import generate
 
 
-def setup_world(directory,seed,open_routes=4):
+def setup_world(directory,seed,open_routes=4,template=None):
     directory.mkdir(mode=0o700);now=int(time.time());db=directory/'game.db'
     parameters=json.loads((ROOT/'examples/phase3-generator.json').read_text());parameters['initial_open_routes']=open_routes
-    data=generate(Catalog.load(ROOT/'examples/phase3-trial.json').data,parameters,
+    data=generate(Catalog.load(template or ROOT/'examples/phase3-trial.json').data,parameters,
                   json.loads((ROOT/'examples/industry-levels-trial.json').read_text()),seed)
     package=export_package(data);save(directory/'private-package.json',package);initialize(db,now);m=Manager(db,now)
     try:

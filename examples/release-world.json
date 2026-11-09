@@ -1,0 +1,3500 @@
+{
+  "format_version": 2,
+  "starting": {
+    "cash": 5000,
+    "planet_id": "aurora",
+    "ship_id": "normal_2"
+  },
+  "planets": [
+    {
+      "id": "aurora",
+      "name": "オーロラ"
+    },
+    {
+      "id": "forge",
+      "name": "フォージ"
+    },
+    {
+      "id": "haven",
+      "name": "ヘイヴン"
+    }
+  ],
+  "goods": [
+    {
+      "id": "grain",
+      "name": "星穀",
+      "base_price": 100,
+      "volume": 1,
+      "production": 8,
+      "volatility_bps": 500
+    },
+    {
+      "id": "alloy",
+      "name": "軽量合金",
+      "base_price": 200,
+      "volume": 2,
+      "production": 4,
+      "volatility_bps": 800
+    },
+    {
+      "id": "medicine",
+      "name": "医療パック",
+      "base_price": 300,
+      "volume": 1,
+      "production": 2,
+      "volatility_bps": 1200
+    },
+    {
+      "id": "fusion_fuel",
+      "name": "核融合燃料",
+      "base_price": 300,
+      "volume": 1,
+      "production": 0,
+      "volatility_bps": 500
+    },
+    {
+      "id": "dense_warp_fuel",
+      "name": "高密度ワープ燃料",
+      "base_price": 1200,
+      "volume": 2,
+      "production": 0,
+      "volatility_bps": 500
+    },
+    {
+      "id": "water",
+      "name": "飲料水",
+      "base_price": 80,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "vegetables",
+      "name": "野菜",
+      "base_price": 105,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "fruit",
+      "name": "果実",
+      "base_price": 130,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "protein",
+      "name": "培養蛋白",
+      "base_price": 155,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "timber",
+      "name": "木材",
+      "base_price": 180,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "fiber",
+      "name": "繊維",
+      "base_price": 205,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "iron_ore",
+      "name": "鉄鉱石",
+      "base_price": 230,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "copper_ore",
+      "name": "銅鉱石",
+      "base_price": 255,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "rare_metals",
+      "name": "希少金属",
+      "base_price": 280,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "crystals",
+      "name": "結晶",
+      "base_price": 305,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "ceramics",
+      "name": "セラミックス",
+      "base_price": 330,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "polymers",
+      "name": "高分子素材",
+      "base_price": 355,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "machinery",
+      "name": "産業機械",
+      "base_price": 380,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "electronics",
+      "name": "電子部品",
+      "base_price": 405,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "robotics",
+      "name": "作業ロボット",
+      "base_price": 430,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "tools",
+      "name": "工具",
+      "base_price": 455,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "vehicles",
+      "name": "地上車両",
+      "base_price": 480,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "textiles",
+      "name": "織物",
+      "base_price": 505,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "luxuries",
+      "name": "高級品",
+      "base_price": 530,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "spices",
+      "name": "香辛料",
+      "base_price": 555,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "data_cores",
+      "name": "データコア",
+      "base_price": 580,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "biotech",
+      "name": "生体技術素材",
+      "base_price": 605,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "sensors",
+      "name": "精密センサー",
+      "base_price": 630,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "quantum_chips",
+      "name": "量子チップ",
+      "base_price": 655,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    },
+    {
+      "id": "research_kits",
+      "name": "研究機材",
+      "base_price": 680,
+      "volume": 1,
+      "production": 4,
+      "volatility_bps": 500
+    }
+  ],
+  "ships": [
+    {
+      "id": "normal_1",
+      "name": "Test normal 1",
+      "capacity": 20,
+      "max_distance": 120,
+      "speed": 1,
+      "profile": {
+        "ship_type": "normal",
+        "grade_id": "test_low",
+        "normal_speed": 10,
+        "max_warp_speed": 20,
+        "purchase_price": 1000,
+        "insurance_premium": 100,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "armed_cruiser_1",
+      "name": "Test armed_cruiser 1",
+      "capacity": 20,
+      "max_distance": 120,
+      "speed": 1,
+      "profile": {
+        "ship_type": "armed_cruiser",
+        "grade_id": "test_low",
+        "normal_speed": 10,
+        "max_warp_speed": 20,
+        "purchase_price": 1500,
+        "insurance_premium": 50,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "engineering_1",
+      "name": "Test engineering 1",
+      "capacity": 20,
+      "max_distance": 120,
+      "speed": 1,
+      "profile": {
+        "ship_type": "engineering",
+        "grade_id": "test_low",
+        "normal_speed": 5,
+        "max_warp_speed": 10,
+        "purchase_price": 1500,
+        "insurance_premium": 100,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "normal_2",
+      "name": "Test normal 2",
+      "capacity": 40,
+      "max_distance": 120,
+      "speed": 1,
+      "profile": {
+        "ship_type": "normal",
+        "grade_id": "test_high",
+        "normal_speed": 10,
+        "max_warp_speed": 40,
+        "purchase_price": 2000,
+        "insurance_premium": 200,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "armed_cruiser_2",
+      "name": "Test armed_cruiser 2",
+      "capacity": 40,
+      "max_distance": 120,
+      "speed": 1,
+      "profile": {
+        "ship_type": "armed_cruiser",
+        "grade_id": "test_high",
+        "normal_speed": 10,
+        "max_warp_speed": 40,
+        "purchase_price": 3000,
+        "insurance_premium": 100,
+        "specification_status": "provisional"
+      }
+    },
+    {
+      "id": "engineering_2",
+      "name": "Test engineering 2",
+      "capacity": 40,
+      "max_distance": 120,
+      "speed": 1,
+      "profile": {
+        "ship_type": "engineering",
+        "grade_id": "test_high",
+        "normal_speed": 5,
+        "max_warp_speed": 20,
+        "purchase_price": 3000,
+        "insurance_premium": 200,
+        "specification_status": "provisional"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "id": "aurora-forge",
+      "from": "aurora",
+      "to": "forge",
+      "distance": 3,
+      "seconds": 2,
+      "fee": 0,
+      "is_open": true
+    },
+    {
+      "id": "forge-haven",
+      "from": "forge",
+      "to": "haven",
+      "distance": 4,
+      "seconds": 3,
+      "fee": 0,
+      "is_open": true
+    },
+    {
+      "id": "haven-aurora",
+      "from": "haven",
+      "to": "aurora",
+      "distance": 6,
+      "seconds": 4,
+      "fee": 0,
+      "is_open": true
+    }
+  ],
+  "markets": [
+    {
+      "planet_id": "aurora",
+      "goods_id": "grain",
+      "price": 60,
+      "stock": 200
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "alloy",
+      "price": 240,
+      "stock": 80
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "medicine",
+      "price": 350,
+      "stock": 50
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "grain",
+      "price": 120,
+      "stock": 70
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "alloy",
+      "price": 130,
+      "stock": 200
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "medicine",
+      "price": 340,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "grain",
+      "price": 90,
+      "stock": 100
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "alloy",
+      "price": 220,
+      "stock": 80
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "medicine",
+      "price": 180,
+      "stock": 150
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "fusion_fuel",
+      "price": 300,
+      "stock": 10
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "fusion_fuel",
+      "price": 500,
+      "stock": 10
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "fusion_fuel",
+      "price": 800,
+      "stock": 10
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "dense_warp_fuel",
+      "price": 1200,
+      "stock": 4
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "dense_warp_fuel",
+      "price": 2000,
+      "stock": 4
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "dense_warp_fuel",
+      "price": 1500,
+      "stock": 4
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "water",
+      "price": 80,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "water",
+      "price": 80,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "water",
+      "price": 80,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "vegetables",
+      "price": 105,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "vegetables",
+      "price": 105,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "vegetables",
+      "price": 105,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "fruit",
+      "price": 130,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "fruit",
+      "price": 130,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "fruit",
+      "price": 130,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "protein",
+      "price": 155,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "protein",
+      "price": 155,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "protein",
+      "price": 155,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "timber",
+      "price": 180,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "timber",
+      "price": 180,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "timber",
+      "price": 180,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "fiber",
+      "price": 205,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "fiber",
+      "price": 205,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "fiber",
+      "price": 205,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "iron_ore",
+      "price": 230,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "iron_ore",
+      "price": 230,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "iron_ore",
+      "price": 230,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "copper_ore",
+      "price": 255,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "copper_ore",
+      "price": 255,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "copper_ore",
+      "price": 255,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "rare_metals",
+      "price": 280,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "rare_metals",
+      "price": 280,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "rare_metals",
+      "price": 280,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "crystals",
+      "price": 305,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "crystals",
+      "price": 305,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "crystals",
+      "price": 305,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "ceramics",
+      "price": 330,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "ceramics",
+      "price": 330,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "ceramics",
+      "price": 330,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "polymers",
+      "price": 355,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "polymers",
+      "price": 355,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "polymers",
+      "price": 355,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "machinery",
+      "price": 380,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "machinery",
+      "price": 380,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "machinery",
+      "price": 380,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "electronics",
+      "price": 405,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "electronics",
+      "price": 405,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "electronics",
+      "price": 405,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "robotics",
+      "price": 430,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "robotics",
+      "price": 430,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "robotics",
+      "price": 430,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "tools",
+      "price": 455,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "tools",
+      "price": 455,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "tools",
+      "price": 455,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "vehicles",
+      "price": 480,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "vehicles",
+      "price": 480,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "vehicles",
+      "price": 480,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "textiles",
+      "price": 505,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "textiles",
+      "price": 505,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "textiles",
+      "price": 505,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "luxuries",
+      "price": 530,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "luxuries",
+      "price": 530,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "luxuries",
+      "price": 530,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "spices",
+      "price": 555,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "spices",
+      "price": 555,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "spices",
+      "price": 555,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "data_cores",
+      "price": 580,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "data_cores",
+      "price": 580,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "data_cores",
+      "price": 580,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "biotech",
+      "price": 605,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "biotech",
+      "price": 605,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "biotech",
+      "price": 605,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "sensors",
+      "price": 630,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "sensors",
+      "price": 630,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "sensors",
+      "price": 630,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "quantum_chips",
+      "price": 655,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "quantum_chips",
+      "price": 655,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "quantum_chips",
+      "price": 655,
+      "stock": 60
+    },
+    {
+      "planet_id": "aurora",
+      "goods_id": "research_kits",
+      "price": 680,
+      "stock": 60
+    },
+    {
+      "planet_id": "forge",
+      "goods_id": "research_kits",
+      "price": 680,
+      "stock": 60
+    },
+    {
+      "planet_id": "haven",
+      "goods_id": "research_kits",
+      "price": 680,
+      "stock": 60
+    }
+  ],
+  "ship_grades": [
+    {
+      "id": "test_low",
+      "rank": 1
+    },
+    {
+      "id": "test_high",
+      "rank": 2
+    }
+  ],
+  "navigation": {
+    "status": "provisional",
+    "plans": [
+      {
+        "ship_id": "normal_1",
+        "route_id": "aurora-forge",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_1",
+        "route_id": "forge-haven",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_1",
+        "route_id": "haven-aurora",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_1",
+        "route_id": "aurora-forge",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_1",
+        "route_id": "forge-haven",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_1",
+        "route_id": "haven-aurora",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_1",
+        "route_id": "aurora-forge",
+        "normal_seconds": 1440,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 720,
+            "fuel_cost": 12
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_1",
+        "route_id": "forge-haven",
+        "normal_seconds": 1440,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 720,
+            "fuel_cost": 12
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_1",
+        "route_id": "haven-aurora",
+        "normal_seconds": 1440,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 720,
+            "fuel_cost": 12
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_2",
+        "route_id": "aurora-forge",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 180,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_2",
+        "route_id": "forge-haven",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 180,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "normal_2",
+        "route_id": "haven-aurora",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 180,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_2",
+        "route_id": "aurora-forge",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 180,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_2",
+        "route_id": "forge-haven",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 180,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "armed_cruiser_2",
+        "route_id": "haven-aurora",
+        "normal_seconds": 720,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 20
+          },
+          {
+            "level": "faster",
+            "speed": 40,
+            "seconds": 180,
+            "fuel_cost": 60
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_2",
+        "route_id": "aurora-forge",
+        "normal_seconds": 1440,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 720,
+            "fuel_cost": 12
+          },
+          {
+            "level": "faster",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 24
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_2",
+        "route_id": "forge-haven",
+        "normal_seconds": 1440,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 720,
+            "fuel_cost": 12
+          },
+          {
+            "level": "faster",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 24
+          }
+        ]
+      },
+      {
+        "ship_id": "engineering_2",
+        "route_id": "haven-aurora",
+        "normal_seconds": 1440,
+        "warp_options": [
+          {
+            "level": "fast",
+            "speed": 10,
+            "seconds": 720,
+            "fuel_cost": 12
+          },
+          {
+            "level": "faster",
+            "speed": 20,
+            "seconds": 360,
+            "fuel_cost": 24
+          }
+        ]
+      }
+    ]
+  },
+  "economy": {
+    "mode": "planet_supply_v1",
+    "status": "provisional",
+    "tick_seconds": 60,
+    "markets": [
+      {
+        "planet_id": "aurora",
+        "goods_id": "grain",
+        "target_stock": 200,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "alloy",
+        "target_stock": 80,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "medicine",
+        "target_stock": 50,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "grain",
+        "target_stock": 70,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "alloy",
+        "target_stock": 200,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "medicine",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "grain",
+        "target_stock": 100,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "alloy",
+        "target_stock": 80,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "medicine",
+        "target_stock": 150,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 10000,
+        "demand_per_tick": 1
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fusion_fuel",
+        "target_stock": 10,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fusion_fuel",
+        "target_stock": 10,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "fusion_fuel",
+        "target_stock": 10,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "dense_warp_fuel",
+        "target_stock": 4,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "dense_warp_fuel",
+        "target_stock": 4,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "dense_warp_fuel",
+        "target_stock": 4,
+        "step_price": 1,
+        "min_price": 1,
+        "max_price": 10000,
+        "stock_limit": 100,
+        "demand_per_tick": 0
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "water",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "water",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "water",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "vegetables",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "vegetables",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "vegetables",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fruit",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fruit",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "fruit",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "protein",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "protein",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "protein",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "timber",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "timber",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "timber",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fiber",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fiber",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "fiber",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "iron_ore",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "iron_ore",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "iron_ore",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "copper_ore",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "copper_ore",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "copper_ore",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "rare_metals",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "rare_metals",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "rare_metals",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "crystals",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "crystals",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "crystals",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "ceramics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "ceramics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "ceramics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "polymers",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "polymers",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "polymers",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "machinery",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "machinery",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "machinery",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "electronics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "electronics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "electronics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "robotics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "robotics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "robotics",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "tools",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "tools",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "tools",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "vehicles",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "vehicles",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "vehicles",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "textiles",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "textiles",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "textiles",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "luxuries",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "luxuries",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "luxuries",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "spices",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "spices",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "spices",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "data_cores",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "data_cores",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "data_cores",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "biotech",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "biotech",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "biotech",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "sensors",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "sensors",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "sensors",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "quantum_chips",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "quantum_chips",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "quantum_chips",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "research_kits",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "research_kits",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "research_kits",
+        "target_stock": 60,
+        "step_price": 1,
+        "min_price": 10,
+        "max_price": 10000,
+        "stock_limit": 500,
+        "demand_per_tick": 3
+      }
+    ]
+  },
+  "development": {
+    "mode": "linear_units_v1",
+    "status": "provisional",
+    "credits_per_unit": {
+      "primary": 100,
+      "secondary": 150,
+      "tertiary": 150,
+      "quaternary": 200
+    },
+    "engineering_bonus_bps": 2500,
+    "planets": [
+      {
+        "planet_id": "aurora",
+        "initial_progress": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 0,
+          "quaternary": 0
+        },
+        "private_caps": {
+          "primary": 5,
+          "secondary": 5,
+          "tertiary": 5,
+          "quaternary": 5
+        },
+        "resources": [
+          {
+            "resource_id": "agricultural",
+            "abundance": 7500,
+            "rare": false
+          },
+          {
+            "resource_id": "trace_minerals",
+            "abundance": 100,
+            "rare": true
+          }
+        ]
+      },
+      {
+        "planet_id": "forge",
+        "initial_progress": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 0,
+          "quaternary": 0
+        },
+        "private_caps": {
+          "primary": 5,
+          "secondary": 5,
+          "tertiary": 5,
+          "quaternary": 5
+        },
+        "resources": [
+          {
+            "resource_id": "metallic",
+            "abundance": 8000,
+            "rare": false
+          },
+          {
+            "resource_id": "trace_minerals",
+            "abundance": 100,
+            "rare": true
+          }
+        ]
+      },
+      {
+        "planet_id": "haven",
+        "initial_progress": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 0,
+          "quaternary": 0
+        },
+        "private_caps": {
+          "primary": 5,
+          "secondary": 5,
+          "tertiary": 5,
+          "quaternary": 5
+        },
+        "resources": [
+          {
+            "resource_id": "crystalline",
+            "abundance": 6000,
+            "rare": false
+          },
+          {
+            "resource_id": "trace_minerals",
+            "abundance": 100,
+            "rare": true
+          }
+        ]
+      }
+    ]
+  },
+  "production": {
+    "mode": "per_planet_v1",
+    "status": "provisional",
+    "sources": [
+      {
+        "planet_id": "aurora",
+        "goods_id": "grain",
+        "industry": "primary",
+        "units_per_tick": 6
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "grain",
+        "industry": "primary",
+        "units_per_tick": 2
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "alloy",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "medicine",
+        "industry": "quaternary",
+        "units_per_tick": 3
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fusion_fuel",
+        "industry": "primary",
+        "units_per_tick": 3
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fusion_fuel",
+        "industry": "primary",
+        "units_per_tick": 1
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "dense_warp_fuel",
+        "industry": "quaternary",
+        "units_per_tick": 1
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "water",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "vegetables",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fruit",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "protein",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "timber",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fiber",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "iron_ore",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "copper_ore",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "rare_metals",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "crystals",
+        "industry": "primary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "ceramics",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "polymers",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "machinery",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "electronics",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "robotics",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "tools",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "vehicles",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "textiles",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "luxuries",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "spices",
+        "industry": "secondary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "data_cores",
+        "industry": "quaternary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "biotech",
+        "industry": "quaternary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "sensors",
+        "industry": "quaternary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "quantum_chips",
+        "industry": "quaternary",
+        "units_per_tick": 4
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "research_kits",
+        "industry": "quaternary",
+        "units_per_tick": 4
+      }
+    ],
+    "imports": [
+      {
+        "planet_id": "haven",
+        "goods_id": "grain",
+        "units_per_tick": 2
+      }
+    ]
+  },
+  "regional_prices": {
+    "mode": "distance_bias_v1",
+    "status": "provisional",
+    "metric": "shortest_configured_routes_v1",
+    "goods": [
+      {
+        "goods_id": "grain",
+        "origin_price": 100,
+        "price_per_distance": 20,
+        "unreachable_price": 200
+      },
+      {
+        "goods_id": "alloy",
+        "origin_price": 200,
+        "price_per_distance": 20,
+        "unreachable_price": 400
+      },
+      {
+        "goods_id": "medicine",
+        "origin_price": 300,
+        "price_per_distance": 20,
+        "unreachable_price": 600
+      },
+      {
+        "goods_id": "fusion_fuel",
+        "origin_price": 300,
+        "price_per_distance": 20,
+        "unreachable_price": 600
+      },
+      {
+        "goods_id": "dense_warp_fuel",
+        "origin_price": 1200,
+        "price_per_distance": 20,
+        "unreachable_price": 2400
+      },
+      {
+        "goods_id": "water",
+        "origin_price": 80,
+        "price_per_distance": 3,
+        "unreachable_price": 160
+      },
+      {
+        "goods_id": "vegetables",
+        "origin_price": 105,
+        "price_per_distance": 3,
+        "unreachable_price": 210
+      },
+      {
+        "goods_id": "fruit",
+        "origin_price": 130,
+        "price_per_distance": 3,
+        "unreachable_price": 260
+      },
+      {
+        "goods_id": "protein",
+        "origin_price": 155,
+        "price_per_distance": 3,
+        "unreachable_price": 310
+      },
+      {
+        "goods_id": "timber",
+        "origin_price": 180,
+        "price_per_distance": 3,
+        "unreachable_price": 360
+      },
+      {
+        "goods_id": "fiber",
+        "origin_price": 205,
+        "price_per_distance": 3,
+        "unreachable_price": 410
+      },
+      {
+        "goods_id": "iron_ore",
+        "origin_price": 230,
+        "price_per_distance": 3,
+        "unreachable_price": 460
+      },
+      {
+        "goods_id": "copper_ore",
+        "origin_price": 255,
+        "price_per_distance": 3,
+        "unreachable_price": 510
+      },
+      {
+        "goods_id": "rare_metals",
+        "origin_price": 280,
+        "price_per_distance": 3,
+        "unreachable_price": 560
+      },
+      {
+        "goods_id": "crystals",
+        "origin_price": 305,
+        "price_per_distance": 3,
+        "unreachable_price": 610
+      },
+      {
+        "goods_id": "ceramics",
+        "origin_price": 330,
+        "price_per_distance": 3,
+        "unreachable_price": 660
+      },
+      {
+        "goods_id": "polymers",
+        "origin_price": 355,
+        "price_per_distance": 3,
+        "unreachable_price": 710
+      },
+      {
+        "goods_id": "machinery",
+        "origin_price": 380,
+        "price_per_distance": 3,
+        "unreachable_price": 760
+      },
+      {
+        "goods_id": "electronics",
+        "origin_price": 405,
+        "price_per_distance": 3,
+        "unreachable_price": 810
+      },
+      {
+        "goods_id": "robotics",
+        "origin_price": 430,
+        "price_per_distance": 3,
+        "unreachable_price": 860
+      },
+      {
+        "goods_id": "tools",
+        "origin_price": 455,
+        "price_per_distance": 3,
+        "unreachable_price": 910
+      },
+      {
+        "goods_id": "vehicles",
+        "origin_price": 480,
+        "price_per_distance": 3,
+        "unreachable_price": 960
+      },
+      {
+        "goods_id": "textiles",
+        "origin_price": 505,
+        "price_per_distance": 3,
+        "unreachable_price": 1010
+      },
+      {
+        "goods_id": "luxuries",
+        "origin_price": 530,
+        "price_per_distance": 3,
+        "unreachable_price": 1060
+      },
+      {
+        "goods_id": "spices",
+        "origin_price": 555,
+        "price_per_distance": 3,
+        "unreachable_price": 1110
+      },
+      {
+        "goods_id": "data_cores",
+        "origin_price": 580,
+        "price_per_distance": 3,
+        "unreachable_price": 1160
+      },
+      {
+        "goods_id": "biotech",
+        "origin_price": 605,
+        "price_per_distance": 3,
+        "unreachable_price": 1210
+      },
+      {
+        "goods_id": "sensors",
+        "origin_price": 630,
+        "price_per_distance": 3,
+        "unreachable_price": 1260
+      },
+      {
+        "goods_id": "quantum_chips",
+        "origin_price": 655,
+        "price_per_distance": 3,
+        "unreachable_price": 1310
+      },
+      {
+        "goods_id": "research_kits",
+        "origin_price": 680,
+        "price_per_distance": 3,
+        "unreachable_price": 1360
+      }
+    ]
+  },
+  "industry_effects": {
+    "mode": "next_period_v1",
+    "status": "provisional",
+    "planets": [
+      {
+        "planet_id": "aurora",
+        "production_bps_per_unit": {
+          "primary": 5000,
+          "secondary": 5000,
+          "tertiary": 5000,
+          "quaternary": 5000
+        },
+        "market_bps_per_unit": 1000
+      },
+      {
+        "planet_id": "forge",
+        "production_bps_per_unit": {
+          "primary": 5000,
+          "secondary": 5000,
+          "tertiary": 5000,
+          "quaternary": 5000
+        },
+        "market_bps_per_unit": 1000
+      },
+      {
+        "planet_id": "haven",
+        "production_bps_per_unit": {
+          "primary": 5000,
+          "secondary": 5000,
+          "tertiary": 5000,
+          "quaternary": 5000
+        },
+        "market_bps_per_unit": 1000
+      }
+    ]
+  },
+  "phase3": {
+    "status": "provisional",
+    "sales": {
+      "normal_1": {},
+      "armed_cruiser_1": {},
+      "engineering_1": {},
+      "normal_2": {
+        "secondary": 1
+      },
+      "armed_cruiser_2": {
+        "secondary": 1
+      },
+      "engineering_2": {
+        "secondary": 1
+      }
+    },
+    "route_cost_per_distance": 10,
+    "jackpot_bps": 1000,
+    "route_bonus_bps": 2500,
+    "restart_ship": "normal_1",
+    "restart_cash": 1000,
+    "insurance_cash_bps": 2500,
+    "event_interval": 300,
+    "event_seed": "phase3-trial-events",
+    "event_probabilities": {
+      "pirate": 100,
+      "patrol": 100,
+      "storm": 50,
+      "failure": 50,
+      "wreck": 5,
+      "planet_raid": 10,
+      "cyclone": 10,
+      "factory_accident": 10
+    },
+    "disaster_damage": 1,
+    "disaster_industries": {
+      "planet_raid": [
+        "secondary",
+        "tertiary",
+        "quaternary"
+      ],
+      "cyclone": [
+        "primary",
+        "tertiary"
+      ],
+      "factory_accident": [
+        "secondary"
+      ]
+    },
+    "loot_goods": "alloy",
+    "loot_quantity": 2,
+    "pirate_loss_bps": 1000,
+    "storm_delay": 30,
+    "repair_cost": 50,
+    "mineral_goods": "iron_ore",
+    "rare_goods": "rare_metals",
+    "mineral_base_bps": 50,
+    "mineral_level_bps": 20,
+    "mineral_abundance_divisor": 100,
+    "rare_bps": 500,
+    "max_catchup_slots": 1000,
+    "investment_bonus_mode": "accumulate_fraction_v1",
+    "ship_exchange_mode": "replace_no_refund_v1",
+    "cap_mode": "reject_no_charge_v1",
+    "bankruptcy_mode": "clear_cargo_reset_start_v1",
+    "disaster_cap_mode": "preserve_maximum_v1",
+    "excess_stock_mode": "discard_at_boundary_v1",
+    "disaster_effect_timing": "next_period_v1",
+    "insurance_mode": "one_wreck_ship_cash_no_cargo_v1",
+    "jackpot_mode": "last_donor_total_paid_v1",
+    "world_events": {
+      "mode": "global_slots_v1",
+      "interval_seconds": 7200,
+      "probability_bps": 100,
+      "kind_weights": {
+        "planet_raid": 1,
+        "cyclone": 1,
+        "factory_accident": 1
+      }
+    },
+    "navigation_min_distance_units": 10
+  },
+  "market_events": {
+    "mode": "slot_shocks_v1",
+    "status": "provisional",
+    "seed": "phase3-market-trial",
+    "interval_seconds": 300,
+    "duration_seconds": 120,
+    "targets": [
+      {
+        "planet_id": "aurora",
+        "goods_id": "grain",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "alloy",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "medicine",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "grain",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "alloy",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "medicine",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "grain",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "alloy",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "medicine",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fusion_fuel",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fusion_fuel",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "fusion_fuel",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "dense_warp_fuel",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "dense_warp_fuel",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "dense_warp_fuel",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "water",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "water",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "water",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "vegetables",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "vegetables",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "vegetables",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fruit",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fruit",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "fruit",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "protein",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "protein",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "protein",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "timber",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "timber",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "timber",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "fiber",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "fiber",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "fiber",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "iron_ore",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "iron_ore",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "iron_ore",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "copper_ore",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "copper_ore",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "copper_ore",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "rare_metals",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "rare_metals",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "rare_metals",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "crystals",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "crystals",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "crystals",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "ceramics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "ceramics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "ceramics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "polymers",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "polymers",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "polymers",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "machinery",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "machinery",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "machinery",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "electronics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "electronics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "electronics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "robotics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "robotics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "robotics",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "tools",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "tools",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "tools",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "vehicles",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "vehicles",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "vehicles",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "textiles",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "textiles",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "textiles",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "luxuries",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "luxuries",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "luxuries",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "spices",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "spices",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "spices",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "data_cores",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "data_cores",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "data_cores",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "biotech",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "biotech",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "biotech",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "sensors",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "sensors",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "sensors",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "quantum_chips",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "quantum_chips",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "quantum_chips",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "aurora",
+        "goods_id": "research_kits",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "forge",
+        "goods_id": "research_kits",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      },
+      {
+        "planet_id": "haven",
+        "goods_id": "research_kits",
+        "surge_bps": 100,
+        "crash_bps": 100,
+        "surge_credits": 300,
+        "crash_credits": 200
+      }
+    ]
+  },
+  "market_buyback": {
+    "mode": "recovering_v1",
+    "status": "provisional",
+    "capacity": 100,
+    "initial": 100,
+    "recovery_units": 10,
+    "interval_seconds": 60
+  },
+  "exploration": {
+    "mode": "coordinate_discovery_v1",
+    "status": "provisional",
+    "device_price": 1000000,
+    "offroute_speed_bps": 5000,
+    "guild_price": 100,
+    "truth_bps": 2000,
+    "trade_rumor_bps": 100,
+    "departure_rumor_bps": 100,
+    "hint_thresholds": [
+      1,
+      3,
+      5
+    ],
+    "rumor_radius": 40
+  }
+}

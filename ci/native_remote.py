@@ -56,7 +56,8 @@ def commands_for(target):
     flags = [] if target == "freebsd" else ["CC=clang", "SQLITE_CFLAGS=", "SQLITE_LIBS=-lsqlite3"]
     return [[python, "ci/run_tests.py", "--output", "ci-output"],
             ["make", "-C", liner, "-j2", *flags, "runtime"],
-            [python, "scripts/bbs_ui_telnet_demo.py", "--directory", str(Path.cwd().parent / "door-demo"), "--liner", liner]]
+            [python, "scripts/ui_integration_telnet_demo.py", "--template", "examples/market-buyback-trial.json", "--directory", str(Path.cwd().parent / "door-demo"), "--liner", liner],
+            [python, "scripts/exploration_telnet_demo.py", "--directory", str(Path.cwd().parent / "exploration-demo"), "--liner", liner]]
 
 
 def verify_os(target):

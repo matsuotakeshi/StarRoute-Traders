@@ -148,7 +148,8 @@
     "ROUTE_ALREADY_OPEN": "Route already open.",
     "ALREADY_INSURED": "Already insured.",
     "EVENT_NOT_ELIGIBLE": "Not eligible for this event.",
-    "EVENT_CATCHUP_REQUIRED": "Administrator time synchronization required."
+    "EVENT_CATCHUP_REQUIRED": "Administrator time synchronization required.",
+    "INSUFFICIENT_BUYBACK": "Market buyback capacity is insufficient. Wait and check again."
   },
   "names": {
     "planets": {

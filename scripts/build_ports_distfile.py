@@ -7,7 +7,7 @@ def build(source,output,ports):
     version=re.search(r'__version__\s*=\s*"([^"]+)"',(source/'starroute/__init__.py').read_text()).group(1)
     name='starroute-traders-'+version
     paths=[]
-    for folder in ('starroute','starroute_bbs','srt_universe_generator','examples','tests','scripts'):
+    for folder in ('starroute','starroute_bbs','srt_universe_generator','examples','tests','scripts','ci','.github'):
         paths.extend(p for p in (source/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.suffix!='.pyc')
     paths.append(source/'PORTS_COMPLETE.md')
     for p in paths:

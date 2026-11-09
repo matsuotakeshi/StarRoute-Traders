@@ -65,6 +65,7 @@ def public_definition(catalog,target,visibility):
     coordinates={r['planet_id']:{k:r[k] for k in ('x','y')} for r in catalog.data.get('universe',{}).get('coordinates',[])}
     planets=[]
     for pid in sorted(visibility.planet_ids & catalog.planets.keys()):
+        if pid=='hidden-001':continue
         row={'planet_id':pid,'name':catalog.planets[pid]['name']}
         if pid in visibility.coordinate_ids and pid in coordinates:row['coordinates']=coordinates[pid]
         planets.append(row)
@@ -79,9 +80,13 @@ def public_definition(catalog,target,visibility):
 
 PLAYER_FIELDS=('player_id','handle','season_id','cash','ship_id','ship_name','capacity','used_capacity',
                'planet_id','planet_name','destination_id','arrival_at','remaining_seconds')
-TRADE_FIELDS=('side','goods_id','quantity','unit_price','first_unit_price','last_unit_price','total','pricing_mode','stock_before','stock_after')
-NAV_FIELDS=('season_id','player_id','ship_id','origin_id','destination_id','mode','level','seconds','fuel_cost','warp_speed','policy_status','arrival_at','fee')
+TRADE_FIELDS=('side','goods_id','quantity','unit_price','first_unit_price','last_unit_price','total','pricing_mode','stock_before','stock_after','rumor')
+NAV_FIELDS=('season_id','player_id','ship_id','origin_id','destination_id','mode','level','seconds','fuel_cost','warp_speed','policy_status','arrival_at','fee','rumor','distance','estimated_arrival_at')
 OPERATIONS={
+    'buy_device':('buy_device',()),'coordinate_quote':('coordinate_quote',('x','y','mode','level')),
+    'coordinate_depart':('coordinate_depart',('x','y','mode','level','quote_id')),
+    'explorer_info':('explorer_info',()),'nearby':('nearby',()),'guild':('guild',()),
+    'notebook':('notebook',()),'name_star':('name_star',('value',)),'discoverers':('discoverers',()),
     'register':('create_account',('handle',)),
     'status':('get_player',()),
     'market':('get_market',()),
@@ -103,7 +108,7 @@ OPERATIONS={
     'flight':('flight',()),
     'news':('news',()),
 }
-MUTATIONS=frozenset(('register','buy','sell','invest','navigate','dock','buy_ship','donate','insure','bankrupt'))
+MUTATIONS=frozenset(('register','buy','sell','invest','navigate','dock','buy_ship','donate','insure','bankrupt','buy_device','coordinate_depart','guild','name_star'))
 
 
 def pick(value,fields):return {k:value[k] for k in fields if k in value}
@@ -111,12 +116,14 @@ def pick(value,fields):return {k:value[k] for k in fields if k in value}
 
 def response(operation,value,visibility):
     # Explicit projections prevent a future internal field from silently becoming public.
+    if operation in ('buy_device','coordinate_quote','coordinate_depart','explorer_info','guild','notebook','name_star','discoverers'):return value
+    if operation=='nearby':return [r for r in value if r['planet_id'] in visibility.coordinate_ids]
     if operation=='shipyard':return [pick(r,('ship_id','price','capacity','available')) for r in value]
     if operation=='buy_ship':return pick(value,('ship_id','old_ship_id','paid_credits'))
-    if operation=='donate':return pick(value,('route_id','paid_credits','effect_units','opened','jackpot'))
+    if operation=='donate':return pick(value,('route_id','paid_credits','effect_units','opened','jackpot','donated_credits','development_effect','required_effect','remaining_effect','remaining_credits'))
     if operation=='insure':return pick(value,('ship_id','paid_credits','insured'))
     if operation=='bankrupt':return pick(value,('ship_id','cash','planet_id','insured_rescue'))
-    if operation=='flight':return pick(value,('origin_id','destination_id','departure_at','arrival_at','remaining_seconds','position'))
+    if operation=='flight':return pick(value,('origin_id','destination_id','departure_at','arrival_at','remaining_seconds','position','target','origin_position'))
     if operation=='news':
         rows=[]
         for row in value:
@@ -141,13 +148,13 @@ def response(operation,value,visibility):
         if 'level' in result:result.pop('progress',None)
         return result
     if operation=='routes':
-        return [pick(r,('route_id','destination_id','name','distance','fee','seconds','is_open')) for r in value
+        return [pick(r,('route_id','destination_id','name','distance','fee','seconds','is_open','origin_id','origin_name','donated_credits','development_effect','required_effect','remaining_effect','remaining_credits')) for r in value
                 if r['route_id'] in visibility.route_ids and r['destination_id'] in visibility.planet_ids]
     if operation=='development':
         return {**pick(value,('planet_id','enabled')),
                 'industries':[pick(r,('industry','level') if 'level' in r else ('industry','progress')) for r in value['industries']]}
     if operation in ('market','production'):
-        fields=('goods_id','name','volume','price','stock') if operation=='market' else ('goods_id','produces','industry','production_per_tick','imports_per_tick','available','market_capacity')
+        fields=('goods_id','name','volume','price','stock','buy_price','sell_price','buyback_available','owned','free_capacity','max_buy','max_sell') if operation=='market' else ('goods_id','produces','industry','production_per_tick','imports_per_tick','available','market_capacity')
         return {**pick(value,('planet_id','pricing_mode','enabled','tick_seconds')),
                 'entries':[pick(r,fields) for r in value['entries']]}
     raise GameError('MASTER_REQUEST_INVALID')
@@ -171,6 +178,11 @@ class MasterService:
             pid=self.app.resolve_account(context.bbs_id,context.user_id)
             self.app.engine.player(world,pid)
             result=public_definition(self.app.engine.catalog,context.target,context.visibility)
+            if self.app.engine.catalog.exploration is not None:
+                from .exploration import discovered,HIDDEN,coordinates,player_state
+                if discovered(world,pid):
+                    result['definition']['planets'].append({'planet_id':HIDDEN,'name':player_state(world,pid)['name'] or 'Undiscovered','coordinates':dict(zip(('x','y'),coordinates(self.app.engine.catalog)[HIDDEN]))})
+                result['public_definition_hash']=hashlib.sha256(canonical_bytes(result['definition'])).hexdigest()
             result['rules']=fingerprint(self.app.engine.catalog)
             raw=self.app.engine.catalog.data.get('universe')
             result['generator_version']=raw['generator_version'] if raw else None
@@ -197,7 +209,7 @@ class MasterService:
         else:
             pid=self.app.resolve_account(context.bbs_id,context.user_id)
             def access(world):
-                if operation in ('status','news'):return
+                if operation in ('status','news','coordinate_quote','coordinate_depart','explorer_info','nearby','notebook','discoverers','name_star'):return
                 if operation=='flight':
                     player=self.app.engine.player(world,pid)
                     if player.planet_id not in context.visibility.coordinate_ids or (player.destination_id and player.destination_id not in context.visibility.coordinate_ids):raise GameError('DISCLOSURE_DENIED')

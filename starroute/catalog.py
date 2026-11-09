@@ -37,6 +37,8 @@ class Catalog:
             self.ship_grades, self.ship_profiles = build_ship_models(self.data, identifier)
             self.navigation_plans, self.navigation_status = navigation_plans(self.data, self.ship_profiles)
             self.economy = policy(self.data)
+            from .buyback import policy as buyback_policy
+            self.market_buyback = buyback_policy(self.data)
             self.economy_markets = {(r["planet_id"],r["goods_id"]):r for r in self.economy.get("markets",[])}
             self.development = development_policy(self.data, identifier)
             self.development_planets = {r["planet_id"]:r for r in self.development.get("planets",[])}
@@ -51,8 +53,11 @@ class Catalog:
             self.industry_effect_planets = {r['planet_id']:r for r in self.industry_effects.get('planets',[])}
             from .phase3_policy import policy as phase3_policy
             self.phase3 = phase3_policy(self.data,self.ship_profiles,self.ship_grades)
+            from .exploration_policy import policy as exploration_policy,materialize
+            self.exploration=exploration_policy(self.data)
             from .universe import validate
             validate(self)
+            materialize(self)
         except (KeyError, TypeError, ValueError, GameError) as exc:
             raise GameError("INVALID_CONFIG") from exc
 

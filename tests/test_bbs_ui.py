@@ -143,7 +143,7 @@ class UITests(unittest.TestCase):
         self.assertEqual(len(self.b.calls),before)
     def test_map_center_matches_ship(self):
         lines=starmap(self.m.definition,self.m.flight,{'destination_id':'002'},31,11,True,False)
-        self.assertEqual(lines[5][15],'+')
+        self.assertEqual(lines[5][17],'+')  # Four axis cells + centered 26-cell viewport.
 
 class UIServerTests(unittest.TestCase):
     setUp=baseline.Phase5Tests.setUp

@@ -45,12 +45,31 @@ def _compile(template,params,seed,universe_id):
             x,y=find(a),find(b)
             if x!=y:parent[x]=y;selected.add((a,b))
         if len(selected)!=47:continue
+        tree=set(selected)
         for pid in ids:
             nearby=[(d,a,b) for d,a,b in edges if pid in (a,b)]
             selected.update((a,b) for _,a,b in nearby[:params['extra_neighbors']])
+        connected=params['mode']=='grid_mst_connected_v2'
+        if connected and selected==tree:
+            extra=next(((a,b) for _,a,b in edges if (a,b) not in tree),None)
+            if extra is None:continue
+            selected.add(extra)
+        if connected:
+            graph={p:[] for p in ids}
+            for a,b in tree:
+                graph[a].append((b,distance(a,b)));graph[b].append((a,distance(a,b)))
+            def detour(a,b):
+                pending=[(a,None,0)]
+                while pending:
+                    node,parent,length=pending.pop()
+                    if node==b:return length
+                    pending.extend((other,node,length+weight) for other,weight in graph[node] if other!=parent)
+            shortcut=next(((a,b) for d,a,b in edges if (a,b) not in tree and d<detour(a,b)),None)
+            if shortcut is None:continue
+            selected.add(shortcut)
         # Balanced shuffled template assignment guarantees each template is represented.
         assignments=dict(zip(ids,rng.shuffle([templates[i%len(templates)] for i in range(48)])))
-        start=ids[rng.below(len(ids))];visited={start};opened=set()
+        start=ids[rng.below(len(ids))];visited={start};opened=set(tree) if connected else set()
         while len(opened)<params['initial_open_routes']:
             frontier=sorted((distance(a,b),a,b) for a,b in selected if (a in visited)!=(b in visited))
             if not frontier:break

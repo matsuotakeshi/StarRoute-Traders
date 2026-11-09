@@ -148,7 +148,8 @@
     "ROUTE_ALREADY_OPEN": "航路は開通済みです。",
     "ALREADY_INSURED": "保険に加入済みです。",
     "EVENT_NOT_ELIGIBLE": "イベント対象外です。",
-    "EVENT_CATCHUP_REQUIRED": "管理者による時間同期が必要です。"
+    "EVENT_CATCHUP_REQUIRED": "管理者による時間同期が必要です。",
+    "INSUFFICIENT_BUYBACK": "市場の買取可能数が不足しています。時間をおいて再確認してください。"
   },
   "names": {
     "planets": {

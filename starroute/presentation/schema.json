@@ -340,7 +340,8 @@
     "ROUTE_ALREADY_OPEN",
     "ALREADY_INSURED",
     "EVENT_NOT_ELIGIBLE",
-    "EVENT_CATCHUP_REQUIRED"
+    "EVENT_CATCHUP_REQUIRED",
+    "INSUFFICIENT_BUYBACK"
   ],
   "canonical_names": {
     "planets": {
