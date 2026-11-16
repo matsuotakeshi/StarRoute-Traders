@@ -146,7 +146,8 @@ def execute_target(target, archive, digest, sha, output, cancelled, fixture, fix
             result["tests"] = record["tests"]
             result["liner_fixture_sha"] = LINER_SHA
             run_setup(["scp", *ssh_options(key), host+":"+directory+"/door-demo/result.json", str(output/(target+"-door.json"))], log, cancelled)
-            run_setup(["scp", *ssh_options(key), host+":"+directory+"/exploration-demo/result.json", str(output/(target+"-exploration.json"))], log, cancelled)
+            if target == "freebsd":
+                run_setup(["scp", *ssh_options(key), host+":"+directory+"/exploration-demo/result.json", str(output/(target+"-exploration.json"))], log, cancelled)
             result["status"] = "passed"
         except Exception as error:
             result["status"] = "cancelled" if cancelled.is_set() else "failed"
@@ -186,7 +187,7 @@ def all_passed(results, targets, sha):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--target", choices=["all", *TARGETS], default="all")
+    parser.add_argument("--target", choices=["all", *TARGETS], default="freebsd")
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     sha = os.environ.get("GITHUB_SHA", "")

@@ -30,8 +30,15 @@ class CIPolicyTests(unittest.TestCase):
         event['pull_request']['user']['login']='outsider';self.assertFalse(allowed(env,event))
         event['pull_request']['user']['login']='matsuotakeshi';event['number']=2;self.assertFalse(allowed(env,event))
     def test_commands_use_unittest_not_bbs_make_check(self):
-        for target in ('freebsd','rocky','ubuntu'):
-            commands=commands_for(target);self.assertIn('ci/run_tests.py',commands[0]);self.assertNotIn('check',commands[1]);self.assertIn('runtime',commands[1]);self.assertIn('scripts/ui_integration_telnet_demo.py',commands[2])
+        commands=commands_for('freebsd')
+        self.assertIn('ci/run_tests.py',commands[0]);self.assertNotIn('--suite',commands[0])
+        self.assertIn('scripts/ui_integration_telnet_demo.py',commands[2])
+        self.assertIn('scripts/exploration_telnet_demo.py',commands[3])
+        for target in ('rocky','ubuntu'):
+            commands=commands_for(target)
+            self.assertIn('compatibility',commands[0]);self.assertEqual(len(commands),3)
+            self.assertIn('runtime',commands[1]);self.assertNotIn('check',commands[1])
+            self.assertIn('ci/door_smoke.py',commands[2])
     def test_ssh_never_disables_host_key_or_falls_back_to_password(self):
         opts=ssh_options('/key');self.assertIn('StrictHostKeyChecking=yes',opts);self.assertIn('PasswordAuthentication=no',opts);self.assertIn('IdentitiesOnly=yes',opts)
     def test_all_os_gate_rejects_missing_duplicates_and_failure(self):
@@ -65,10 +72,29 @@ class CIPolicyTests(unittest.TestCase):
             self.assertTrue(Path(temp).exists())
     def test_workflow_fixed_checks_and_no_privileged_pr(self):
         text=(ROOT/'.github/workflows/starroute-ci.yml').read_text()
-        self.assertIn('    if: always()',text.split('  native-required:')[1]);self.assertNotIn('pull_request_target',text);self.assertIn('StarRoute / Required',text);self.assertIn('StarRoute / Native required',text)
+        self.assertIn('    if: always()',text.split('  required:')[1])
+        self.assertNotIn('pull_request_target',text);self.assertIn('StarRoute / FreeBSD required',text)
+        self.assertIn('--target freebsd',text);self.assertNotIn('matrix',text)
         self.assertIn("github.ref == 'refs/heads/main'",text);self.assertIn('starroute-native]',text)
+        self.assertIn('cancel-in-progress: true',text)
         import re
-        for action in re.findall(r'uses: ([^\s]+)',text):self.assertRegex(action,r'@[a-f0-9]{40}$')
+        for path in (ROOT/'.github/workflows').glob('*.yml'):
+            value=path.read_text()
+            for action in re.findall(r'uses: ([^\s]+)',value):self.assertRegex(action,r'@[a-f0-9]{40}$')
+            if path.name!='starroute-ci.yml':
+                self.assertIn('workflow_dispatch:',value);self.assertNotIn('pull_request:',value);self.assertNotIn('  push:',value)
+
+    def test_compatibility_is_selected_not_full_regression(self):
+        from run_tests import load_suite
+        def ids(suite):
+            for item in suite:
+                if isinstance(item,unittest.TestSuite):yield from ids(item)
+                else:yield item.id()
+        selected=list(ids(load_suite('compatibility')))
+        self.assertTrue(selected);self.assertFalse(any('_FailedTest' in i for i in selected))
+        self.assertFalse(any('test_exploration.' in i or 'test_economy.' in i for i in selected))
+        self.assertTrue(any('test_sqlite_path' in i for i in selected))
+        with self.assertRaises(ValueError):load_suite('unknown')
 
 @unittest.skipIf(os.name=='nt','POSIX advisory locks and pipe monitoring')
 class CILockTests(unittest.TestCase):
