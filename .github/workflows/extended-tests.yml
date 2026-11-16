@@ -1,0 +1,40 @@
+name: Extended Tests
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        type: choice
+        options: [ubuntu-24.04, windows-2025]
+        default: ubuntu-24.04
+      python:
+        type: choice
+        options: ['3.10', '3.12', '3.14']
+        default: '3.10'
+permissions:
+  contents: read
+concurrency:
+  group: starroute-extended-${{ github.ref }}-${{ inputs.os }}-${{ inputs.python }}
+  cancel-in-progress: true
+jobs:
+  extended:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ${{ inputs.os }}
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: ${{ inputs.python }}
+      - run: python ci/run_tests.py --output "${{ runner.temp }}/starroute-results"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: starroute-extended-results
+          path: ${{ runner.temp }}/starroute-results/tests.json
+          if-no-files-found: error
+          retention-days: 30

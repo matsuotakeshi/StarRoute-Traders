@@ -19,8 +19,26 @@ def execute(suite,stream=sys.stderr):
             'seconds':round(time.monotonic()-start,3),'ok':result.wasSuccessful() and result.testsRun>0,
             'failed_tests':[{'test':t.id(),'traceback':trace} for t,trace in result.failures+result.errors]}
 
+COMPATIBILITY_TESTS = (
+    'tests.test_ci', 'tests.test_platform_smoke',
+    'tests.test_scheduled_backup',
+    'tests.test_ports_time.MaintenanceTests',
+    'tests.test_phase5.Phase5Tests.test_thin_client_imports_without_engine',
+    'tests.test_phase5.Phase5Tests.test_terminal_live_size_overrides_startup_environment',
+    'tests.test_phase5.Phase5Tests.test_terminal_map_ansi_names_width',
+)
+
+
+def load_suite(name):
+    if name == 'regression':
+        return unittest.defaultTestLoader.discover(str(ROOT/'tests'),top_level_dir=None)
+    if name == 'compatibility':
+        return unittest.defaultTestLoader.loadTestsFromNames(COMPATIBILITY_TESTS)
+    raise ValueError('Unknown suite')
+
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--suite',choices=('regression','compatibility'),default='regression');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     output=a.output.resolve();output.mkdir(parents=True,exist_ok=True);os.chdir(ROOT)
     report={'ok':False,'source_sha':os.environ.get('GITHUB_SHA') or (ROOT/'.ci-source-sha').read_text().strip() if (ROOT/'.ci-source-sha').exists() else os.environ.get('GITHUB_SHA')}
     try:
@@ -28,9 +46,9 @@ def main():
         # All generated DBs/keys remain in a private run-specific directory, not in the checkout.
         with tempfile.TemporaryDirectory(prefix='starroute-tests-') as private:
             previous=tempfile.tempdir;tempfile.tempdir=str(Path(private).resolve())
-            try:report.update(execute(unittest.defaultTestLoader.discover(str(ROOT/'tests'),top_level_dir=None)))
+            try:report.update(execute(load_suite(a.suite)))
             finally:tempfile.tempdir=previous
-        if report['ok']:
+        if report['ok'] and a.suite=='regression':
             code=subprocess.call([sys.executable,'scripts/demo.py'],cwd=ROOT)
             report['cli_exit_code']=code;report['ok']=code==0
             if report['ok']:
@@ -40,6 +58,7 @@ def main():
                         report[name+'_exit_code']=code
                         if code:report['ok']=False;break
     except Exception as error:report['error']=str(error)
+    report['suite']=a.suite;report['exit_code']=0 if report['ok'] else 1
     (output/'tests.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
     print('SRT_UNIT_SUMMARY '+json.dumps({k:v for k,v in report.items() if k not in ('failed_tests','environment')}),flush=True)
     return 0 if report['ok'] else 1

@@ -1,0 +1,30 @@
+name: Ubuntu Compatibility
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: starroute-ubuntu-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  compatibility:
+    if: ${{ github.repository == 'matsuotakeshi/StarRoute-Traders' && github.ref == 'refs/heads/main' }}
+    runs-on: [self-hosted, Linux, X64, starroute-native]
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Native verification
+        run: python3 ci/native_ci.py --target ubuntu --output "$RUNNER_TEMP/starroute-native-${{ github.run_id }}-${{ github.run_attempt }}"
+      - name: Retain logs and results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: starroute-native-results
+          path: |
+            ${{ runner.temp }}/starroute-native-${{ github.run_id }}-${{ github.run_attempt }}/*.log
+            ${{ runner.temp }}/starroute-native-${{ github.run_id }}-${{ github.run_attempt }}/*.json
+          if-no-files-found: error
+          retention-days: 30
+

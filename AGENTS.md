@@ -1,15 +1,23 @@
 # Development and CI policy
 
-Use the CI in `CI.md` for every subsequent feature, fix, refactor and release candidate.
-Start from current main, use a branch and PR, and update relevant tests. Never disable tests or
-relax the gate to obtain a passing result. Require both `StarRoute / Required` and `StarRoute / Native required` before merging.
-After integration verify `StarRoute / Native required` for the exact main commit on FreeBSD,
-Rocky Linux and Ubuntu. Failed or incomplete native CI blocks release/package promotion.
+Use CI.md for all subsequent development. The revised user policy supersedes the
+former all-OS required matrix. Use a branch and PR. The sole normal required check
+is `StarRoute / FreeBSD required`: all existing regression tests, CLI and isolated
+Telnet scenarios on FreeBSD / Python 3.12. Missing, failed or cancelled runs block merge.
 
-External PRs use GitHub-hosted runners only. Home runners/SSH hosts execute main and
-owner-authored same-repository PRs to main. Review external contributions and port them to
-an owner-authored same-repository PR before integration. Manual dispatch is main-only. Preserve the root-owned runner admission hook; workflow guards alone are not
-the trust boundary. Never use production keys/worlds, deploy, or restart shared services for CI.
-Keep Liner Notes and StarRoute workspaces/artifacts separate. Use the shared per-host lock and
-heartbeat cancellation. Cleanup only the current StarRoute run. Report skipped/unsupported
-platforms and distinguish synthetic, native and actual Telnet results.
+Linux-dependent changes and Linux release candidates require the manual Linux
+Compatibility workflow on Rocky; it runs selected OS tests and a short real Door smoke.
+Ubuntu Compatibility is manual for Ubuntu-specific work. Extended Tests selects one
+hosted OS and Python version manually. Solaris is not required. Linux distribution
+installation/service packages are not implemented or claimed verified by runtime smoke.
+
+Reuse existing successful results for the same commit; do not rerun them unnecessarily.
+New commits cancel superseded runs of the same workflow/branch. No automatic retries
+or automatic fix loops. Investigate existing failure logs and run only needed checks.
+PR and main push are distinct commit checks; do not manually duplicate either.
+
+Only trusted main and owner-authored same-repository PRs can use the home runner.
+External PRs never access it and cannot pass the required gate without review and
+porting to an owner-authored branch. Preserve the root-owned admission hook, existing
+SSH host verification, shared per-VM lock and heartbeat cancellation. Manual native
+workflows are main-only. No production data, deployment, Liner CI changes or service restarts.

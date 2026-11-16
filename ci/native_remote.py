@@ -54,6 +54,10 @@ def commands_for(target):
     python = sys.executable
     liner = str(Path.cwd().parent / "liner-fixture" / "source")
     flags = [] if target == "freebsd" else ["CC=clang", "SQLITE_CFLAGS=", "SQLITE_LIBS=-lsqlite3"]
+    if target != "freebsd":
+        return [[python, "ci/run_tests.py", "--suite", "compatibility", "--output", "ci-output"],
+                ["make", "-C", liner, "-j2", *flags, "runtime"],
+                [python, "ci/door_smoke.py", "--directory", str(Path.cwd().parent / "door-demo"), "--liner", liner]]
     return [[python, "ci/run_tests.py", "--output", "ci-output"],
             ["make", "-C", liner, "-j2", *flags, "runtime"],
             [python, "scripts/ui_integration_telnet_demo.py", "--template", "examples/market-buyback-trial.json", "--directory", str(Path.cwd().parent / "door-demo"), "--liner", liner],
