@@ -14,7 +14,8 @@ installation/service packages are not implemented or claimed verified by runtime
 Reuse existing successful results for the same commit; do not rerun them unnecessarily.
 New commits cancel superseded runs of the same workflow/branch. No automatic retries
 or automatic fix loops. Investigate existing failure logs and run only needed checks.
-PR and main push are distinct commit checks; do not manually duplicate either.
+PR regression is required before merge; main push does not rerun it.
+Use workflow_dispatch on main when exact-main or release verification is needed.
 
 Only trusted main and owner-authored same-repository PRs can use the home runner.
 External PRs never access it and cannot pass the required gate without review and

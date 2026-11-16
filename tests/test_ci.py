@@ -75,6 +75,8 @@ class CIPolicyTests(unittest.TestCase):
         self.assertIn('    if: always()',text.split('  required:')[1])
         self.assertNotIn('pull_request_target',text);self.assertIn('StarRoute / FreeBSD required',text)
         self.assertIn('--target freebsd',text);self.assertNotIn('matrix',text)
+        self.assertNotIn('  push:',text);self.assertIn('  pull_request:',text)
+        self.assertIn('  workflow_dispatch:',text);self.assertNotIn("github.event_name == 'push'",text)
         self.assertIn("github.ref == 'refs/heads/main'",text);self.assertIn('starroute-native]',text)
         self.assertIn('cancel-in-progress: true',text)
         import re
