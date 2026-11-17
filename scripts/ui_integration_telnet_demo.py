@@ -56,12 +56,8 @@ def main():
         try:return r._load().players[r.resolve_account(site,'1')]
         finally:r.close()
     def confirm(c):
-        # Typical receipts fit on the first page. Review longer receipts before Y.
-        result=command(c,'y')
-        for _ in range(5):
-            if 'remaining details' not in result and '残りの確認' not in result:return result
-            command(c,'>');result=command(c,'y')
-        raise AssertionError('confirmation paging')
+        from telnet_confirmation import confirm_menu
+        return confirm_menu(lambda line: command(c,line))
     try:
         db,key=setup_world(base/'local','phase3-complete-demo',open_routes=1,template=a.template)
         cfg={'mode':'standalone','database':str(db),'reference_key':str(base/'local/reference.key'),'profile':profile(db,key,'standalone'),'language':'ja','ansi':True}

@@ -2,6 +2,7 @@
 import argparse,json,os,sys,time,uuid,select,threading
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
+from telnet_wait import wait_prompt, close_servers
 from phase5_telnet_demo import setup_world
 from tests.phase5_support import certificate
 from starroute.repository import SQLiteRepository
@@ -47,13 +48,21 @@ def main():
         while select.select([c.sock],[],[],.1)[0]:c.receive()
         c.buf=b''
     def command(c,line,label=None,columns=80,rows=24):
-        drain(c);c.send(line.encode()+b'\n');raw=c.until(b'Select > ')
+        drain(c);c.send(line.encode()+b'\n')
+        started=time.monotonic()
+        try:raw=wait_prompt(c)
+        except Exception:
+            # Private fixture directory only: never print player data or input text.
+            (base/'prompt-timeout.bin').write_bytes(c.buf)
+            print('TELNET prompt failed; private prompt-timeout.bin and standalone/door-stack.log; elapsed='+str(round(time.monotonic()-started,3)),flush=True)
+            raise
         plain=capture(raw,label,columns,rows) if label else ANSI.sub('',raw.decode('utf8','replace')).replace('\r','')
         print('MENU operation '+('OK' if 'Traceback' not in plain else 'FAIL'),flush=True)
         assert 'Traceback' not in plain;return plain
     def start(label,cfg):
         home=base/label;home.mkdir();config=home/'node.json';save(config,cfg)
-        wrapper=home/'door';wrapper.write_text('#!'+sys.executable+'\nimport sys\nsys.path.insert(0,'+repr(str(ROOT))+')\nfrom starroute_bbs.door import main\nsys.argv=["door","--config",'+repr(str(config))+']\nraise SystemExit(main())\n');wrapper.chmod(0o700)
+        stack=home/'door-stack.log'
+        wrapper=home/'door';wrapper.write_text('#!'+sys.executable+'\nimport sys,faulthandler\n_stack=open('+repr(str(stack))+',"w")\nfaulthandler.enable(file=_stack)\nfaulthandler.dump_traceback_later(15,repeat=True,file=_stack)\nsys.path.insert(0,'+repr(str(ROOT))+')\nfrom starroute_bbs.door import main\nsys.argv=["door","--config",'+repr(str(config))+']\nraise SystemExit(main())\n');wrapper.chmod(0o700)
         doors=home/'doors.conf';doors.write_text(f'1|0|1800|{wrapper}|{home}|StarRoute Traders\n')
         server=Server(str(liner/'runtime'),home/'board',members=home/'members',options=['--doors',str(doors)],menu=True,telnet=True,language='en',menu_dir=liner/'menus',bind='127.0.0.1');servers.append(server)
         c=Client(server.port);clients.append(c);c.until();password=uuid.uuid4().hex
@@ -70,12 +79,8 @@ def main():
         try:return r._load().players[r.resolve_account(site,'1')]
         finally:r.close()
     def confirm(c):
-        # Typical receipts fit on the first page. Review longer receipts before Y.
-        result=command(c,'y')
-        for _ in range(5):
-            if 'remaining details' not in result and '残りの確認' not in result:return result
-            command(c,'>');result=command(c,'y')
-        raise AssertionError('confirmation paging')
+        from telnet_confirmation import confirm_menu
+        return confirm_menu(lambda line: command(c,line))
     try:
         db,key=setup_exploration(base/'local')
         cfg={'mode':'standalone','database':str(db),'reference_key':str(base/'local/reference.key'),'profile':profile(db,key,'standalone'),'language':'en','ansi':True}
@@ -109,8 +114,9 @@ def main():
         finally:r.close()
         command(c,'m');command(c,'3');command(c,'1');command(c,'1');confirm(c)
         assert state(db,'standalone').cargo
-        command(c,'m');command(c,'4');command(c,'1');command(c,'1');confirm(c)
-        assert not state(db,'standalone').cargo
+        command(c,'m');command(c,'4');command(c,'1');command(c,'1');receipt=confirm(c)
+        (screens/'sell-result.txt').write_text(receipt,encoding='utf8')
+        assert not state(db,'standalone').cargo, 'Sale not settled; see private screens/sell-result.txt'
         command(c,'m');command(c,'e');command(c,'7');command(c,'m');command(c,'e');command(c,'3');command(c,'1');command(c,'1');confirm(c)
         assert state(db,'standalone').destination_id
         c.send(b'q\n');assert b'Back to BBS' in c.until();assert b'PONG' in c.cmd('PING')
@@ -123,7 +129,7 @@ def main():
         for c in clients:
             try:c.close()
             except OSError:pass
-        for server in servers:server.close()
+        close_servers(servers)
         if master:master.shutdown();master.server_close()
 
 if __name__=='__main__':main()

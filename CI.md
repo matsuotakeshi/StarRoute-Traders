@@ -1,11 +1,11 @@
-# StarRoute Traders CI（軽量版、2026-11-16）
+# StarRoute Traders CI（軽量版、2026-11-17）
 
 通常はFreeBSD 10.0.0.50 / Python 3.12だけで既存unittest全件、CLI、隔離Telnet UI・探索試遊を実行する。
 ゲームロジックのテストは削除・縮小していない。長時間の実航行試遊もFreeBSDでは維持する。
 
 | workflow | 起動 | 内容 | 必須 |
 |---|---|---|---|
-| FreeBSD Regression (`starroute-ci.yml`) | PR / main push / 手動 | 全回帰＋CLI＋実Telnet | `StarRoute / FreeBSD required` |
+| FreeBSD Regression (`starroute-ci.yml`) | PR / 手動 | 全回帰＋CLI＋実Telnet | `StarRoute / FreeBSD required` |
 | Linux Compatibility | 手動、Linux変更・Linuxリリース前 | Rocky上の選択テスト＋短いTelnet/PTY Door試験 | 該当変更のレビューで確認 |
 | Ubuntu Compatibility | Ubuntu固有変更時に手動 | 同じ限定試験 | 通常必須ではない |
 | Extended Tests | 手動 | hosted OS 1つ・Python 1つを選択して全回帰 | 通常必須ではない |
@@ -31,7 +31,9 @@ Linux/Ubuntu/Extendedは必要な対象だけ選ぶ。通常はmainの手動work
 同じnative supervisorと共有VMロックを利用して確認する。試験起動だけのコミットは作らない。
 
 同一コミットの成功済み結果は再利用する。既存のrun URL、SHA、JSONを先に確認する。
-PRの仮マージSHAとmain SHAは異なるので、内容一致を示す場合はtree IDも記録する。
+main pushでは全回帰を再実行しない。mainの直接pushで未検証変更を入れず、PRの必須チェックを通す。
+リリース等で最終main SHAの証跡が必要な場合はworkflow_dispatchを使用する。
+PRの仮マージSHAとmain SHAは異なるため、PR成功をmain実行済みとは報告しない。
 新コミットでは同じworkflow/branchの古い実行・待機をcancel-in-progressでキャンセルする。
 自動再試行や自動修正ループはない。原因不明の失敗が続く場合はログと調査結果を報告して停止する。
 
