@@ -70,12 +70,8 @@ def main():
         try:return r._load().players[r.resolve_account(site,'1')]
         finally:r.close()
     def confirm(c):
-        # Typical receipts fit on the first page. Review longer receipts before Y.
-        result=command(c,'y')
-        for _ in range(5):
-            if 'remaining details' not in result and '残りの確認' not in result:return result
-            command(c,'>');result=command(c,'y')
-        raise AssertionError('confirmation paging')
+        from telnet_confirmation import confirm_menu
+        return confirm_menu(lambda line: command(c,line))
     try:
         db,key=setup_exploration(base/'local')
         cfg={'mode':'standalone','database':str(db),'reference_key':str(base/'local/reference.key'),'profile':profile(db,key,'standalone'),'language':'en','ansi':True}
@@ -109,8 +105,9 @@ def main():
         finally:r.close()
         command(c,'m');command(c,'3');command(c,'1');command(c,'1');confirm(c)
         assert state(db,'standalone').cargo
-        command(c,'m');command(c,'4');command(c,'1');command(c,'1');confirm(c)
-        assert not state(db,'standalone').cargo
+        command(c,'m');command(c,'4');command(c,'1');command(c,'1');receipt=confirm(c)
+        (screens/'sell-result.txt').write_text(receipt,encoding='utf8')
+        assert not state(db,'standalone').cargo, 'Sale not settled; see private screens/sell-result.txt'
         command(c,'m');command(c,'e');command(c,'7');command(c,'m');command(c,'e');command(c,'3');command(c,'1');command(c,'1');confirm(c)
         assert state(db,'standalone').destination_id
         c.send(b'q\n');assert b'Back to BBS' in c.until();assert b'PONG' in c.cmd('PING')
