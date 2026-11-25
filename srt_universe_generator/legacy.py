@@ -27,12 +27,18 @@ def _compile(template,params,seed,universe_id):
     from starroute.catalog import identifier
     identifier(seed);params=parameters(params);c=_template(template)
     if not isinstance(universe_id,str) or str(uuid.UUID(universe_id))!=universe_id:raise ValueError('universe id')
-    if c.phase3 is not None and (params['width'],params['height'])!=(240,120):raise ValueError('phase3 chart requires 240 by 120')
+    clustered='distribution' in params
+    if c.phase3 is not None and not clustered and (params['width'],params['height'])!=(240,120):raise ValueError('phase3 chart requires 240 by 120')
     names=normal_planets();ids=[r['id'] for r in names];templates=sorted(c.planets)
     max_edge=min(s['max_distance'] for s in c.ships.values())
     for attempt in range(params['max_attempts']):
         rng=Draw(seed,attempt)
-        cells=rng.shuffle([(x,y) for x in range(params['width']) for y in range(params['height'])])[:48]
+        if clustered:
+            from .clustered import clustered_cells
+            cells=clustered_cells(params,Draw(seed+'-clusters',attempt))
+            if cells is None:continue
+        else:
+            cells=rng.shuffle([(x,y) for x in range(params['width']) for y in range(params['height'])])[:48]
         coords=dict(zip(ids,cells))
         def distance(a,b):return abs(coords[a][0]-coords[b][0])+abs(coords[a][1]-coords[b][1])
         edges=sorted((distance(a,b),a,b) for i,a in enumerate(ids) for b in ids[i+1:] if distance(a,b)<=max_edge)
@@ -65,6 +71,12 @@ def _compile(template,params,seed,universe_id):
                     if node==b:return length
                     pending.extend((other,node,length+weight) for other,weight in graph[node] if other!=parent)
             shortcut=next(((a,b) for d,a,b in edges if (a,b) not in tree and d<detour(a,b)),None)
+            if clustered:
+                # Keep the most useful ship-reachable shortcut available for donations.
+                saving,a,b=max((detour(a,b)-d,a,b) for d,a,b in edges if (a,b) not in tree)
+                shortcut=(a,b) if saving>0 else None
+                from .hidden import hidden_position
+                if hidden_position(coords,params,seed) is None:continue
             if shortcut is None:continue
             selected.add(shortcut)
         # Balanced shuffled template assignment guarantees each template is represented.

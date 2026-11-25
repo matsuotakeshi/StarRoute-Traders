@@ -12,7 +12,7 @@ def build(output):
     paths=[ROOT/'starroute'/(name+'.py') for name in VALIDATORS]
     paths += [ROOT/'starroute/data/normal-planets.json']
     paths += list((ROOT/'srt_universe_generator').glob('*.py'))
-    paths += [ROOT/'examples'/name for name in ('industry-effects-trial.json','universe-generator-trial.json','industry-levels-trial.json','phase3-trial.json','phase3-generator.json','market-buyback-trial.json','connected-universe-trial.json','exploration-trial.json','exploration-operations.json')]
+    paths += [ROOT/'examples'/name for name in ('industry-effects-trial.json','universe-generator-trial.json','industry-levels-trial.json','phase3-trial.json','phase3-generator.json','market-buyback-trial.json','connected-universe-trial.json','clustered-universe-trial.json','clustered-universe-large-comparison.json','release-world.json','exploration-trial.json','exploration-operations.json')]
     with zipfile.ZipFile(output,'x',zipfile.ZIP_DEFLATED) as bundle:
         for path in paths:bundle.write(path,path.relative_to(ROOT).as_posix())
         bundle.writestr('README.txt',

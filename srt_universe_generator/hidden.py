@@ -4,11 +4,9 @@ from .legacy import Draw
 from starroute.development import INDUSTRIES
 
 
-def generate_hidden(data,seed,draw):
-    raw=data['universe'];params=raw['parameters'];rng=Draw(seed+'-hidden',0)
-    coordinates={r['planet_id']:(r['x'],r['y']) for r in raw['coordinates']}
+def hidden_position(coordinates,params,seed):
+    rng=Draw(seed+'-hidden',0)
     def distance(a,b):return max(abs(a[0]-b[0]),abs(a[1]-b[1]))
-    position=None
     # Finite candidate enumeration, not unbounded random rejection.
     for reference in rng.shuffle(sorted(coordinates))[:params['max_attempts']]:
         rx,ry=coordinates[reference];radius=params['hidden_reference_max_distance']
@@ -16,8 +14,16 @@ def generate_hidden(data,seed,draw):
                     for y in range(max(0,ry-radius),min(params['height']-1,ry+radius)+1)
                     if all(distance((x,y),p)>=params['hidden_min_distance'] for p in coordinates.values())]
         if candidates:
-            position=candidates[rng.below(len(candidates))];break
-    if position is None:raise ValueError('hidden placement constraints unsatisfied')
+            return reference,candidates[rng.below(len(candidates))],rng
+    return None
+
+
+def generate_hidden(data,seed,draw):
+    raw=data['universe'];params=raw['parameters']
+    coordinates={r['planet_id']:(r['x'],r['y']) for r in raw['coordinates']}
+    placement=hidden_position(coordinates,params,seed)
+    if placement is None:raise ValueError('hidden placement constraints unsatisfied')
+    reference,position,rng=placement
     origin=sorted(coordinates)[rng.below(48)];pid='hidden-001'
     def rows(group,key=None):
         source=data[group] if key is None else data[group][key]

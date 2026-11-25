@@ -23,15 +23,30 @@ def parameters(raw):
     fields={'mode','status','width','height','extra_neighbors','initial_open_routes',
             'production_percent_min','production_percent_max','max_attempts'}
     connected=isinstance(raw,dict) and raw.get('mode')==CONNECTED_MODE
+    clustered=connected and 'distribution' in raw
+    if clustered:fields.add('distribution')
     if connected:fields|={'hidden_min_distance','hidden_reference_max_distance'}
     if not isinstance(raw,dict) or set(raw)!=fields or raw['mode'] not in ('grid_mst_templates_v1',CONNECTED_MODE) or raw['status']!='provisional':
         raise ValueError('generator policy')
-    integer(raw['width'],2,240);integer(raw['height'],2,128)
+    integer(raw['width'],2,360 if clustered else 240)
+    integer(raw['height'],2,180 if clustered else 128)
+    if clustered:
+        distribution=raw['distribution']
+        required={'mode','cluster_count','frontier_planets','cluster_radius','void_width','min_distance'}
+        if not isinstance(distribution,dict) or set(distribution)!=required or distribution['mode']!='clusters_and_void_v1':
+            raise ValueError('cluster distribution policy')
+        integer(distribution['cluster_count'],2,8)
+        integer(distribution['frontier_planets'],0,16)
+        integer(distribution['cluster_radius'],1,min(raw['width'],raw['height'])//2)
+        integer(distribution['void_width'],1,raw['width']//2)
+        integer(distribution['min_distance'],1,max(raw['width'],raw['height']))
+        if raw['hidden_min_distance']!=10 or raw['hidden_reference_max_distance']!=40:
+            raise ValueError('clustered worlds require hidden distances 10 and 40')
     if raw['width']*raw['height']<48:raise ValueError('insufficient coordinate cells')
     integer(raw['extra_neighbors'],1 if connected else 0,8)
     integer(raw['initial_open_routes'],47 if connected else 1,47 if connected else 46)
     if connected:
-        if (raw['width'],raw['height'])!=(240,120):raise ValueError('connected chart dimensions')
+        if not clustered and (raw['width'],raw['height'])!=(240,120):raise ValueError('connected chart dimensions')
         integer(raw['hidden_min_distance'],1,240);integer(raw['hidden_reference_max_distance'],1,240)
     integer(raw['production_percent_min'],1,10000)
     integer(raw['production_percent_max'],raw['production_percent_min'],10000)
@@ -58,3 +73,13 @@ def _template(data):
     return c
 
 
+
+
+def void_columns(params):
+    width=params['distribution']['void_width']
+    left=(params['width']-width)//2
+    return range(left,left+width)
+
+
+def separation(a,b):
+    return max(abs(a[0]-b[0]),abs(a[1]-b[1]))

@@ -75,4 +75,5 @@ libexec/starroute-traders/srt_universe_generator/legacy.py
 libexec/starroute-traders/srt_universe_generator/levels.py
 libexec/starroute-traders/srt_universe_generator/hidden.py
 %%EXAMPLESDIR%%/connected-universe-trial.json
+%%EXAMPLESDIR%%/clustered-universe-trial.json
 %%EXAMPLESDIR%%/release-world.json
