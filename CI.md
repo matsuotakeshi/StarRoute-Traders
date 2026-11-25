@@ -7,7 +7,7 @@
 |---|---|---|---|
 | FreeBSD Regression (`starroute-ci.yml`) | PR / 手動 | 全回帰＋CLI＋実Telnet | `StarRoute / FreeBSD required` |
 | Linux Compatibility | 手動、Linux変更・Linuxリリース前 | Rocky上の選択テスト＋短いTelnet/PTY Door試験 | 該当変更のレビューで確認 |
-| Ubuntu Compatibility | Ubuntu固有変更時に手動 | 同じ限定試験 | 通常必須ではない |
+| Debian Compatibility | Debian固有変更時に手動 | Debian子機上の同じ限定試験 | 通常必須ではない |
 | Extended Tests | 手動 | hosted OS 1つ・Python 1つを選択して全回帰 | 通常必須ではない |
 
 Python対応は3.10以上。通常は3.12、追加バージョンは必要時だけ選ぶ。WindowsもExtended Testsで選択する。
@@ -26,7 +26,7 @@ Linux関連変更ではマージ前に該当Linux証跡を確認する（GitHub�
 ## 操作と省資源
 
 Actionsでworkflowを選び、mainを指定してRun workflowを実行する。
-Linux/Ubuntu/Extendedは必要な対象だけ選ぶ。通常はmainの手動workflowを使用する。
+Linux/Debian/Extendedは必要な対象だけ選ぶ。通常はmainの手動workflowを使用する。
 マージ前のLinux関連変更は、信頼済みの対象コミットを専用作業領域に配置し、
 同じnative supervisorと共有VMロックを利用して確認する。試験起動だけのコミットは作らない。
 
@@ -39,8 +39,8 @@ PRの仮マージSHAとmain SHAは異なるため、PR成功をmain実行済み�
 
 ## 安全・結果
 
-10.0.0.54の既存StarRoute runner (`starroute-native`) と既存SSH鍵を利用。
-Liner用runner、鍵、VM、本番、root管理admission hookは変更しない。
+10.0.0.54の既存StarRoute runner (`starroute-native`) を利用。Debian子機は `ci-test@10.0.0.59` に `/home/ci/.ssh/id_ed25519_debian_ci` で接続し、親機の `ci` ユーザーの `known_hosts` に登録したホスト鍵を照合する。
+Liner用runner、本番、root管理admission hookは変更しない。
 各VMの `~/ci/.liner-notes-native.lock` で別プロジェクトとも排他。待機中もheartbeatで中止を検知する。
 一時パス・DB・ポートはStarRoute専用。終了時はSHAマーカーが一致する自分のrunだけを削除する。
 外部/未信頼PRは自宅runnerでは実行しない。required gateはskipも失敗にする。

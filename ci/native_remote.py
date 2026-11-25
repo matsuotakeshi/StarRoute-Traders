@@ -187,7 +187,7 @@ def worker(target, sha, timeout, lease):
 def cleanup(directory, sha):
     import shutil
     directory = directory.resolve()
-    if directory.parent != (Path.home()/"ci"/"starroute").resolve() or not re.fullmatch(r"run-(freebsd|rocky|ubuntu)-[A-Za-z0-9]+", directory.name):
+    if directory.parent != (Path.home()/"ci"/"starroute").resolve() or not re.fullmatch(r"run-(freebsd|rocky|debian)-[A-Za-z0-9]+", directory.name):
         raise ValueError("Cleanup path outside StarRoute runs")
     marker=directory/"source"/".ci-source-sha"
     if marker.read_text().strip()!=sha:
@@ -207,7 +207,7 @@ def main():
     clean.add_argument("directory")
     clean.add_argument("sha")
     run = sub.add_parser("worker")
-    run.add_argument("target", choices=["freebsd", "rocky", "ubuntu"])
+    run.add_argument("target", choices=["freebsd", "rocky", "debian"])
     run.add_argument("sha")
     run.add_argument("--timeout", type=int, default=3300)
     run.add_argument("--lease", type=int, default=45)

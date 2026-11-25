@@ -7,7 +7,7 @@ Telnet scenarios on FreeBSD / Python 3.12. Missing, failed or cancelled runs blo
 
 Linux-dependent changes and Linux release candidates require the manual Linux
 Compatibility workflow on Rocky; it runs selected OS tests and a short real Door smoke.
-Ubuntu Compatibility is manual for Ubuntu-specific work. Extended Tests selects one
+Debian Compatibility is manual for Debian-specific work. Extended Tests selects one
 hosted OS and Python version manually. Solaris is not required. Linux distribution
 installation/service packages are not implemented or claimed verified by runtime smoke.
 
