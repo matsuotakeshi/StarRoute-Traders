@@ -1,10 +1,10 @@
-name: Ubuntu Compatibility
+name: Debian Compatibility
 on:
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: starroute-ubuntu-${{ github.ref }}
+  group: starroute-debian-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   compatibility:
@@ -16,7 +16,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Native verification
-        run: python3 ci/native_ci.py --target ubuntu --output "$RUNNER_TEMP/starroute-native-${{ github.run_id }}-${{ github.run_attempt }}"
+        run: python3 ci/native_ci.py --target debian --output "$RUNNER_TEMP/starroute-native-${{ github.run_id }}-${{ github.run_attempt }}"
       - name: Retain logs and results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -27,4 +27,3 @@ jobs:
             ${{ runner.temp }}/starroute-native-${{ github.run_id }}-${{ github.run_attempt }}/*.json
           if-no-files-found: error
           retention-days: 30
-

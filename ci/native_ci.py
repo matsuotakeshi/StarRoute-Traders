@@ -23,7 +23,7 @@ LINER_SHA = "ad20f564955bb97e43addac3c4f18e79c7eef62c"
 TARGETS = {
     "freebsd": ("takeshi@10.0.0.50", "/home/ci/.ssh/id_ed25519_freebsd_ci"),
     "rocky": ("ci-test@10.0.0.51", "/home/ci/.ssh/id_ed25519_rocky_ci"),
-    "ubuntu": ("ci-test@10.0.0.53", "/home/ci/.ssh/id_ed25519_ubuntu_ci"),
+    "debian": ("ci-test@10.0.0.59", "/home/ci/.ssh/id_ed25519_debian_ci"),
 }
 
 
