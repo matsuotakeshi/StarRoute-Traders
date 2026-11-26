@@ -79,7 +79,7 @@ def validate(catalog):
     if catalog.phase3!=source.phase3:raise ValueError('phase3 rule mismatch')
     if catalog.exploration!=source.exploration:raise ValueError('exploration rule mismatch')
     if catalog.market_buyback!=source.market_buyback:raise ValueError('buyback rule mismatch')
-    if catalog.phase3 is not None and (params['width'],params['height'])!=(240,120):raise ValueError('phase3 chart dimensions')
+    if catalog.phase3 is not None and 'distribution' not in params and (params['width'],params['height'])!=(240,120):raise ValueError('phase3 chart dimensions')
     if modern:level_parameters(raw['industry_levels'])
     elif 'industry_levels' in raw:raise ValueError('unexpected level policy')
     if modern and 'manifest_hash' not in raw:raise ValueError('missing manifest checksum')
@@ -95,6 +95,15 @@ def validate(catalog):
         if cell in cells:raise ValueError('duplicate coordinate')
         coords[row['planet_id']]=cell;cells.add(cell)
     if set(coords)!=expected:raise ValueError('coordinates incomplete')
+    if 'distribution' in params:
+        from .generation_contract import void_columns, separation
+        distribution=params['distribution']
+        void=void_columns(params)
+        if any(x in void for x,y in cells):raise ValueError('planet in reserved void')
+        points=sorted(cells)
+        if any(separation(a,b)<distribution['min_distance']
+               for i,a in enumerate(points) for b in points[i+1:]):
+            raise ValueError('planet separation')
     def same(a,b):return canonical_bytes(a)==canonical_bytes(b)
     # Verify effective shared policies, independently of generator code or claimed inputs.
     for group in ('goods','ships','ship_grades','regional_prices'):
