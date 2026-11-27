@@ -68,6 +68,37 @@ class ResetTests(unittest.TestCase):
                 self.assertEqual(b['seconds'],(a['seconds']+59)//60);self.assertEqual(a['fuel_cost'],b['fuel_cost'])
         self.assertEqual(len(list(n['BACKUP_PARENT'].glob('*/state-and-config.tar'))),1)
 
+    def test_permissions_set_before_world_is_published(self):
+        handoff = self.ns['handoff']
+        state = self.ns['STATE']
+        def checked(world, owner):
+            self.assertFalse(world.is_relative_to(state))
+            self.assertEqual(stat.S_IMODE(world.parent.stat().st_mode), 0o700)
+            self.assertFalse((state/world.name).exists())
+            handoff(world, owner)
+            for path in [world, *world.rglob('*')]:
+                self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o700 if path.is_dir() else 0o600)
+        self.ns['handoff'] = checked
+        self.perform()
+
+    def test_handoff_rejects_additional_file_links(self):
+        directory = self.root/'staged'
+        directory.mkdir()
+        file = self.root/'original'
+        file.touch(mode=0o640)
+        original = file.stat()
+        os.link(file, directory/'unexpected')
+        with self.assertRaises(RuntimeError):
+            self.ns['handoff'](directory, (os.getuid(), os.getgid()))
+        self.assertEqual(file.stat().st_mode, original.st_mode)
+
+    def test_untrusted_staging_parent_stops_before_door_closure(self):
+        self.root.chmod(0o770)
+        with self.assertRaisesRegex(RuntimeError, 'administrator-controlled'):
+            self.perform()
+        self.preserved()
+        self.assertTrue(os.access(self.ns['DOOR'], os.X_OK))
+
     def test_failures_never_switch(self):
         for stage in ('door_closed','backup_verified','new_active','validated','before_switch'):
             with self.subTest(stage=stage):

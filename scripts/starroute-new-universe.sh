@@ -154,7 +154,70 @@ def validate_new(new, uid, config, backup):
     if not reply.get('admitted'):
         raise RuntimeError('New standalone profile was not admitted')
 
+def prepare_world(new, bbs_id, backup):
+    template = read_json(EXAMPLES/'release-world.json')
+    for plan in template['navigation']['plans']:
+        plan['normal_seconds'] = max(1, (plan['normal_seconds']+SPEEDUP-1)//SPEEDUP)
+        for option in plan['warp_options']:
+            option['seconds'] = max(1, (option['seconds']+SPEEDUP-1)//SPEEDUP)
+    write_json(new/'template.json', template)
+    shutil.copyfile(EXAMPLES/'connected-universe-trial.json', new/'generator.json')
+    shutil.copyfile(EXAMPLES/'industry-levels-trial.json', new/'levels.json')
+    policy = read_json(LIB/'starroute/config/phase4.json')
+    policy['round_seconds'] = ROUND_DAYS * 86400
+    write_json(new/'round-policy.json', policy)
+    generated = run('starroute-universe', ['--template', new/'template.json',
+        '--parameters', new/'generator.json', '--levels', new/'levels.json',
+        '--seed', secrets.token_hex(32), '--output', new/'universe.json'], backup, 'generate')
+    uid = generated['universe_id']
+    db = new/'game.db'
+    def admin(label, *args):
+        return run('starroute-admin', ['--db', db, *args], backup, label)
+    admin('init', 'init')
+    admin('stage', 'stage', '--package', new/'universe.json')
+    admin('validate', 'validate', '--universe', uid)
+    admin('register', 'register', '--universe', uid)
+    admin('prepare', 'prepare', '--universe', uid, '--round', '1', '--policy', new/'round-policy.json')
+    admin('activate', 'activate', '--universe', uid, '--round', '1')
+    checkpoint('new_active')
+    site_args = ['--db', db, '--reference-key', new/'reference.key']
+    run('starroute-sites', [*site_args, 'init'], backup, 'site-init')
+    run('starroute-sites', [*site_args, 'add', '--bbs-id', bbs_id, '--name', 'Liner notes',
+                          '--output', new/'site-profile.json'], backup, 'site-add')
+    return uid
+
+def handoff(new, owner):
+    """Only the administrator can traverse the staging parent until publication."""
+    def fail(error):
+        raise error
+    for _, dirs, files, directory in os.fwalk(new, topdown=False, onerror=fail, follow_symlinks=False):
+        for name in dirs:
+            if not stat.S_ISDIR(os.stat(name, dir_fd=directory, follow_symlinks=False).st_mode):
+                raise RuntimeError('Unexpected directory entry in new world')
+        for name in files:
+            fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
+            try:
+                entry = os.fstat(fd)
+                if not stat.S_ISREG(entry.st_mode) or entry.st_nlink != 1:
+                    raise RuntimeError('Expected a private regular file in new world')
+                os.fchown(fd, *owner)
+                os.fchmod(fd, 0o600)
+            finally:
+                os.close(fd)
+        os.fchown(directory, *owner)
+        os.fchmod(directory, 0o700)
+
 def perform(owner):
+    staging_parent = STATE.parent
+    parent_stat = staging_parent.stat()
+    if parent_stat.st_uid != os.geteuid() or parent_stat.st_mode & 0o022:
+        raise RuntimeError('Private staging requires an administrator-controlled state parent')
+    if parent_stat.st_dev != STATE.stat().st_dev:
+        # A dedicated mount can stage internally if the mount root itself is trusted.
+        state_stat = STATE.stat()
+        if state_stat.st_uid != os.geteuid() or state_stat.st_mode & 0o022:
+            raise RuntimeError('Private staging requires a trusted directory on the state filesystem')
+        staging_parent = STATE
     original = CFG.read_bytes()
     cfg_stat = CFG.stat()
     config = json.loads(original)
@@ -201,51 +264,21 @@ def perform(owner):
                     if stream_digest(stream) != digest(source):
                         raise RuntimeError('Backup verification failed')
     checkpoint('backup_verified')
-    new = Path(tempfile.mkdtemp(prefix='world-new.', dir=STATE))
-    note('New world (not active in Door): ' + str(new))
-    template = read_json(EXAMPLES/'release-world.json')
-    for plan in template['navigation']['plans']:
-        plan['normal_seconds'] = max(1, (plan['normal_seconds']+SPEEDUP-1)//SPEEDUP)
-        for option in plan['warp_options']:
-            option['seconds'] = max(1, (option['seconds']+SPEEDUP-1)//SPEEDUP)
-    write_json(new/'template.json', template)
-    shutil.copyfile(EXAMPLES/'connected-universe-trial.json', new/'generator.json')
-    shutil.copyfile(EXAMPLES/'industry-levels-trial.json', new/'levels.json')
-    policy = read_json(LIB/'starroute/config/phase4.json')
-    policy['round_seconds'] = ROUND_DAYS * 86400
-    write_json(new/'round-policy.json', policy)
-    generated = run('starroute-universe', ['--template', new/'template.json',
-        '--parameters', new/'generator.json', '--levels', new/'levels.json',
-        '--seed', secrets.token_hex(32), '--output', new/'universe.json'], backup, 'generate')
-    uid = generated['universe_id']
+    with tempfile.TemporaryDirectory(prefix='.starroute-stage-', dir=staging_parent) as private:
+        new = Path(tempfile.mkdtemp(prefix='world-new.', dir=private))
+        published = STATE / new.name
+        uid = prepare_world(new, bbs_id, backup)
+        if 'state_directory' in config:
+            (new/'client-state').mkdir(mode=0o700)
+            config['state_directory'] = str(published/'client-state')
+        validate_new(new, uid, config, backup)
+        checkpoint('validated')
+        handoff(new, owner)
+        # All privileged work on the new world ends inside the private parent.
+        new.rename(published)
+    new = published
     db = new/'game.db'
-    def admin(label, *args):
-        return run('starroute-admin', ['--db', db, *args], backup, label)
-    admin('init', 'init')
-    admin('stage', 'stage', '--package', new/'universe.json')
-    admin('validate', 'validate', '--universe', uid)
-    admin('register', 'register', '--universe', uid)
-    admin('prepare', 'prepare', '--universe', uid, '--round', '1', '--policy', new/'round-policy.json')
-    admin('activate', 'activate', '--universe', uid, '--round', '1')
-    checkpoint('new_active')
-    site_args = ['--db', db, '--reference-key', new/'reference.key']
-    run('starroute-sites', [*site_args, 'init'], backup, 'site-init')
-    run('starroute-sites', [*site_args, 'add', '--bbs-id', bbs_id, '--name', 'Liner notes',
-                          '--output', new/'site-profile.json'], backup, 'site-add')
     config.update(database=str(db), reference_key=str(new/'reference.key'), profile=str(new/'site-profile.json'))
-    if 'state_directory' in config:
-        (new/'client-state').mkdir(mode=0o700)
-        config['state_directory'] = str(new/'client-state')
-    validate_new(new, uid, config, backup)
-    checkpoint('validated')
-    for directory, dirs, files in os.walk(new):
-        os.chown(directory, *owner)
-        os.chmod(directory, 0o700)
-        for name in files:
-            p = Path(directory)/name
-            regular(p)
-            os.chown(p, *owner)
-            os.chmod(p, 0o600)
     # Confirm the BBS UID can read the new files and write the state directory.
     pid = os.fork()
     if pid == 0:
