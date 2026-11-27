@@ -58,6 +58,47 @@ class Phase5Tests(unittest.TestCase):
     def test_disabled_site(self):
         a=self.logged();self.m.c.execute("UPDATE p5_sites SET state='DISABLED'")
         with self.assertRaises(ClientError):a.call('status')
+    def test_departure_and_revocation_order(self):
+        for first in ('disable', 'leave', 'rotate'):
+            with self.subTest(first=first):
+                a = self.logged('site_'+first)
+                site = a.profile['bbs_id']
+                request = {**a.target(), 'confirm_bbs_id': site}
+                lookup = {**a.target(), 'user_id': a.user_id, 'operation': 'register', 'request_id': 'initial-registration'}
+                if first == 'leave':
+                    for _ in range(2):
+                        self.assertEqual(a.post('leave', request, site=True), {'state': 'LEFT'})
+                    self.assertEqual(a.post('site-result', lookup, site=True)['status'], 'committed')
+                    self.assertEqual(self.m.c.execute("SELECT COUNT(*) FROM p5_audit WHERE bbs_id=? AND action='leave' AND code='OK'", (site,)).fetchone()[0], 1)
+                    self.assertFalse(self.m.c.execute('SELECT 1 FROM p5_sessions WHERE bbs_id=?', (site,)).fetchone())
+                with self.m.atomic():
+                    if first == 'rotate':
+                        self.m.c.execute('UPDATE p5_sites SET credential_hash=? WHERE bbs_id=?', (sec.digest('replacement'), site))
+                    else:
+                        self.m.c.execute("UPDATE p5_sites SET state='DISABLED' WHERE bbs_id=?", (site,))
+                for endpoint, body in [('leave', request), ('site-result', lookup)]:
+                    with self.assertRaisesRegex(ClientError, 'AUTH_FAILED'):
+                        a.post(endpoint, body, site=True)
+                expected = 'ENABLED' if first == 'rotate' else 'DISABLED'
+                self.assertEqual(self.m.c.execute('SELECT state FROM p5_sites WHERE bbs_id=?', (site,)).fetchone()[0], expected)
+
+    def test_departure_checks_target_under_writer_lock(self):
+        a = self.logged()
+        original = sec.reference
+        checked = []
+        def verify(repo, key):
+            self.assertTrue(repo.connection.in_transaction)
+            with sqlite3.connect(self.db, timeout=0) as writer:
+                with self.assertRaisesRegex(sqlite3.OperationalError, 'locked'):
+                    writer.execute('BEGIN IMMEDIATE')
+            writer.close()
+            checked.append(True)
+            return original(repo, key)
+        with patch.object(sec, 'reference', verify):
+            self.assertEqual(self.gateway.dispatch('leave', a.profile['credential'],
+                             {**a.target(), 'confirm_bbs_id': a.profile['bbs_id']}), {'state': 'LEFT'})
+        self.assertEqual(checked, [True])
+
     def test_request_replay_and_conflict(self):
         a=self.logged();good=self.good(a);args={'goods_id':good,'quantity':1}
         one=a.call('buy',args,'same');two=a.call('buy',args,'same');self.assertEqual(one,two)

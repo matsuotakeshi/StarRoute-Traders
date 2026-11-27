@@ -61,12 +61,20 @@ class Gateway:
         if 'round_id' in body and (type(body['round_id']) is not int or body['round_id']<1):raise GameError('INVALID_REQUEST')
         r=SQLiteRepository(self.database);c=r.connection;now=self.clock.now();site=None;user=None
         try:
+            # Serialize departure with admin revocation, credential rotation and round changes.
+            # A departed site's receipt lookup uses one consistent read snapshot.
+            if path == 'leave':
+                c.execute('BEGIN IMMEDIATE')
+            elif path == 'site-result':
+                c.execute('BEGIN')
             ref=security.reference(r,self.key)
             if path in ('connect','session','reference','leave','rebind','site-result'):
                 if path in ('leave','site-result'):
-                    site=c.execute('SELECT * FROM p5_sites WHERE credential_hash=?',(security.digest(token),)).fetchone()
+                    if not isinstance(token, str) or not token or len(token) > 256:
+                        raise GameError('AUTH_FAILED')
+                    credential_hash = security.digest(token)
+                    site=c.execute('SELECT * FROM p5_sites WHERE credential_hash=?',(credential_hash,)).fetchone()
                     if not site or site['state'] not in ('ENABLED','LEFT'):raise GameError('AUTH_FAILED')
-                    if path=='leave' and site['state']=='LEFT' and body.get('confirm_bbs_id')==site['bbs_id']:return {'state':'LEFT'}
                 else:site=security.authenticate(c,token)
                 if path=='site-result':
                     if set(body)!={'user_id','universe_id','round_id','operation','request_id'}:raise GameError('INVALID_REQUEST')
@@ -91,9 +99,22 @@ class Gateway:
                     if result['code']!='OK':return {'diagnostic':result,'admitted':False}
                     return {'diagnostic':result,'admitted':True}
                 if path=='leave':
-                    if body!={'universe_id':ref['universe_id'],'round_id':ref['round_id'],'confirm_bbs_id':site['bbs_id']}:raise GameError('INVALID_REQUEST')
-                    c.execute('BEGIN IMMEDIATE')
-                    c.execute("UPDATE p5_sites SET state='LEFT' WHERE bbs_id=?",(site['bbs_id'],));c.execute('DELETE FROM p5_sessions WHERE bbs_id=?',(site['bbs_id'],))
+                    if set(body) != {'universe_id', 'round_id', 'confirm_bbs_id'} or body['confirm_bbs_id'] != site['bbs_id']:
+                        raise GameError('INVALID_REQUEST')
+                    if site['state'] == 'LEFT':
+                        # Retries after a round switch still acknowledge an existing target.
+                        if not c.execute('SELECT 1 FROM p4_rounds WHERE universe_id=? AND round_id=?',
+                                         (body['universe_id'], body['round_id'])).fetchone():
+                            raise GameError('INVALID_REQUEST')
+                        c.commit()
+                        return {'state': 'LEFT'}
+                    if (body['universe_id'], body['round_id']) != (ref['universe_id'], ref['round_id']):
+                        raise GameError('INVALID_REQUEST')
+                    updated = c.execute("UPDATE p5_sites SET state='LEFT' WHERE bbs_id=? AND credential_hash=? AND state='ENABLED'",
+                                        (site['bbs_id'], credential_hash))
+                    if updated.rowcount != 1:
+                        raise GameError('AUTH_FAILED')
+                    c.execute('DELETE FROM p5_sessions WHERE bbs_id=?', (site['bbs_id'],))
                     security.audit(c,now,site['bbs_id'],None,'leave','OK');c.commit();return {'state':'LEFT'}
                 if set(body)!={'user_id','display_name','session_id','universe_id','round_id'}:raise GameError('INVALID_REQUEST')
                 identifier(body['user_id']);identifier(body['session_id']);display_name(body['display_name']);user=body['user_id']
