@@ -1,4 +1,10 @@
+import io
+import json
+from pathlib import Path
 import socket
+import tempfile
+from contextlib import redirect_stdout
+from unittest.mock import patch
 import unittest
 from scripts.telnet_wait import wait_prompt, close_servers
 
@@ -63,3 +69,30 @@ class TelnetWaitTests(unittest.TestCase):
         self.assertEqual(len(calls), 2)
         with self.assertRaisesRegex(TimeoutError, 'cleanup'):
             close_servers([Server()])
+
+class GuildDiagnosticTests(unittest.TestCase):
+    def test_report_identifies_slow_read_without_terminal_contents(self):
+        from scripts.telnet_guild_trace import report
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp)/'trace'
+            path.write_text('1000000 input-main\n2000000 map-begin\n3000000 private-value\npartial')
+            output = io.StringIO()
+            with redirect_stdout(output), patch('time.monotonic_ns',return_value=31_000_000):
+                report(path, 1_000_000, b'\x1b[2Jprivate-frame', TimeoutError())
+            prefix, payload = output.getvalue().split(' ',1)
+            self.assertEqual(prefix, 'SRT_TELNET_STEP')
+            self.assertNotIn('private', payload)
+            result = json.loads(payload)
+            self.assertEqual(result['door_progress_ms'], [['input-main',0],['map-begin',1]])
+            self.assertEqual(result['wait_ms'], 30)
+            self.assertTrue(result['received_frame_start'])
+
+    def test_empty_trace_does_not_claim_input_arrived(self):
+        from scripts.telnet_guild_trace import report
+        with tempfile.TemporaryDirectory() as temp:
+            output = io.StringIO()
+            with redirect_stdout(output):
+                report(Path(temp)/'missing', 0, b'', TimeoutError())
+            result = json.loads(output.getvalue().split(' ',1)[1])
+            self.assertEqual(result['door_progress_ms'], [])
+            self.assertFalse(result['received_frame_start'])
