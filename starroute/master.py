@@ -196,6 +196,12 @@ class MasterService:
         expected_total=None
         if operation in ('buy','sell') and 'expected_total' in arguments:
             arguments=dict(arguments);expected_total=arguments.pop('expected_total');integer(expected_total,0)
+        if operation == 'discoverers' and arguments:
+            fields = ('after_round', 'after_rank')
+            for key in fields:
+                if key not in arguments:
+                    raise GameError('MASTER_REQUEST_INVALID')
+                integer(arguments[key], 0)
         if set(arguments)!=set(fields):raise GameError('MASTER_REQUEST_INVALID')
         for key in ('goods_id','destination_id','ship_id','route_id'):
             if key in arguments:identifier(arguments[key])

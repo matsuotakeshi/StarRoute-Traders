@@ -99,9 +99,9 @@ def active_writers():
     if found:
         raise RuntimeError('Game/maintenance processes still running; PIDs: ' + ','.join(map(str, found)))
 
-def run(tool, arguments, backup, label):
+def run(tool, arguments, backup, label, *, stdin=None):
     result = subprocess.run([str(BIN / tool), *map(str, arguments)],
-                            capture_output=True, text=True, encoding='utf-8', timeout=300)
+                            input=stdin, capture_output=True, text=True, encoding='utf-8', timeout=300)
     # Private administrator logs only; never print captured process output.
     (backup / (label + '.log')).write_text(result.stdout + '\n' + result.stderr, encoding='utf-8')
     if result.returncode:
@@ -174,7 +174,7 @@ def prepare_world(new, bbs_id, backup, parameters):
     write_json(new/'round-policy.json', policy)
     generated = run('starroute-universe', ['--template', new/'template.json',
         '--parameters', new/'generator.json', '--levels', new/'levels.json',
-        '--seed', secrets.token_hex(32), '--output', new/'universe.json'], backup, 'generate')
+        '--seed-stdin', '--output', new/'universe.json'], backup, 'generate', stdin=secrets.token_hex(32)+'\n')
     uid = generated['universe_id']
     db = new/'game.db'
     def admin(label, *args):

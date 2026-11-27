@@ -20,7 +20,7 @@ def main():
         backend=LocalDoor(cfg,user,name)
     elif cfg['mode']=='inter-bbs':backend=Client(cfg,user,name)
     else:raise ValueError('mode')
-    ui=Terminal(backend,cfg.get('language','ja'),cfg.get('ansi',True),int(os.environ.get('COLUMNS','80')),int(os.environ.get('LINES','24')))
+    ui=Terminal(backend,cfg.get('language','ja'),cfg.get('ansi',True),os.environ.get('COLUMNS','80'),os.environ.get('LINES','24'))
     try:backend.connect();ui.language=backend.language()
     except ClientError as e:ui.emit(ui.text('error')+': '+e.code)
     ui.run(sys.stdin);return 0

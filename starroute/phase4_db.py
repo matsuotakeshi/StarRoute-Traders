@@ -25,6 +25,10 @@ def policy_hash(value):return hashlib.sha256(canonical_bytes(policy(value))).hex
 def create(c):
     had_visits=c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='p4_visits'").fetchone()
     statements=[
+        """CREATE TABLE IF NOT EXISTS p4_public_arrivals(
+            round_id INTEGER NOT NULL, rank INTEGER NOT NULL, data TEXT NOT NULL,
+            PRIMARY KEY(round_id,rank))""",
+        "CREATE TABLE IF NOT EXISTS p4_arrivals_indexed(round_id INTEGER PRIMARY KEY)",
         '''CREATE TABLE IF NOT EXISTS p4_universes(
           universe_id TEXT PRIMARY KEY, state TEXT NOT NULL CHECK(state IN ('STAGED','VALIDATED','REGISTERED','ACTIVE','ARCHIVED')),
           package_json TEXT NOT NULL, package_hash TEXT NOT NULL, definition_hash TEXT NOT NULL,

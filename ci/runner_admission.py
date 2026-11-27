@@ -10,6 +10,9 @@ def allowed(env,event):
     if env.get('GITHUB_EVENT_NAME') == 'pull_request':
         pr=event.get('pull_request',{})
         return (event.get('action') in ('opened','synchronize','reopened')
+            and event.get('sender',{}).get('login') == 'matsuotakeshi'
+            and env.get('GITHUB_ACTOR') == 'matsuotakeshi'
+            and env.get('GITHUB_TRIGGERING_ACTOR') == 'matsuotakeshi'
             and pr.get('user',{}).get('login') == 'matsuotakeshi'
             and pr.get('head',{}).get('repo',{}).get('full_name') == REPOSITORY
             and pr.get('base',{}).get('repo',{}).get('full_name') == REPOSITORY

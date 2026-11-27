@@ -68,6 +68,21 @@ class Application:
         mutation = method in ('create_player','buy_goods','sell_goods','depart','navigate','dock','invest','buy_ship','donate','insure','bankrupt','buy_device','coordinate_depart','guild','name_star')
         if request_id is not None:
             identifier(request_id)
+        if method == 'discoverers':
+            from .exploration import archived_arrivals, ARRIVAL_PAGE
+            after = tuple(args[1:]) or (0, 0)
+            with self.repository.transaction(readonly=True) as world:
+                self.repository.check_round(world, self.clock.now())
+                if target_guard:
+                    target_guard(world)
+                if access_guard:
+                    access_guard(world)
+                # Settling on this snapshot keeps the display consistent with elapsed time.
+                self.engine.update(world, self.clock.now())
+                current = self.engine.discoverers(world, args[0])
+                archived = archived_arrivals(self.repository, after)
+                current = [row for row in current if (row['round_id'], row['rank']) > after]
+                return (archived + current)[:ARRIVAL_PAGE]
         if self.engine.catalog.phase3 is not None and 'world_events' in self.engine.catalog.phase3:
             from .maintenance import advance
             def guarded(world):
@@ -107,9 +122,6 @@ class Application:
                 result=self.engine.navigate(world,*args,quote_id=quote['quote_id'])
             else:
                 result = getattr(self.engine, method)(world, *args)
-            if method=='discoverers':
-                from .exploration import archived_arrivals
-                result=archived_arrivals(self.repository)+result
             if mutation:
                 from .exploration import after_operation
                 after_operation(self.engine,world,actor,method,result)
@@ -122,7 +134,7 @@ class Application:
                     self.repository.record_trade(world,actor,origin,result,before,operation_id)
                 if method in ("depart","navigate"):
                     self.repository.record_voyage(world.season_id,actor,origin,world.game_time,result,operation_id)
-            return result
+        return result
 
     def create_account(self, bbs_id, local_user_id, handle, *, request_id=None, target_guard=None):
         """Trusted adapter API; bbs_id must come from authenticated server context.

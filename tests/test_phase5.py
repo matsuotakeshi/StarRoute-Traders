@@ -33,7 +33,8 @@ class Phase5Tests(unittest.TestCase):
     def client(self,site='bbs_a',user='1',name='Pilot',claim=None):
         if site not in self.profiles:
             p=sec.provision(self.m.repo,self.signing,site,site,100,claim);self.profiles[site]=p;save(self.root/(site+'.json'),p)
-        cfg={'url':f'https://127.0.0.1:{self.server.server_port}','profile':str(self.root/(site+'.json')),'ca_file':self.cert,'state_directory':str(self.root/'client-state'),'timeout':2}
+            save(self.root/(site+'.operator.json'), {'bbs_id': site, 'credential': sec.issue_operator_credential(self.m.c, site)})
+        cfg={'url':f'https://127.0.0.1:{self.server.server_port}','profile':str(self.root/(site+'.json')),'ca_file':self.cert,'state_directory':str(self.root/'client-state'),'timeout':2,'operator_credential_file':str(self.root/(site+'.operator.json'))}
         c=Client(cfg,user,name);self.clients.append(c);return c
     def logged(self,*args,**kwargs):
         c=self.client(*args,**kwargs);c.connect();return c
@@ -44,6 +45,14 @@ class Phase5Tests(unittest.TestCase):
         good=self.good(a);before=next(x['stock'] for x in b.call('market')['entries'] if x['goods_id']==good)
         a.call('buy',{'goods_id':good,'quantity':1});after=next(x['stock'] for x in b.call('market')['entries'] if x['goods_id']==good)
         self.assertEqual(before-after,1);self.assertEqual(b.call('status')['cargo'],[])
+    def test_door_credential_cannot_manage_site(self):
+        a = self.logged()
+        with self.assertRaises(GameError) as denied:
+            self.gateway.dispatch('leave', a.profile['credential'],
+                                  {**a.target(), 'confirm_bbs_id': a.profile['bbs_id']})
+        self.assertEqual(denied.exception.code, 'AUTH_FAILED')
+        self.assertEqual(a.call('status')['handle'], 'Pilot')
+
     def test_bad_site_token(self):
         c=self.client();c.profile['credential']='bad'
         with self.assertRaises(ClientError) as e:c.connect()
@@ -75,7 +84,7 @@ class Phase5Tests(unittest.TestCase):
                     self.assertFalse(self.m.c.execute('SELECT 1 FROM p5_sessions WHERE bbs_id=?', (site,)).fetchone())
                 with self.m.atomic():
                     if first == 'rotate':
-                        self.m.c.execute('UPDATE p5_sites SET credential_hash=? WHERE bbs_id=?', (sec.digest('replacement'), site))
+                        sec.issue_operator_credential(self.m.c, site)
                     else:
                         self.m.c.execute("UPDATE p5_sites SET state='DISABLED' WHERE bbs_id=?", (site,))
                 for endpoint, body in [('leave', request), ('site-result', lookup)]:
@@ -97,7 +106,7 @@ class Phase5Tests(unittest.TestCase):
             checked.append(True)
             return original(repo, key)
         with patch.object(sec, 'reference', verify):
-            self.assertEqual(self.gateway.dispatch('leave', a.profile['credential'],
+            self.assertEqual(self.gateway.dispatch('leave', json.loads(Path(a.config['operator_credential_file']).read_text())['credential'],
                              {**a.target(), 'confirm_bbs_id': a.profile['bbs_id']}), {'state': 'LEFT'})
         self.assertEqual(checked, [True])
 

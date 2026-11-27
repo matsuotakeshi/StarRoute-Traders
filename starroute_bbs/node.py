@@ -76,7 +76,7 @@ def door_config(config):
 
 
 @contextmanager
-def operator_lock(config):
+def operator_lock(config, *, busy_code="TRANSITION_BUSY"):
     fd = os.open(config.with_suffix('.transition.lock'), os.O_RDWR | os.O_CREAT | getattr(os, 'O_NOFOLLOW', 0), 0o600)
     try:
         try:
@@ -87,7 +87,7 @@ def operator_lock(config):
                 import fcntl
                 fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except OSError as error:
-            raise ClientError('TRANSITION_BUSY') from error
+            raise ClientError(busy_code) from error
         yield
     finally:
         os.close(fd)
@@ -207,10 +207,13 @@ def recover(config):
 
 def pending_results(config,client):
     for pending in Path(config['state_directory']).rglob('pending.json'):
-        owner=read(pending.parent/'owner.json');operation=read(pending)
-        if owner['bbs_id']!=client.profile['bbs_id']:raise ClientError('INVALID_PENDING_OWNER')
-        result=client.post('site-result',{'user_id':owner['user_id'],**{k:operation[k] for k in ('universe_id','round_id','operation','request_id')}},site=True)
-        yield pending, operation, result
+        with operator_lock(pending, busy_code='OPERATION_UNCERTAIN'):
+            if not pending.exists():
+                continue
+            owner=read(pending.parent/'owner.json');operation=read(pending)
+            if owner['bbs_id']!=client.profile['bbs_id']:raise ClientError('INVALID_PENDING_OWNER')
+            result=client.post('site-result',{'user_id':owner['user_id'],**{k:operation[k] for k in ('universe_id','round_id','operation','request_id')}},site=True)
+            yield pending, operation, result
 
 
 def settle(config,client):
@@ -235,6 +238,8 @@ def prepare_leave(config, old, new):
     try:
         row=c.execute("SELECT universe_id FROM p4_rounds WHERE state='ACTIVE'").fetchone()
         if not row or c.execute('SELECT count(*) FROM players').fetchone()[0]:raise ValueError('fresh activated local universe required')
+        if not old.get('operator_credential_file'):
+            raise ClientError('OPERATOR_CREDENTIAL_REQUIRED')
         profile=read(old['profile'])
         if row[0]==profile['configuration']['universe_id']:raise ValueError('new universe required')
         if c.execute('PRAGMA integrity_check').fetchone()[0]!='ok':raise ValueError('local integrity')

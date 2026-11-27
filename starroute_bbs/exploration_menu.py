@@ -16,9 +16,18 @@ def open_menu(m,action):
         for r in m.backend.call('notebook'):
             lines+=wrap(time.strftime('%Y-%m-%d %H:%M UTC',time.gmtime(r['at']))+' '+m.text('rumor_'+str(r['template']),planet=r.get('planet_name',planet_name(m,r['planet_id']))),m.size()[1])+['']
         m.push('TEXT',lines,'notebook')
-    elif action=='discoverers':m.show('discoverers',m.backend.call('discoverers'))
+    elif action=='discoverers':discoverers(m)
     else:return False
     return True
+
+def discoverers(m, cursor=None):
+    arguments = dict(zip(('after_round', 'after_rank'), cursor)) if cursor else {}
+    records = m.backend.call('discoverers', arguments)
+    m.show('discoverers', records)
+    m.history_cursor = (records[-1]['round_id'], records[-1]['rank']) if len(records) == 100 else None
+    if m.history_cursor:
+        m.data += ['[O] '+m.text('discoverers_more')]
+
 
 def planet_name(m,pid):
     return next((p['name'] for p in m.definition.get('planets',[]) if p['planet_id']==pid),pid)

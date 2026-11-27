@@ -59,7 +59,19 @@ class Gateway:
     def dispatch(self,path,token,body):
         if not isinstance(body,dict):raise GameError('INVALID_REQUEST')
         if 'round_id' in body and (type(body['round_id']) is not int or body['round_id']<1):raise GameError('INVALID_REQUEST')
-        r=SQLiteRepository(self.database);c=r.connection;now=self.clock.now();site=None;user=None
+        now = self.clock.now()
+        # Even an uninitialized game database is never initialized by an anonymous request.
+        check = sqlite3.connect(Path(self.database).resolve().as_uri()+'?mode=ro', uri=True)
+        check.row_factory = sqlite3.Row
+        try:
+            security.authenticate_request(check, path, token, now, self.session_seconds)
+        except sqlite3.OperationalError as error:
+            if 'no such table' not in str(error):
+                raise
+            raise GameError('AUTH_FAILED') from None
+        finally:
+            check.close()
+        r=SQLiteRepository(self.database, operational=True);c=r.connection;site=None;user=None
         try:
             # Serialize departure with admin revocation, credential rotation and round changes.
             # A departed site's receipt lookup uses one consistent read snapshot.
@@ -70,11 +82,7 @@ class Gateway:
             ref=security.reference(r,self.key)
             if path in ('connect','session','reference','leave','rebind','site-result'):
                 if path in ('leave','site-result'):
-                    if not isinstance(token, str) or not token or len(token) > 256:
-                        raise GameError('AUTH_FAILED')
-                    credential_hash = security.digest(token)
-                    site=c.execute('SELECT * FROM p5_sites WHERE credential_hash=?',(credential_hash,)).fetchone()
-                    if not site or site['state'] not in ('ENABLED','LEFT'):raise GameError('AUTH_FAILED')
+                    site = security.authenticate_operator(c, token)
                 else:site=security.authenticate(c,token)
                 if path=='site-result':
                     if set(body)!={'user_id','universe_id','round_id','operation','request_id'}:raise GameError('INVALID_REQUEST')
@@ -111,8 +119,8 @@ class Gateway:
                         return {'state': 'LEFT'}
                     if (body['universe_id'], body['round_id']) != (ref['universe_id'], ref['round_id']):
                         raise GameError('INVALID_REQUEST')
-                    updated = c.execute("UPDATE p5_sites SET state='LEFT' WHERE bbs_id=? AND credential_hash=? AND state='ENABLED'",
-                                        (site['bbs_id'], credential_hash))
+                    updated = c.execute("UPDATE p5_sites SET state='LEFT' WHERE bbs_id=? AND state='ENABLED'",
+                                        (site['bbs_id'],))
                     if updated.rowcount != 1:
                         raise GameError('AUTH_FAILED')
                     c.execute('DELETE FROM p5_sessions WHERE bbs_id=?', (site['bbs_id'],))
@@ -294,6 +302,9 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--config',required=True);args=p.parse_args();cfg=json.loads(Path(args.config).read_text())
     key=Path(cfg['reference_key']).read_bytes()
     if len(key)<32:raise ValueError('reference key must contain at least 32 random bytes')
+    # Upgrade and validate before accepting any transport requests.
+    settings_repo = SQLiteRepository(cfg['database'])
+    settings_repo.close()
     gateway=Gateway(cfg['database'],key,session_seconds=cfg.get('session_seconds',300))
     server=TLSServer((cfg.get('host','127.0.0.1'),cfg['port']),gateway,cfg['certificate'],cfg['private_key'],
                      max_body=cfg.get('max_body',16384),timeout=cfg.get('timeout',10),max_clients=cfg.get('max_clients',32),requests_per_minute=cfg.get('requests_per_minute',120))

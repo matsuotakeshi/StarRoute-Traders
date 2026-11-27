@@ -48,13 +48,25 @@ CREATE TABLE routes(
 
 
 class SQLiteRepository:
-    def __init__(self, path, catalog=None, now=0, *, default_catalog_path=None):
+    def __init__(self, path, catalog=None, now=0, *, default_catalog_path=None, operational=False):
         self.path = str(path)
         self.backup_path = None
-        self.connection = sqlite3.connect(path, timeout=10, isolation_level=None)
+        target = Path(path).resolve().as_uri()+'?mode=rw' if operational else path
+        self.connection = sqlite3.connect(target, timeout=10, isolation_level=None, uri=operational)
         self.connection.row_factory = sqlite3.Row
         try:
             self.connection.execute("PRAGMA foreign_keys=ON")
+            if operational:
+                self.connection.execute('BEGIN')
+                metadata = dict(self.connection.execute(
+                    "SELECT key,value FROM metadata WHERE key IN ('schema_version','catalog')"))
+                if metadata.get('schema_version') != str(SCHEMA_VERSION):
+                    raise GameError('UNSUPPORTED_SCHEMA')
+                self.catalog = Catalog(json.loads(metadata['catalog']))
+                self.world_id = self.connection.execute(
+                    'SELECT world_id FROM world_identity WHERE singleton=1').fetchone()[0]
+                self.connection.commit()
+                return
             self.connection.execute("PRAGMA journal_mode=WAL")
             self.connection.execute("BEGIN IMMEDIATE")
             exists = self.connection.execute(
@@ -377,9 +389,9 @@ class SQLiteRepository:
         c.executemany('INSERT INTO routes VALUES (1,:id,:from,:to,:distance,:seconds,:fee,:is_open)', d["routes"])
 
     @contextmanager
-    def transaction(self):
+    def transaction(self, *, readonly=False):
         c = self.connection
-        c.execute("BEGIN IMMEDIATE")
+        c.execute("BEGIN" if readonly else "BEGIN IMMEDIATE")
         try:
             if c.execute("SELECT 1 FROM metadata WHERE key='node_paused' AND value='1'").fetchone():raise GameError('NODE_TRANSITION')
             stored=c.execute("SELECT value FROM metadata WHERE key='catalog'").fetchone()
@@ -388,7 +400,8 @@ class SQLiteRepository:
                 if not c.execute("SELECT 1 FROM p4_rounds WHERE state='ACTIVE'").fetchone():raise GameError('ROUND_NOT_ACTIVE')
             world = self._load()
             yield world
-            self._save(world)
+            if not readonly:
+                self._save(world)
             c.commit()
         except BaseException:
             c.rollback()

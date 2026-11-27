@@ -21,9 +21,16 @@ def clip(text,columns):
     return result
 
 
+def terminal_size(columns, rows):
+    try:
+        return max(20, min(240, int(columns))), max(12, min(120, int(rows)))
+    except (TypeError, ValueError):
+        return 80, 24
+
+
 class Terminal:
     def __init__(self,backend,language='ja',ansi=True,columns=80,rows=24,output=print):
-        self.backend=backend;self.language=language;self.ansi=ansi;self.columns=columns;self.rows=rows;self.output=output;self.names=False
+        self.backend=backend;self.language=language;self.ansi=ansi;self.columns,self.rows=terminal_size(columns, rows);self.output=output;self.names=False
         self.packs={lang:json.loads((Path(__file__).parent/'locales'/(lang+'.json')).read_text(encoding='utf8')) for lang in ('ja','en')}
 
     def text(self,key):return self.packs[self.language][key]
@@ -32,7 +39,7 @@ class Terminal:
         try:size=os.get_terminal_size(input_stream.fileno())
         except (OSError,ValueError,AttributeError):return
         if size.columns and size.lines:
-            self.columns=max(20,min(240,size.columns));self.rows=max(12,min(120,size.lines))
+            self.columns,self.rows=terminal_size(size.columns,size.lines)
     def emit(self,text):self.output(clip(text,self.columns))
     def show(self,data):
         if isinstance(data,list):

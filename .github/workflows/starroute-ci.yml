@@ -10,7 +10,7 @@ concurrency:
 jobs:
   native:
     name: FreeBSD / Python 3.12 / full regression
-    if: ${{ github.repository == 'matsuotakeshi/StarRoute-Traders' && ((github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch') || (github.event_name == 'pull_request' && github.event.pull_request.user.login == 'matsuotakeshi' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.base.ref == 'main')) }}
+    if: ${{ github.repository == 'matsuotakeshi/StarRoute-Traders' && ((github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch') || (github.event_name == 'pull_request' && github.event.sender.login == 'matsuotakeshi' && github.actor == 'matsuotakeshi' && github.triggering_actor == 'matsuotakeshi' && github.event.pull_request.user.login == 'matsuotakeshi' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.base.ref == 'main')) }}
     runs-on: [self-hosted, Linux, X64, starroute-native]
     timeout-minutes: 60
     steps:

@@ -177,15 +177,27 @@ def arrivals(engine,world,pid):
     return copy.deepcopy(state(world)['arrivals'])
 
 
-def archived_arrivals(repository):
-    """Read only the safe arrival projection; private archives never leave the server."""
-    import json,zlib
-    result=[]
-    for archive in repository.connection.execute('SELECT round_id,snapshot,sha256 FROM p4_archives ORDER BY round_id'):
-        raw=zlib.decompress(archive['snapshot'])
-        if hashlib.sha256(raw).hexdigest()!=archive['sha256']:raise GameError('CONFIG_VERIFICATION_FAILED')
-        tables=json.loads(raw)['tables']
-        for row in tables.get('phase3_state',[]):
-            for arrival in json.loads(row['state_json']).get('exploration',{}).get('arrivals',[]):
-                result.append({k:arrival[k] for k in ('player_id','display_name','at','name','rank','round_id','universe_id')})
-    return result
+ARRIVAL_FIELDS = ('player_id','display_name','at','name','rank','round_id','universe_id')
+ARRIVAL_PAGE = 100
+
+
+def index_archive_arrivals(connection, round_id, tables):
+    import json
+    for row in tables.get('phase3_state', []):
+        for arrival in json.loads(row['state_json']).get('exploration', {}).get('arrivals', []):
+            projected = {k: arrival[k] for k in ARRIVAL_FIELDS}
+            if projected['round_id'] == round_id:
+                connection.execute('INSERT INTO p4_public_arrivals VALUES (?, ?, ?)',
+                                   (round_id, projected['rank'], json.dumps(projected, ensure_ascii=False)))
+    connection.execute('INSERT INTO p4_arrivals_indexed VALUES (?)', (round_id,))
+
+
+def archived_arrivals(repository, after=(0, 0)):
+    """Read the indexed public projection, never decompress private snapshots during gameplay."""
+    import json
+    if not repository.connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='p4_public_arrivals'").fetchone():
+        return []
+    rows = repository.connection.execute("""SELECT data FROM p4_public_arrivals
+        WHERE (round_id, rank) > (?, ?) ORDER BY round_id, rank LIMIT ?""", (*after, ARRIVAL_PAGE))
+    return [json.loads(row[0]) for row in rows]

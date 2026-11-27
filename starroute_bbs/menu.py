@@ -263,6 +263,9 @@ class Menu:
                 if key not in ('1','2','ja','en'):raise ClientError('INVALID_SELECTION')
                 self.ui.language='ja' if key in ('1','ja') else 'en';self.backend.language(self.ui.language);self.main()
             elif self.state=='MAP_VIEW':map_menu.select(self,key)
+            elif self.state == 'TEXT' and self.action == 'discoverers' and key == 'o':
+                if self.history_cursor is not None:
+                    exploration_ui.discoverers(self, self.history_cursor)
             elif self.state=='HISTORY' and key=='o':
                 if self.history_cursor is not None:self.history(self.history_cursor)
             elif self.state=='QUANTITY':
