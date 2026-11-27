@@ -26,7 +26,7 @@ class ResetTests(unittest.TestCase):
             p.write_text('#!'+sys.executable+' -I\nimport sys,runpy\nsys.path.insert(0,'+repr(str(SOURCE))+')\nrunpy.run_module('+repr(module)+',run_name="__main__")\n')
             p.chmod(0o755)
         n['EXAMPLES'].mkdir()
-        for name in ('release-world.json','connected-universe-trial.json','industry-levels-trial.json'):
+        for name in ('release-world.json','connected-universe-trial.json','clustered-universe-trial.json','industry-levels-trial.json'):
             (n['EXAMPLES']/name).write_bytes((SOURCE/'examples'/name).read_bytes())
         old=n['STATE']/'world';old.mkdir()
         subprocess.run([str(n['BIN']/'starroute-admin'),'--db',str(old/'game.db'),'init'],check=True,capture_output=True)
@@ -79,7 +79,14 @@ class ResetTests(unittest.TestCase):
             for path in [world, *world.rglob('*')]:
                 self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o700 if path.is_dir() else 0o600)
         self.ns['handoff'] = checked
-        self.perform()
+        with patch.object(subprocess, 'check_output', return_value='0.21.0_1'):
+            parameters = self.ns['generator_parameters']()
+        self.ns['perform']((os.getuid(), os.getgid()), parameters)
+        new = Path(json.loads(self.ns['CFG'].read_text())['database']).parent
+        self.assertEqual((new/'generator.json').read_bytes(), (self.ns['EXAMPLES']/'clustered-universe-trial.json').read_bytes())
+        with patch.object(subprocess, 'check_output', side_effect=['0.21.0', '0.21.0_1']):
+            with self.assertRaises(RuntimeError):
+                self.ns['generator_parameters']()
 
     def test_handoff_rejects_additional_file_links(self):
         directory = self.root/'staged'

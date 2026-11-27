@@ -108,12 +108,22 @@ def run(tool, arguments, backup, label):
         raise RuntimeError(label + ' failed; inspect the private backup log')
     return json.loads(result.stdout)
 
+def generator_parameters():
+    versions = {subprocess.check_output(['pkg', 'query', '%v', name], text=True).strip()
+                for name in ('starroute-traders', 'starroute-traders-client')}
+    if versions == {'0.21.0_1'}:
+        return 'clustered-universe-trial.json'
+    if versions == {'0.21.0'}:
+        return 'connected-universe-trial.json'
+    raise RuntimeError('Expected matching 0.21.0 or 0.21.0_1 packages')
+
 def prerequisites():
     if os.geteuid() != 0 or not sys.platform.startswith('freebsd'):
         raise RuntimeError('Run on FreeBSD as root')
     account = pwd.getpwnam('liner_notes')
+    parameters = generator_parameters()
     for p in (CFG, DOOR, DOORS, EXAMPLES / 'release-world.json',
-              EXAMPLES / 'connected-universe-trial.json', EXAMPLES / 'industry-levels-trial.json',
+              EXAMPLES / parameters, EXAMPLES / 'industry-levels-trial.json',
               LIB / 'starroute/config/phase4.json'):
         regular(p)
     if not os.access(DOOR, os.X_OK):
@@ -122,13 +132,9 @@ def prerequisites():
         regular(BIN / tool)
         if not os.access(BIN / tool, os.X_OK):
             raise RuntimeError('Missing executable: ' + tool)
-    for package in ('starroute-traders', 'starroute-traders-client'):
-        version = subprocess.check_output(['pkg', 'query', '%v', package], text=True).strip()
-        if version != '0.21.0':
-            raise RuntimeError('This script requires installed v0.21.0 packages')
     no_links_tree(STATE)
     no_links_tree(CONFIG)
-    return account.pw_uid, account.pw_gid
+    return (account.pw_uid, account.pw_gid), parameters
 
 def validate_new(new, uid, config, backup):
     run('starroute-admin', ['--db', new/'game.db', 'check'], backup, 'new-admin-check')
@@ -154,14 +160,14 @@ def validate_new(new, uid, config, backup):
     if not reply.get('admitted'):
         raise RuntimeError('New standalone profile was not admitted')
 
-def prepare_world(new, bbs_id, backup):
+def prepare_world(new, bbs_id, backup, parameters):
     template = read_json(EXAMPLES/'release-world.json')
     for plan in template['navigation']['plans']:
         plan['normal_seconds'] = max(1, (plan['normal_seconds']+SPEEDUP-1)//SPEEDUP)
         for option in plan['warp_options']:
             option['seconds'] = max(1, (option['seconds']+SPEEDUP-1)//SPEEDUP)
     write_json(new/'template.json', template)
-    shutil.copyfile(EXAMPLES/'connected-universe-trial.json', new/'generator.json')
+    shutil.copyfile(EXAMPLES/parameters, new/'generator.json')
     shutil.copyfile(EXAMPLES/'industry-levels-trial.json', new/'levels.json')
     policy = read_json(LIB/'starroute/config/phase4.json')
     policy['round_seconds'] = ROUND_DAYS * 86400
@@ -207,7 +213,7 @@ def handoff(new, owner):
         os.fchown(directory, *owner)
         os.fchmod(directory, 0o700)
 
-def perform(owner):
+def perform(owner, parameters='connected-universe-trial.json'):
     staging_parent = STATE.parent
     parent_stat = staging_parent.stat()
     if parent_stat.st_uid != os.geteuid() or parent_stat.st_mode & 0o022:
@@ -267,7 +273,7 @@ def perform(owner):
     with tempfile.TemporaryDirectory(prefix='.starroute-stage-', dir=staging_parent) as private:
         new = Path(tempfile.mkdtemp(prefix='world-new.', dir=private))
         published = STATE / new.name
-        uid = prepare_world(new, bbs_id, backup)
+        uid = prepare_world(new, bbs_id, backup, parameters)
         if 'state_directory' in config:
             (new/'client-state').mkdir(mode=0o700)
             config['state_directory'] = str(published/'client-state')
@@ -321,10 +327,10 @@ def main():
     signal.signal(signal.SIGINT, interrupted)
     fd = None
     try:
-        owner = prerequisites()
+        owner, parameters = prerequisites()
         fd = os.open(LOCK, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
         fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        perform(owner)
+        perform(owner, parameters)
         return 0
     except Exception as error:
         print('STOP: ' + str(error), file=sys.stderr)
