@@ -116,6 +116,7 @@ def verify_master(config):
                                     'configuration': client.profile['configuration']}, site=True)
     if not reply['admitted']:
         raise ClientError(reply['diagnostic']['code'])
+    return client
 
 
 def backup_db(path,dest):
@@ -168,8 +169,7 @@ def recover(config):
         state = record['state']
         if state in TERMINAL:
             expected = record['new'] if state == 'COMMITTED' else record['old']
-            if read(config) != expected:
-                set_gate(config, True)
+            if config.with_suffix('.transition.pending').exists() and read(config) != expected:
                 raise ClientError('TRANSITION_UNCERTAIN')
             set_gate(config, False)
             return {'state': state}
@@ -185,7 +185,10 @@ def recover(config):
                     or (current == old and state != 'PUBLISHING')):
                 raise ClientError('TRANSITION_UNCERTAIN')
             # A published legacy JOIN or durable publication intent is forward-only.
-            verify_master(new)
+            client = verify_master(new)
+            for _, _, result in pending_results(new, client):
+                if result.get('status') != 'committed':
+                    raise ClientError('OPERATION_UNCERTAIN')
             if current != new:
                 publish_config(config, new)
             return finish(config, record, 'COMMITTED')
@@ -194,12 +197,17 @@ def recover(config):
         raise ClientError('TRANSITION_UNCERTAIN')
 
 
-def settle(config,client):
-    import hashlib
+def pending_results(config,client):
     for pending in Path(config['state_directory']).rglob('pending.json'):
         owner=read(pending.parent/'owner.json');operation=read(pending)
         if owner['bbs_id']!=client.profile['bbs_id']:raise ClientError('INVALID_PENDING_OWNER')
         result=client.post('site-result',{'user_id':owner['user_id'],**{k:operation[k] for k in ('universe_id','round_id','operation','request_id')}},site=True)
+        yield pending, operation, result
+
+
+def settle(config,client):
+    import hashlib
+    for pending, operation, result in pending_results(config, client):
         save(pending.with_name('departure-result-'+operation['request_id']+'.json'),{'operation':operation,'status':result['status'],
              'receipt_sha256':hashlib.sha256(json.dumps(result,sort_keys=True).encode()).hexdigest()})
         pending.unlink()

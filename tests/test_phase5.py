@@ -386,7 +386,13 @@ except ClientError as e:print(json.dumps({'ok':False,'error':e.code}))
         with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
             node.door_config(cfg)
         self.assertEqual(node.read(cfg), remote)
+        pending = {**a.target(), 'operation':'buy', 'request_id':'before-recovery'}
+        save(a.pending, {**pending, 'request_id': 'unconfirmed'})
+        with self.assertRaisesRegex(ClientError, 'OPERATION_UNCERTAIN'):
+            node.recover(cfg)
+        save(a.pending, pending)
         self.assertEqual(node.recover(cfg)['state'], 'COMMITTED')
+        self.assertEqual(node.read(a.pending), pending)
         self.assertEqual(a.call('status')['cargo'], cargo)
         self.assertEqual(node.door_config(cfg), remote)
 
