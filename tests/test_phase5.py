@@ -33,7 +33,8 @@ class Phase5Tests(unittest.TestCase):
     def client(self,site='bbs_a',user='1',name='Pilot',claim=None):
         if site not in self.profiles:
             p=sec.provision(self.m.repo,self.signing,site,site,100,claim);self.profiles[site]=p;save(self.root/(site+'.json'),p)
-        cfg={'url':f'https://127.0.0.1:{self.server.server_port}','profile':str(self.root/(site+'.json')),'ca_file':self.cert,'state_directory':str(self.root/'client-state'),'timeout':2}
+            save(self.root/(site+'.operator.json'), {'bbs_id': site, 'credential': sec.issue_operator_credential(self.m.c, site)})
+        cfg={'url':f'https://127.0.0.1:{self.server.server_port}','profile':str(self.root/(site+'.json')),'ca_file':self.cert,'state_directory':str(self.root/'client-state'),'timeout':2,'operator_credential_file':str(self.root/(site+'.operator.json'))}
         c=Client(cfg,user,name);self.clients.append(c);return c
     def logged(self,*args,**kwargs):
         c=self.client(*args,**kwargs);c.connect();return c
@@ -44,6 +45,14 @@ class Phase5Tests(unittest.TestCase):
         good=self.good(a);before=next(x['stock'] for x in b.call('market')['entries'] if x['goods_id']==good)
         a.call('buy',{'goods_id':good,'quantity':1});after=next(x['stock'] for x in b.call('market')['entries'] if x['goods_id']==good)
         self.assertEqual(before-after,1);self.assertEqual(b.call('status')['cargo'],[])
+    def test_door_credential_cannot_manage_site(self):
+        a = self.logged()
+        with self.assertRaises(GameError) as denied:
+            self.gateway.dispatch('leave', a.profile['credential'],
+                                  {**a.target(), 'confirm_bbs_id': a.profile['bbs_id']})
+        self.assertEqual(denied.exception.code, 'AUTH_FAILED')
+        self.assertEqual(a.call('status')['handle'], 'Pilot')
+
     def test_bad_site_token(self):
         c=self.client();c.profile['credential']='bad'
         with self.assertRaises(ClientError) as e:c.connect()
@@ -58,6 +67,49 @@ class Phase5Tests(unittest.TestCase):
     def test_disabled_site(self):
         a=self.logged();self.m.c.execute("UPDATE p5_sites SET state='DISABLED'")
         with self.assertRaises(ClientError):a.call('status')
+    def test_departure_and_revocation_order(self):
+        for first in ('disable', 'leave', 'rotate'):
+            with self.subTest(first=first):
+                a = self.logged('site_'+first)
+                site = a.profile['bbs_id']
+                request = {**a.target(), 'confirm_bbs_id': site}
+                lookup = {**a.target(), 'user_id': a.user_id, 'operation': 'register', 'request_id': 'initial-registration'}
+                if first == 'leave':
+                    for _ in range(2):
+                        self.assertEqual(a.post('leave', request, site=True), {'state': 'LEFT'})
+                    with self.assertRaisesRegex(ClientError, 'INVALID_REQUEST'):
+                        a.post('leave', {**request, 'universe_id': None}, site=True)
+                    self.assertEqual(a.post('site-result', lookup, site=True)['status'], 'committed')
+                    self.assertEqual(self.m.c.execute("SELECT COUNT(*) FROM p5_audit WHERE bbs_id=? AND action='leave' AND code='OK'", (site,)).fetchone()[0], 1)
+                    self.assertFalse(self.m.c.execute('SELECT 1 FROM p5_sessions WHERE bbs_id=?', (site,)).fetchone())
+                with self.m.atomic():
+                    if first == 'rotate':
+                        sec.issue_operator_credential(self.m.c, site)
+                    else:
+                        self.m.c.execute("UPDATE p5_sites SET state='DISABLED' WHERE bbs_id=?", (site,))
+                for endpoint, body in [('leave', request), ('site-result', lookup)]:
+                    with self.assertRaisesRegex(ClientError, 'AUTH_FAILED'):
+                        a.post(endpoint, body, site=True)
+                expected = 'ENABLED' if first == 'rotate' else 'DISABLED'
+                self.assertEqual(self.m.c.execute('SELECT state FROM p5_sites WHERE bbs_id=?', (site,)).fetchone()[0], expected)
+
+    def test_departure_checks_target_under_writer_lock(self):
+        a = self.logged()
+        original = sec.reference
+        checked = []
+        def verify(repo, key):
+            self.assertTrue(repo.connection.in_transaction)
+            with sqlite3.connect(self.db, timeout=0) as writer:
+                with self.assertRaisesRegex(sqlite3.OperationalError, 'locked'):
+                    writer.execute('BEGIN IMMEDIATE')
+            writer.close()
+            checked.append(True)
+            return original(repo, key)
+        with patch.object(sec, 'reference', verify):
+            self.assertEqual(self.gateway.dispatch('leave', json.loads(Path(a.config['operator_credential_file']).read_text())['credential'],
+                             {**a.target(), 'confirm_bbs_id': a.profile['bbs_id']}), {'state': 'LEFT'})
+        self.assertEqual(checked, [True])
+
     def test_request_replay_and_conflict(self):
         a=self.logged();good=self.good(a);args={'goods_id':good,'quantity':1}
         one=a.call('buy',args,'same');two=a.call('buy',args,'same');self.assertEqual(one,two)
@@ -293,6 +345,98 @@ except ClientError as e:print(json.dumps({'ok':False,'error':e.code}))
         with patch.object(a,'call',return_value=[{'kind':'price_surge','planet_id':'001','game_time':100,'values':{'goods_id':'grain','delta':30}}]):ui.execute('news')
         self.assertTrue(any('grain' in line and '30' in line for line in out));out.clear();ui.execute('help')
         self.assertTrue(any('retry' in line for line in out));self.assertTrue(all(width(line)<=80 for line in out))
+
+    def test_join_recovery_publication_boundaries(self):
+        from starroute_bbs import node
+        a = self.client()
+        remote = {'mode': 'inter-bbs', **a.config}
+        proposed = self.root/'remote.json'
+        save(proposed, remote)
+        for point in ('paused', 'publishing', 'published'):
+            with self.subTest(point=point):
+                local = self.root/(point+'.db')
+                initialize(local, 100)
+                cfg = self.root/(point+'.json')
+                old = {'mode': 'standalone', 'database': str(local)}
+                save(cfg, old)
+                def interrupt(step):
+                    if step == point:
+                        with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+                            node.door_config(cfg)
+                        with self.assertRaisesRegex(ClientError, 'TRANSITION_BUSY'):
+                            node.recover(cfg)
+                        raise RuntimeError('interrupted')
+                with self.assertRaisesRegex(RuntimeError, 'interrupted'):
+                    node.join(cfg, proposed, interrupt)
+                with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+                    node.leave(cfg, proposed)
+                expected = 'RECOVERED' if point == 'paused' else 'COMMITTED'
+                self.assertEqual(node.recover(cfg)['state'], expected)
+                self.assertEqual(node.recover(cfg)['state'], expected)
+                self.assertEqual(node.door_config(cfg), old if point == 'paused' else remote)
+                with sqlite3.connect(local) as db:
+                    paused = db.execute("SELECT value FROM metadata WHERE key='node_paused'").fetchone()[0]
+                db.close()
+                self.assertEqual(paused, '0' if point == 'paused' else '1')
+
+    def test_legacy_join_keeps_shared_trade_and_requires_master_confirmation(self):
+        from starroute_bbs import node
+        a = self.logged()
+        a.call('buy', {'goods_id': self.good(a), 'quantity': 1}, 'before-recovery')
+        cargo = a.call('status')['cargo']
+        local = self.root/'local.db'
+        initialize(local, 100)
+        old = {'mode': 'standalone', 'database': str(local)}
+        remote = {'mode': 'inter-bbs', **a.config}
+        cfg = self.root/'node.json'
+        save(cfg, remote)
+        save(cfg.with_suffix('.transition.json'), {'kind': 'JOIN', 'state': 'PREPARED', 'old': old, 'new': remote})
+        with patch.object(Client, 'post', side_effect=ClientError('MASTER_UNAVAILABLE')):
+            with self.assertRaisesRegex(ClientError, 'MASTER_UNAVAILABLE'):
+                node.recover(cfg)
+        with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+            node.door_config(cfg)
+        self.assertEqual(node.read(cfg), remote)
+        pending = {**a.target(), 'operation':'buy', 'request_id':'before-recovery'}
+        save(a.pending, {**pending, 'request_id': 'unconfirmed'})
+        with self.assertRaisesRegex(ClientError, 'OPERATION_UNCERTAIN'):
+            node.recover(cfg)
+        save(a.pending, pending)
+        self.assertEqual(node.recover(cfg)['state'], 'COMMITTED')
+        self.assertEqual(node.read(a.pending), pending)
+        self.assertEqual(a.call('status')['cargo'], cargo)
+        self.assertEqual(node.door_config(cfg), remote)
+
+    def test_previous_ready_marker_cannot_open_an_interrupted_second_transition(self):
+        from starroute_bbs import node
+        cfg = self.root/'node.json'
+        local = {'mode': 'standalone'}
+        remote = {'mode': 'inter-bbs'}
+        save(cfg, local)
+        record = {'kind': 'JOIN', 'old': local, 'new': remote, 'format': 2}
+        node.finish(cfg, record, 'RECOVERED')
+        with patch.object(node, 'set_gate', side_effect=OSError('interrupted')):
+            with self.assertRaises(OSError):
+                node.begin_transition(cfg, record)
+        with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+            node.door_config(cfg)
+
+    def test_ambiguous_legacy_join_remains_paused(self):
+        from starroute_bbs import node
+        local = self.root/'local.db'
+        initialize(local, 100)
+        cfg = self.root/'node.json'
+        old = {'mode': 'standalone', 'database': str(local)}
+        save(cfg, old)
+        save(cfg.with_suffix('.transition.json'), {'kind': 'JOIN', 'state': 'PREPARED',
+             'old': old, 'new': {'mode': 'inter-bbs'}})
+        with self.assertRaisesRegex(ClientError, 'TRANSITION_UNCERTAIN'):
+            node.recover(cfg)
+        with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+            node.door_config(cfg)
+        with sqlite3.connect(local) as db:
+            self.assertEqual(db.execute("SELECT value FROM metadata WHERE key='node_paused'").fetchone()[0], '1')
+        db.close()
 
     def test_join_leave_and_recovery(self):
         from starroute_bbs.node import join,leave,recover

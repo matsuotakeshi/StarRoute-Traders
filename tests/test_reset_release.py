@@ -26,7 +26,7 @@ class ResetTests(unittest.TestCase):
             p.write_text('#!'+sys.executable+' -I\nimport sys,runpy\nsys.path.insert(0,'+repr(str(SOURCE))+')\nrunpy.run_module('+repr(module)+',run_name="__main__")\n')
             p.chmod(0o755)
         n['EXAMPLES'].mkdir()
-        for name in ('release-world.json','connected-universe-trial.json','industry-levels-trial.json'):
+        for name in ('release-world.json','connected-universe-trial.json','clustered-universe-trial.json','industry-levels-trial.json'):
             (n['EXAMPLES']/name).write_bytes((SOURCE/'examples'/name).read_bytes())
         old=n['STATE']/'world';old.mkdir()
         subprocess.run([str(n['BIN']/'starroute-admin'),'--db',str(old/'game.db'),'init'],check=True,capture_output=True)
@@ -67,6 +67,44 @@ class ResetTests(unittest.TestCase):
             for a,b in zip(old['warp_options'],newrow['warp_options']):
                 self.assertEqual(b['seconds'],(a['seconds']+59)//60);self.assertEqual(a['fuel_cost'],b['fuel_cost'])
         self.assertEqual(len(list(n['BACKUP_PARENT'].glob('*/state-and-config.tar'))),1)
+
+    def test_permissions_set_before_world_is_published(self):
+        handoff = self.ns['handoff']
+        state = self.ns['STATE']
+        def checked(world, owner):
+            self.assertFalse(world.is_relative_to(state))
+            self.assertEqual(stat.S_IMODE(world.parent.stat().st_mode), 0o700)
+            self.assertFalse((state/world.name).exists())
+            handoff(world, owner)
+            for path in [world, *world.rglob('*')]:
+                self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o700 if path.is_dir() else 0o600)
+        self.ns['handoff'] = checked
+        with patch.object(subprocess, 'check_output', return_value='0.21.0_1'):
+            parameters = self.ns['generator_parameters']()
+        self.ns['perform']((os.getuid(), os.getgid()), parameters)
+        new = Path(json.loads(self.ns['CFG'].read_text())['database']).parent
+        self.assertEqual((new/'generator.json').read_bytes(), (self.ns['EXAMPLES']/'clustered-universe-trial.json').read_bytes())
+        with patch.object(subprocess, 'check_output', side_effect=['0.21.0', '0.21.0_1']):
+            with self.assertRaises(RuntimeError):
+                self.ns['generator_parameters']()
+
+    def test_handoff_rejects_additional_file_links(self):
+        directory = self.root/'staged'
+        directory.mkdir()
+        file = self.root/'original'
+        file.touch(mode=0o640)
+        original = file.stat()
+        os.link(file, directory/'unexpected')
+        with self.assertRaises(RuntimeError):
+            self.ns['handoff'](directory, (os.getuid(), os.getgid()))
+        self.assertEqual(file.stat().st_mode, original.st_mode)
+
+    def test_untrusted_staging_parent_stops_before_door_closure(self):
+        self.root.chmod(0o770)
+        with self.assertRaisesRegex(RuntimeError, 'administrator-controlled'):
+            self.perform()
+        self.preserved()
+        self.assertTrue(os.access(self.ns['DOOR'], os.X_OK))
 
     def test_failures_never_switch(self):
         for stage in ('door_closed','backup_verified','new_active','validated','before_switch'):

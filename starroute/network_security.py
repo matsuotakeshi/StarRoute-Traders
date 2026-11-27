@@ -119,3 +119,34 @@ def session(c,token,now,ttl):
     row=c.execute('SELECT s.*,b.state FROM p5_sessions s JOIN p5_sites b ON b.bbs_id=s.bbs_id WHERE token_hash=?',(digest(token),)).fetchone()
     if not row or row['state']!='ENABLED' or now-row['last_seen']>ttl:raise GameError('SESSION_EXPIRED')
     return row
+
+
+def issue_operator_credential(c, bbs_id):
+    if not c.execute('SELECT 1 FROM p5_sites WHERE bbs_id=?', (bbs_id,)).fetchone():
+        raise ValueError('site not found')
+    c.execute("""CREATE TABLE IF NOT EXISTS p5_operator_credentials (
+        bbs_id TEXT PRIMARY KEY REFERENCES p5_sites(bbs_id), credential_hash TEXT NOT NULL UNIQUE)""")
+    token = secrets.token_urlsafe(32)
+    c.execute("""INSERT INTO p5_operator_credentials VALUES (?,?)
+        ON CONFLICT(bbs_id) DO UPDATE SET credential_hash=excluded.credential_hash""", (bbs_id, digest(token)))
+    return token
+
+
+def authenticate_operator(c, token):
+    if not c.execute("SELECT 1 FROM sqlite_master WHERE name='p5_operator_credentials'").fetchone():
+        raise GameError('AUTH_FAILED')
+    row = c.execute("""SELECT s.* FROM p5_operator_credentials o
+        JOIN p5_sites s ON s.bbs_id=o.bbs_id WHERE o.credential_hash=?""", (digest(token),)).fetchone()
+    if not row or row['state'] not in ('ENABLED', 'LEFT'):
+        raise GameError('AUTH_FAILED')
+    return row
+
+
+def authenticate_request(c, path, token, now, ttl):
+    if not isinstance(token, str) or not token or len(token) > 256:
+        raise GameError('AUTH_FAILED')
+    if path in ('leave', 'site-result'):
+        return authenticate_operator(c, token)
+    if path in ('connect', 'session', 'reference', 'rebind'):
+        return authenticate(c, token)
+    return session(c, token, now, ttl)

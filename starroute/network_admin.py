@@ -15,10 +15,10 @@ def main(argv=None):
     p=argparse.ArgumentParser();p.add_argument('--db',required=True);p.add_argument('--reference-key',required=True)
     sub=p.add_subparsers(dest='command',required=True)
     sub.add_parser('init');sub.add_parser('publish');sub.add_parser('sites');sub.add_parser('audit')
-    for name in ('add','rotate','approve','disable'):
+    for name in ('add','rotate','approve','disable','operator'):
         s=sub.add_parser(name);s.add_argument('--bbs-id',required=True)
         if name=='add':s.add_argument('--name',required=True)
-        if name in ('add','rotate','approve'):s.add_argument('--output',required=True)
+        if name in ('add','rotate','approve','operator'):s.add_argument('--output',required=True)
         if name=='approve':s.add_argument('--configuration')
     args=p.parse_args(argv);now=SystemClock().now();m=Manager(args.db,now)
     try:
@@ -40,6 +40,9 @@ def main(argv=None):
                 if args.command!='disable' and Path(args.output).exists():raise FileExistsError('output exists')
                 with m.atomic():
                     if args.command=='add':profile=sec.provision(m.repo,key,args.bbs_id,args.name,now)
+                    elif args.command == 'operator':
+                        profile = {'bbs_id': args.bbs_id, 'credential': sec.issue_operator_credential(m.c, args.bbs_id)}
+                        sec.audit(m.c,now,args.bbs_id,None,'operator_rotate','OK')
                     else:
                         row=m.c.execute('SELECT * FROM p5_sites WHERE bbs_id=?',(args.bbs_id,)).fetchone()
                         if not row:raise ValueError('site not found')

@@ -27,7 +27,7 @@ def main(argv=None):
     for name in ('activate','finish'):
         s=sub.add_parser(name);s.add_argument('--universe',required=True);s.add_argument('--round',type=int,required=True)
         if name=='activate':s.add_argument('--previous-round',type=int);s.add_argument('--previous-universe')
-    for name in ('list','rounds','history','check','hall'):sub.add_parser(name)
+    for name in ('list','rounds','history','check','hall','index-arrivals'):sub.add_parser(name)
     for name in ('rankings','scores','archive-check'):
         s=sub.add_parser(name);s.add_argument('--round',type=int,required=True)
     args=p.parse_args(argv);m=None
@@ -46,6 +46,7 @@ def main(argv=None):
             elif cmd=='prepare':result={'round_id':m.prepare(args.universe,args.round,args.start if args.start is not None else now,json.loads(read_limited(args.policy)) if args.policy else None)}
             elif cmd=='activate':m.activate(args.round,args.universe,args.previous_round,args.previous_universe);result={'state':'ACTIVE'}
             elif cmd=='finish':m.finish(args.round,args.universe);result={'state':'CLOSED'}
+            elif cmd=='index-arrivals':result={'indexed_rounds':m.index_arrivals()}
             elif cmd=='check':result=m.inspect()
             elif cmd=='archive-check':result={'round_id':args.round,'tables':len(m.archive(args.round)['tables']),'integrity':'ok'}
             elif cmd=='universe':result={k:v for k,v in m.item(args.universe).items() if k!='package_json'}

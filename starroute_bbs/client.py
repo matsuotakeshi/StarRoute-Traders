@@ -7,11 +7,31 @@ from urllib.parse import urlsplit
 from urllib.error import HTTPError,URLError
 
 MUTATIONS={'register','buy','sell','invest','navigate','dock','buy_ship','donate','insure','bankrupt','buy_device','coordinate_depart','guild','name_star'}
-CACHEABLE={'map','market','development','production','routes','news','rankings','hall','rounds','exploration'}
+CACHEABLE={'map','market','development','production','routes','news','rankings','hall','rounds'}
 
 
 class ClientError(Exception):
     def __init__(self,code):super().__init__(code);self.code=code
+
+
+def cache_projection(operation, result):
+    if operation == 'map':
+        definition = result['definition']
+        planets = [{k: row[k] for k in ('planet_id','name','coordinates') if k in row}
+                   for row in definition['planets'] if row['planet_id'] != 'hidden-001']
+        ids = {row['planet_id'] for row in planets}
+        routes = [{k: row[k] for k in ('id','from','to','distance')} for row in definition['routes']
+                  if {row['from'], row['to']} <= ids]
+        return {'definition': {**{k: definition[k] for k in ('projection_version','universe_id','round_id')},
+                               'planets': planets, 'routes': routes}}
+    if operation == 'market':
+        if result.get('planet_id') == 'hidden-001':
+            return None
+        return {**result, 'entries': [{k:v for k,v in row.items()
+                    if k not in ('owned','free_capacity','max_buy','max_sell')} for row in result['entries']]}
+    if operation == 'news':
+        return [row for row in result if row.get('public') is True]
+    return result
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -39,14 +59,30 @@ class Client:
         scope=hashlib.sha256(json.dumps([self.profile['bbs_id'],user_id],ensure_ascii=False).encode()).hexdigest()
         self.directory=Path(config['state_directory'])/scope;self.directory.mkdir(mode=0o700,parents=True,exist_ok=True)
         save(self.directory/'owner.json',{'bbs_id':self.profile['bbs_id'],'user_id':user_id})
-        self.pending=self.directory/'pending.json';self.cache=self.directory/'public-cache.json'
+        self.pending=self.directory/'pending.json';self.cache=self.directory/'public-cache-v2.json'
+        (self.directory/'public-cache.json').unlink(missing_ok=True)
 
     def audit(self,action,code):
         fd=os.open(self.directory/'client-audit.jsonl',os.O_WRONLY|os.O_CREAT|os.O_APPEND,0o600)
         with os.fdopen(fd,'a',encoding='utf8') as f:f.write(json.dumps({'at':int(time.time()),'action':action,'code':code})+'\n')
 
     def post(self,path,body,site=False):
-        token=self.profile['credential'] if site else self.token
+        if path in ('leave', 'site-result'):
+            path_to_credential = self.config.get('operator_credential_file')
+            if not path_to_credential:
+                raise ClientError('OPERATOR_CREDENTIAL_REQUIRED')
+            credential_file = Path(path_to_credential)
+            try:
+                if os.name != 'nt' and credential_file.stat().st_mode & 0o077:
+                    raise ClientError('INSECURE_CREDENTIAL_FILE')
+                credential = json.loads(credential_file.read_text(encoding='utf8'))
+            except (OSError, ValueError) as error:
+                raise ClientError('OPERATOR_CREDENTIAL_REQUIRED') from error
+            if credential.get('bbs_id') != self.profile['bbs_id']:
+                raise ClientError('AUTH_FAILED')
+            token = credential['credential']
+        else:
+            token=self.profile['credential'] if site else self.token
         request=Request(self.config['url'].rstrip('/')+'/v1/'+path,json.dumps(body).encode(),
                         headers={'Content-Type':'application/json','Authorization':'Bearer '+(token or '')},method='POST')
         try:
@@ -94,6 +130,13 @@ class Client:
         return json.loads(path.read_text())['language'] if path.exists() else self.config.get('language','ja')
 
     def call(self,operation,arguments=None,request_id=None):
+        if operation in MUTATIONS:
+            from .node import operator_lock
+            with operator_lock(self.pending, busy_code='OPERATION_UNCERTAIN'):
+                return self._call(operation, arguments, request_id)
+        return self._call(operation, arguments, request_id)
+
+    def _call(self,operation,arguments,request_id):
         if not self.connected:raise ClientError('MASTER_UNAVAILABLE')
         if operation in MUTATIONS and self.pending.exists():raise ClientError('OPERATION_UNCERTAIN')
         body={**self.target(),'operation':operation,'arguments':arguments or {},'request_id':request_id or uuid.uuid4().hex if operation in MUTATIONS else None}
@@ -104,17 +147,20 @@ class Client:
                 self.pending.unlink(missing_ok=True)
             if e.code in ('SESSION_EXPIRED','AUTH_FAILED','WORLD_TARGET_MISMATCH','CONFIG_VERIFICATION_FAILED'):
                 self.connected=False;self.token=None
-                if self.cache.exists():self.cache.unlink()
+                self.cache.unlink(missing_ok=True)
             raise
         if operation in MUTATIONS:self.pending.unlink(missing_ok=True)
         if operation in CACHEABLE:
-            old=json.loads(self.cache.read_text()) if self.cache.exists() else {}
-            if old.get('target')!=self.target():old={'target':self.target(),'items':{}}
-            value=[r for r in result if r.get('public') is True] if operation=='news' else result
-            if operation=='market':
-                # Personal cargo and cash-derived limits must not enter public cache.
-                value={**result,'entries':[{k:v for k,v in row.items() if k not in ('owned','free_capacity','max_buy','max_sell')} for row in result['entries']]}
-            old['items'][operation]={'at':int(time.time()),'value':value};save(self.cache,old)
+            value = cache_projection(operation, result)
+            if value is not None:
+                try:
+                    old = json.loads(self.cache.read_text(encoding='utf8'))
+                except FileNotFoundError:
+                    old = {}
+                if old.get('target') != self.target():
+                    old = {'target': self.target(), 'items': {}}
+                old['items'][operation] = {'at': int(time.time()), 'value': value}
+                save(self.cache, old)
         return result
 
     def cached(self,operation):
@@ -124,6 +170,11 @@ class Client:
         return {'stale':True,'target':data['target'],**data['items'][operation]}
 
     def resolve(self):
+        from .node import operator_lock
+        with operator_lock(self.pending, busy_code='OPERATION_UNCERTAIN'):
+            return self._resolve()
+
+    def _resolve(self):
         if not self.pending.exists():return {'status':'none'}
         body=json.loads(self.pending.read_text())
         result=self.post('result',{k:body[k] for k in ('universe_id','round_id','operation','request_id')})
@@ -133,6 +184,11 @@ class Client:
         return result
 
     def retry_pending(self):
+        from .node import operator_lock
+        with operator_lock(self.pending, busy_code='OPERATION_UNCERTAIN'):
+            return self._retry_pending()
+
+    def _retry_pending(self):
         if not self.connected or not self.pending.exists():raise ClientError('NO_PENDING_OPERATION')
         body=json.loads(self.pending.read_text())
         if {k:body[k] for k in ('universe_id','round_id')}!=self.target():raise ClientError('OLD_ROUND_PENDING')

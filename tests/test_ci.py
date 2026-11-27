@@ -21,10 +21,13 @@ class CIPolicyTests(unittest.TestCase):
         event.pop('pull_request');event['ref']='feature';self.assertFalse(allowed(self.env(),event))
         self.assertFalse(allowed({},{}))
     def test_owner_pr_only_on_native(self):
-        env=dict(self.env(),GITHUB_EVENT_NAME='pull_request',GITHUB_REF='refs/pull/1/merge')
+        env=dict(self.env(),GITHUB_EVENT_NAME='pull_request',GITHUB_REF='refs/pull/1/merge',GITHUB_ACTOR='matsuotakeshi',GITHUB_TRIGGERING_ACTOR='matsuotakeshi')
         repo={'full_name':env['GITHUB_REPOSITORY']}
-        event={'repository':repo,'action':'opened','number':1,'pull_request':{'user':{'login':'matsuotakeshi'},'head':{'repo':dict(repo),'sha':SHA},'base':{'repo':dict(repo),'ref':'main'}}}
+        event={'repository':repo,'action':'opened','sender':{'login':'matsuotakeshi'},'number':1,'pull_request':{'user':{'login':'matsuotakeshi'},'head':{'repo':dict(repo),'sha':SHA},'base':{'repo':dict(repo),'ref':'main'}}}
         self.assertTrue(allowed(env,event))
+        event['sender']['login']='outsider';self.assertFalse(allowed(env,event))
+        event['sender']['login']='matsuotakeshi'
+        self.assertFalse(allowed(dict(env,GITHUB_TRIGGERING_ACTOR='outsider'),event))
         event['pull_request']['head']['repo']['full_name']='outsider/fork';self.assertFalse(allowed(env,event))
         event['pull_request']['head']['repo']=dict(repo)
         event['pull_request']['user']['login']='outsider';self.assertFalse(allowed(env,event))

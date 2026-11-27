@@ -3,6 +3,7 @@ import argparse,json,os,sys,time,uuid,select,threading
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from telnet_wait import wait_prompt, close_servers
+from telnet_guild_trace import report as report_guild_timeout
 from phase5_telnet_demo import setup_world
 from tests.phase5_support import certificate
 from starroute.repository import SQLiteRepository
@@ -47,22 +48,43 @@ def main():
     def drain(c):
         while select.select([c.sock],[],[],.1)[0]:c.receive()
         c.buf=b''
-    def command(c,line,label=None,columns=80,rows=24):
-        drain(c);c.send(line.encode()+b'\n')
+    guild_trace = base/'guild-return.trace'
+    def command(c,line,label=None,columns=80,rows=24,*,trace_return=False):
+        drain(c)
+        if trace_return:
+            guild_trace.write_bytes(b'')
+            guild_trace.with_suffix('.armed').touch(mode=0o600)
+        started_ns = time.monotonic_ns()
+        c.send(line.encode()+b'\n')
         started=time.monotonic()
         try:raw=wait_prompt(c)
-        except Exception:
+        except Exception as error:
+            if trace_return:
+                report_guild_timeout(guild_trace, started_ns, c.buf, error)
             # Private fixture directory only: never print player data or input text.
             (base/'prompt-timeout.bin').write_bytes(c.buf)
             print('TELNET prompt failed; private prompt-timeout.bin and standalone/door-stack.log; elapsed='+str(round(time.monotonic()-started,3)),flush=True)
             raise
+        if trace_return:
+            guild_trace.with_suffix('.armed').unlink()
         plain=capture(raw,label,columns,rows) if label else ANSI.sub('',raw.decode('utf8','replace')).replace('\r','')
         print('MENU operation '+('OK' if 'Traceback' not in plain else 'FAIL'),flush=True)
         assert 'Traceback' not in plain;return plain
     def start(label,cfg):
         home=base/label;home.mkdir();config=home/'node.json';save(config,cfg)
         stack=home/'door-stack.log'
-        wrapper=home/'door';wrapper.write_text('#!'+sys.executable+'\nimport sys,faulthandler\n_stack=open('+repr(str(stack))+',"w")\nfaulthandler.enable(file=_stack)\nfaulthandler.dump_traceback_later(15,repeat=True,file=_stack)\nsys.path.insert(0,'+repr(str(ROOT))+')\nfrom starroute_bbs.door import main\nsys.argv=["door","--config",'+repr(str(config))+']\nraise SystemExit(main())\n');wrapper.chmod(0o700)
+        wrapper = home/'door'
+        wrapper.write_text(
+            f'#!{sys.executable}\nimport sys,faulthandler\n'
+            f'_stack = open({str(stack)!r}, "w")\nfaulthandler.enable(file=_stack)\n'
+            'faulthandler.dump_traceback_later(15, repeat=True, file=_stack)\n'
+            f'sys.path[:0] = [{str(ROOT)!r}, {str(ROOT/"scripts")!r}]\n'
+            'from telnet_guild_trace import install\n'
+            f'install({str(guild_trace)!r})\n'
+            'from starroute_bbs.door import main\n'
+            f'sys.argv = ["door", "--config", {str(config)!r}]\nraise SystemExit(main())\n',
+            encoding='utf8')
+        wrapper.chmod(0o700)
         doors=home/'doors.conf';doors.write_text(f'1|0|1800|{wrapper}|{home}|StarRoute Traders\n')
         server=Server(str(liner/'runtime'),home/'board',members=home/'members',options=['--doors',str(doors)],menu=True,telnet=True,language='en',menu_dir=liner/'menus',bind='127.0.0.1');servers.append(server)
         c=Client(server.port);clients.append(c);c.until();password=uuid.uuid4().hex
@@ -93,7 +115,7 @@ def main():
         finally:r.close()
         command(c,'m');command(c,'e','exploration-menu');command(c,'1','device-confirm');confirm(c)
         command(c,'m');command(c,'e');command(c,'4');confirm(c)
-        command(c,'m');command(c,'e');command(c,'5','notebook')
+        command(c,'m',trace_return=True);command(c,'e');command(c,'5','notebook')
         for cols,rows in ((100,30),(70,24),(50,24),(80,24)):
             drain(c);c.send(bytes([255,250,31,0,cols,0,rows,255,240]));raw=c.until(b'Select > ');capture(raw,f'explore-naws-{cols}',cols,rows)
         command(c,'m');command(c,'l');command(c,'1');command(c,'e','exploration-ja')

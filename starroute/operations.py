@@ -147,6 +147,20 @@ class Manager:
                   'tables':{t:[dict(r) for r in self.c.execute('SELECT * FROM '+t)] for t in GAME_TABLES+('players','bbs_accounts','preferences')}}
         raw=canonical_bytes(snapshot)
         self.c.execute('INSERT INTO p4_archives VALUES(?,?,?,?,?)',(rid,uid,zlib.compress(raw),hashlib.sha256(raw).hexdigest(),self.now))
+        from .exploration import index_archive_arrivals
+        index_archive_arrivals(self.c, rid, snapshot['tables'])
+
+    def index_arrivals(self):
+        """Offline, incremental upgrade for archives created before the public index."""
+        from .exploration import index_archive_arrivals
+        ids = [row[0] for row in self.c.execute(
+            'SELECT round_id FROM p4_archives EXCEPT SELECT round_id FROM p4_arrivals_indexed')]
+        for rid in ids:
+            tables = self.archive(rid)['tables']
+            with self.atomic():
+                if not self.c.execute('SELECT 1 FROM p4_arrivals_indexed WHERE round_id=?', (rid,)).fetchone():
+                    index_archive_arrivals(self.c, rid, tables)
+        return len(ids)
 
     def _finish(self,rid,uid):
         r=self.c.execute('SELECT * FROM p4_rounds WHERE round_id=? AND universe_id=?',(rid,uid)).fetchone()
