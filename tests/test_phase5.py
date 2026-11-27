@@ -294,6 +294,78 @@ except ClientError as e:print(json.dumps({'ok':False,'error':e.code}))
         self.assertTrue(any('grain' in line and '30' in line for line in out));out.clear();ui.execute('help')
         self.assertTrue(any('retry' in line for line in out));self.assertTrue(all(width(line)<=80 for line in out))
 
+    def test_join_recovery_publication_boundaries(self):
+        from starroute_bbs import node
+        a = self.client()
+        remote = {'mode': 'inter-bbs', **a.config}
+        proposed = self.root/'remote.json'
+        save(proposed, remote)
+        for point in ('paused', 'publishing', 'published'):
+            with self.subTest(point=point):
+                local = self.root/(point+'.db')
+                initialize(local, 100)
+                cfg = self.root/(point+'.json')
+                old = {'mode': 'standalone', 'database': str(local)}
+                save(cfg, old)
+                def interrupt(step):
+                    if step == point:
+                        with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+                            node.door_config(cfg)
+                        with self.assertRaisesRegex(ClientError, 'TRANSITION_BUSY'):
+                            node.recover(cfg)
+                        raise RuntimeError('interrupted')
+                with self.assertRaisesRegex(RuntimeError, 'interrupted'):
+                    node.join(cfg, proposed, interrupt)
+                with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+                    node.leave(cfg, proposed)
+                expected = 'RECOVERED' if point == 'paused' else 'COMMITTED'
+                self.assertEqual(node.recover(cfg)['state'], expected)
+                self.assertEqual(node.recover(cfg)['state'], expected)
+                self.assertEqual(node.door_config(cfg), old if point == 'paused' else remote)
+                with sqlite3.connect(local) as db:
+                    paused = db.execute("SELECT value FROM metadata WHERE key='node_paused'").fetchone()[0]
+                db.close()
+                self.assertEqual(paused, '0' if point == 'paused' else '1')
+
+    def test_legacy_join_keeps_shared_trade_and_requires_master_confirmation(self):
+        from starroute_bbs import node
+        a = self.logged()
+        a.call('buy', {'goods_id': self.good(a), 'quantity': 1}, 'before-recovery')
+        cargo = a.call('status')['cargo']
+        local = self.root/'local.db'
+        initialize(local, 100)
+        old = {'mode': 'standalone', 'database': str(local)}
+        remote = {'mode': 'inter-bbs', **a.config}
+        cfg = self.root/'node.json'
+        save(cfg, remote)
+        save(cfg.with_suffix('.transition.json'), {'kind': 'JOIN', 'state': 'PREPARED', 'old': old, 'new': remote})
+        with patch.object(Client, 'post', side_effect=ClientError('MASTER_UNAVAILABLE')):
+            with self.assertRaisesRegex(ClientError, 'MASTER_UNAVAILABLE'):
+                node.recover(cfg)
+        with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+            node.door_config(cfg)
+        self.assertEqual(node.read(cfg), remote)
+        self.assertEqual(node.recover(cfg)['state'], 'COMMITTED')
+        self.assertEqual(a.call('status')['cargo'], cargo)
+        self.assertEqual(node.door_config(cfg), remote)
+
+    def test_ambiguous_legacy_join_remains_paused(self):
+        from starroute_bbs import node
+        local = self.root/'local.db'
+        initialize(local, 100)
+        cfg = self.root/'node.json'
+        old = {'mode': 'standalone', 'database': str(local)}
+        save(cfg, old)
+        save(cfg.with_suffix('.transition.json'), {'kind': 'JOIN', 'state': 'PREPARED',
+             'old': old, 'new': {'mode': 'inter-bbs'}})
+        with self.assertRaisesRegex(ClientError, 'TRANSITION_UNCERTAIN'):
+            node.recover(cfg)
+        with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+            node.door_config(cfg)
+        with sqlite3.connect(local) as db:
+            self.assertEqual(db.execute("SELECT value FROM metadata WHERE key='node_paused'").fetchone()[0], '1')
+        db.close()
+
     def test_join_leave_and_recovery(self):
         from starroute_bbs.node import join,leave,recover
         # Independent local world, with identities/assets kept only in its backup.
