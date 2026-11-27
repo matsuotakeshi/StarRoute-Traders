@@ -99,7 +99,8 @@ class Gateway:
                     if result['code']!='OK':return {'diagnostic':result,'admitted':False}
                     return {'diagnostic':result,'admitted':True}
                 if path=='leave':
-                    if set(body) != {'universe_id', 'round_id', 'confirm_bbs_id'} or body['confirm_bbs_id'] != site['bbs_id']:
+                    if (set(body) != {'universe_id', 'round_id', 'confirm_bbs_id'}
+                            or not isinstance(body['universe_id'], str) or body['confirm_bbs_id'] != site['bbs_id']):
                         raise GameError('INVALID_REQUEST')
                     if site['state'] == 'LEFT':
                         # Retries after a round switch still acknowledge an existing target.

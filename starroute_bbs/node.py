@@ -104,6 +104,15 @@ def record_state(config, record, state):
     persist(config.with_suffix('.transition.json'), record)
 
 
+def begin_transition(config, record):
+    # During an interruption before the private pending marker is created, Door
+    # must consult this journal instead of accepting a previous transition's ready marker.
+    config.with_suffix('.transition.ready').unlink(missing_ok=True)
+    sync_directory(config.parent)
+    record_state(config, record, 'PREPARED')
+    set_gate(config, True)
+
+
 def finish(config, record, state):
     record_state(config, record, state)
     set_gate(config, False)
@@ -148,8 +157,7 @@ def join(config,new_config,failpoint=lambda step:None):
         directory = config.parent/('transition-'+uuid.uuid4().hex)
         directory.mkdir(mode=0o700)
         record = {'format': 2, 'kind': 'JOIN', 'old': old, 'new': new, 'backup': str(directory), 'at': int(time.time())}
-        record_state(config, record, 'PREPARED')
-        set_gate(config, True)
+        begin_transition(config, record)
         pause(old['database'], 1)
         failpoint('paused')
         backup_db(old['database'], directory/'standalone-backup.db')
@@ -233,8 +241,7 @@ def prepare_leave(config, old, new):
     finally:c.close()
     record={'state':'PREPARED','kind':'LEAVE','old':old,'new':new,'at':int(time.time())}
     persist(config.with_name(config.name+'.before-leave-'+uuid.uuid4().hex),old)
-    record_state(config, record, 'PREPARED')
-    set_gate(config, True)
+    begin_transition(config, record)
     return complete_leave(config, record)
 
 

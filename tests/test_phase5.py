@@ -68,6 +68,8 @@ class Phase5Tests(unittest.TestCase):
                 if first == 'leave':
                     for _ in range(2):
                         self.assertEqual(a.post('leave', request, site=True), {'state': 'LEFT'})
+                    with self.assertRaisesRegex(ClientError, 'INVALID_REQUEST'):
+                        a.post('leave', {**request, 'universe_id': None}, site=True)
                     self.assertEqual(a.post('site-result', lookup, site=True)['status'], 'committed')
                     self.assertEqual(self.m.c.execute("SELECT COUNT(*) FROM p5_audit WHERE bbs_id=? AND action='leave' AND code='OK'", (site,)).fetchone()[0], 1)
                     self.assertFalse(self.m.c.execute('SELECT 1 FROM p5_sessions WHERE bbs_id=?', (site,)).fetchone())
@@ -395,6 +397,20 @@ except ClientError as e:print(json.dumps({'ok':False,'error':e.code}))
         self.assertEqual(node.read(a.pending), pending)
         self.assertEqual(a.call('status')['cargo'], cargo)
         self.assertEqual(node.door_config(cfg), remote)
+
+    def test_previous_ready_marker_cannot_open_an_interrupted_second_transition(self):
+        from starroute_bbs import node
+        cfg = self.root/'node.json'
+        local = {'mode': 'standalone'}
+        remote = {'mode': 'inter-bbs'}
+        save(cfg, local)
+        record = {'kind': 'JOIN', 'old': local, 'new': remote, 'format': 2}
+        node.finish(cfg, record, 'RECOVERED')
+        with patch.object(node, 'set_gate', side_effect=OSError('interrupted')):
+            with self.assertRaises(OSError):
+                node.begin_transition(cfg, record)
+        with self.assertRaisesRegex(ClientError, 'TRANSITION_PENDING'):
+            node.door_config(cfg)
 
     def test_ambiguous_legacy_join_remains_paused(self):
         from starroute_bbs import node
